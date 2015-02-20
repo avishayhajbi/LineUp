@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('menuCtrl', function($scope, $ionicModal, $timeout) {
   // Form data for the login modal
   $scope.loginData = {};
 
@@ -33,7 +33,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('PlaylistsCtrl', function($scope) {
+.controller('page1Ctrl', function($scope) {
 
   $scope.playlists = [
     { title: 'Reggae', id: 1 },
@@ -45,7 +45,55 @@ angular.module('starter.controllers', [])
   ];
 })
 
-.controller('PlaylistCtrl', function($scope) {
+.controller('page2Ctrl', function($scope) {
 
 
-});
+})
+.controller('page3Ctrl', function($scope) {
+
+
+})
+
+.controller('page4Ctrl', function($scope) {
+
+
+})
+
+.controller('page5Ctrl', function($scope) {
+
+
+})
+
+.controller('page6Ctrl', function($scope) {
+
+
+})
+.controller('page7Ctrl', function($scope) {
+
+
+})
+
+.controller('page8Ctrl', function($scope) {
+
+
+})
+
+.controller('page9Ctrl', function($scope) {
+
+
+})
+
+.controller('page10Ctrl', function($scope) {
+
+
+})
+
+.controller('page11Ctrl', function($scope) {
+
+
+})
+
+.controller('mainCtrl', function($scope) {
+
+
+})
