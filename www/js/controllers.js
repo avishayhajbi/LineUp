@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ngCordova'])
 
 .controller('menuCtrl', function($scope, $ionicModal, $timeout) {
   // Form data for the login modal
@@ -8,17 +8,17 @@ angular.module('starter.controllers', [])
   $ionicModal.fromTemplateUrl('templates/login.html', {
     scope: $scope
   }).then(function(modal) {
-    $scope.modal = modal;
+    $scope.modalMenu = modal;
   });
 
   // Triggered in the login modal to close it
   $scope.closeLogin = function() {
-    $scope.modal.hide();
+    $scope.modalMenu.hide();
   };
 
   // Open the login modal
   $scope.login = function() {
-    $scope.modal.show();
+    $scope.modalMenu.show();
   };
 
   // Perform the login action when the user submits the login form
@@ -33,26 +33,42 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('page1Ctrl', function($scope) {
+.controller('page1Ctrl', function($scope , $cordovaSocialSharing) {
 
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
+
+   $scope.shareAnywhere = function() {
+        $cordovaSocialSharing.share("This is your message", "This is your subject", "www/imagefile.png", "http://blog.nraboy.com");
+    }
+
+  $scope.playlists = [{
+    title: 'Reggae',
+    id: 1
+  }, {
+    title: 'Chill',
+    id: 2
+  }, {
+    title: 'Dubstep',
+    id: 3
+  }, {
+    title: 'Indie',
+    id: 4
+  }, {
+    title: 'Rap',
+    id: 5
+  }, {
+    title: 'Cowbell',
+    id: 6
+  }];
 })
 
 .controller('page2Ctrl', function($scope) {
 
 
-})
-.controller('page3Ctrl', function($scope) {
+  })
+  .controller('page3Ctrl', function($scope) {
 
 
-})
+  })
 
 .controller('page4Ctrl', function($scope) {
 
@@ -67,11 +83,11 @@ angular.module('starter.controllers', [])
 .controller('page6Ctrl', function($scope) {
 
 
-})
-.controller('page7Ctrl', function($scope) {
+  })
+  .controller('page7Ctrl', function($scope) {
 
 
-})
+  })
 
 .controller('page8Ctrl', function($scope) {
 
@@ -93,7 +109,32 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('mainCtrl', function($scope) {
+.controller('mainCtrl', function($scope, $ionicPopup, $timeout , $cordovaSocialSharing) {
+  //open screen delay 
+  setTimeout(function() {
+    $scope.$apply(function() {
+      $("#welcomeScreen").animate({
+        opacity: 0,
+        top: "+1000"
+      }, 2000, function() {
+        $("#welcomeScreen").hide();
+      });
+    });
+  }, 3000);
+
+    
 
 
-})
+  })
+
+.factory('phoneManager', function ($scope, $ionicPopup) {
+
+  var device , uuid;
+    ionic.Platform.ready(function() {
+        device = ionic.Platform.device();
+        uuid = device.uuid;
+    });
+
+
+});
+
