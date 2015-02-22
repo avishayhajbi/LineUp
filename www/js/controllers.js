@@ -33,12 +33,15 @@ angular.module('starter.controllers', ['ngCordova'])
   };
 })
 
-.controller('page1Ctrl', function($scope , $cordovaSocialSharing) {
+.controller('page1Ctrl' , function ($scope  , phoneManager)  {
+  var title = "hi there";
+  var sub = "sub";
+  var img = "img";
+  var url = "url";
 
-
-   $scope.shareAnywhere = function() {
-        $cordovaSocialSharing.share("This is your message", "This is your subject", "www/imagefile.png", "http://blog.nraboy.com");
-    }
+  $scope.share = function()  {
+      phoneManager.shareAnywhere(title , sub , img , url);
+  }
 
   $scope.playlists = [{
     title: 'Reggae',
@@ -122,19 +125,8 @@ angular.module('starter.controllers', ['ngCordova'])
     });
   }, 3000);
 
-    
-
 
   })
 
-.factory('phoneManager', function ($scope, $ionicPopup) {
-
-  var device , uuid;
-    ionic.Platform.ready(function() {
-        device = ionic.Platform.device();
-        uuid = device.uuid;
-    });
-
-
-});
+;
 
