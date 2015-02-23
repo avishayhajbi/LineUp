@@ -1,6 +1,39 @@
 /* Empty. Add your own CSS if you like */
 
+.center{
+  display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-direction: normal;
+    -moz-box-direction: normal;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-content: stretch;
+    -ms-flex-line-pack: stretch;
+    align-content: stretch;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+
 #welcomeScreen {
+	display: none;
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -11,3 +44,54 @@
 }
 
 
+.header {
+	
+	
+}
+
+.button-positive {
+	margin: 0 auto;
+}
+
+.page1CreateLineButton {
+	margin-top: 30%;
+	font-size: 40px;
+	width: 80%;
+	height: 60px;
+	border-radius: 16px;
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+.page1LineHolder {
+	margin-top: 40%;
+	width: 60%;
+	margin-left: 10%;
+	float: left;
+}
+
+.page1PlusButton {
+	float: none;
+	margin-top: 40%;
+	font-size: 30px;
+}
+
+.page1JoinLine {
+	font-size: 40px;
+	width: 80%;
+	height: 60px;
+	border-radius: 16px;
+	border-top-right-radius: 0px;
+	border-top-left-radius: 0px;
+}
+#page1ListLine {
+	margin-top: 14%;
+
+}
+
+#page1searchLinesButton {
+	z-index: 1000;
+	float: right;
+	margin-right: 4px;
+	margin-top: -11%;
+}

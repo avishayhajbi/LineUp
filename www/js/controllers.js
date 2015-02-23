@@ -33,38 +33,85 @@ angular.module('starter.controllers', ['ngCordova'])
   };
 })
 
-.controller('page1Ctrl' , function ($scope  , phoneManager)  {
-  var title = "hi there";
-  var sub = "sub";
-  var img = "img";
-  var url = "url";
+.controller('page1Ctrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, outSideLineHandler) {
 
-  $scope.share = function()  {
-      phoneManager.shareAnywhere(title , sub , img , url);
-  }
+    $scope.lineIdToGet = '';
+    $scope.placeholder = 'Enter Line ID..';
+    $scope.LineList = outSideLineHandler.getLineList();
 
-  $scope.playlists = [{
-    title: 'Reggae',
-    id: 1
-  }, {
-    title: 'Chill',
-    id: 2
-  }, {
-    title: 'Dubstep',
-    id: 3
-  }, {
-    title: 'Indie',
-    id: 4
-  }, {
-    title: 'Rap',
-    id: 5
-  }, {
-    title: 'Cowbell',
-    id: 6
-  }];
-})
+    $scope.$on('lineListUpdated', function(event) {
+      $scope.LineList = outSideLineHandler.getLineList();
+      console.log('lineListUpdated');
+    });
 
-.controller('page2Ctrl', function($scope) {
+    //when typing on inputbox
+    $scope.changeInput = function(manualId) {
+      $scope.lineIdToGet = manualId;
+    }
+
+    // clear the placeholder when click
+    $scope.clearPlaceHolder = function() {
+        $scope.placeholder = '';
+        $scope.lineIdToGet = '';
+      }
+      //open the list of lines
+    $scope.openChooseLine = function() {
+        $scope.LineList = outSideLineHandler.getDefaultLineList();
+        $scope.modal.show();
+      }
+      //when click back
+    $scope.closeChooseLine = function() {
+        $scope.placeholder = 'Enter Line ID..';
+        $scope.lineIdToGet = '';
+        $scope.modal.hide();
+      }
+      //click on one Line
+    $scope.chooseLine = function(line) {
+      $scope.placeholder = line.title;
+      $scope.lineIdToGet = line.id;
+      $scope.modal.hide();
+    }
+
+    //iside  chooseLine function : 
+    $scope.scrollToTop = function() {
+      $ionicScrollDelegate.scrollTop();
+    }
+
+    $scope.searchLineByName = function(value) {
+      console.log("search Value:" + value);
+      if (value !== '') {
+        outSideLineHandler.searchLineByName(value);
+      }
+
+    }
+    $scope.resetSearchBar = function(value) {
+      if (value === '') {
+        $scope.LineList = outSideLineHandler.getDefaultLineList();
+      }
+    }
+
+    $ionicModal.fromTemplateUrl('templates/LineList.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal;
+    });
+
+    $scope.joinLine = function() {
+      var listObject = outSideLineHandler.getLine();
+      if (!listObject) {
+        var alertPopup = $ionicPopup.alert({
+          title: 'line not found',
+          template: 'id not exist please insert different line ID.'
+        });
+      } else {
+        $state.transitionTo("app.page8");
+      }
+    }
+
+
+  })
+  .controller('page2Ctrl', function($scope) {
 
 
   })
@@ -112,7 +159,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
 })
 
-.controller('mainCtrl', function($scope, $ionicPopup, $timeout , $cordovaSocialSharing) {
+.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $cordovaSocialSharing) {
   //open screen delay 
   setTimeout(function() {
     $scope.$apply(function() {
@@ -124,9 +171,16 @@ angular.module('starter.controllers', ['ngCordova'])
       });
     });
   }, 3000);
+  var processDocumentOnce = false;
+  $scope.$on('$ionicView.afterEnter', function() {
+
+    if (processDocumentOnce === false) {
+      console.log('processDocument called');
+      i18n.processDocument();
+      processDocumentOnce = true;
+    }
+
+  });
 
 
-  })
-
-;
-
+});

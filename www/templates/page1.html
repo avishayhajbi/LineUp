@@ -1,6 +1,21 @@
-<ion-view view-title="Browse">
-  <ion-content>
-    <h1>Browse</h1>
-    <button class="button" ng-click="share()">Share anywhere</button>
-  </ion-content>
+<ion-view>
+	<ion-nav-title><span id="LA_PAGE1HEADER"></span></ion-nav-title>
+	<ion-content>
+		<a class="button button-positive center page1CreateLineButton" href="#/app/page2">
+				<span id="LA_PAGE1BUTTON">Create Line</span>
+		</a>
+		<div class="list list-inset page1LineHolder">
+			<label class="item item-input">
+		    	<input type="text" ng-model="lineIdToGetText" placeholder="{{placeholder}}" ng-change="changeInput(lineIdToGetText)" ng-click="clearPlaceHolder()">
+		  	</label>
+
+		</div>
+		<button class="button button-stable page1PlusButton" ng-click="openChooseLine(); lineIdToGetText = ''">+</button>
+		
+			<button class="button button-positive center page1JoinLine" ng-disabled="lineIdToGet===''" ng-click="joinLine()">
+					<span id="LA_PAGE1JOINLINE">Join Line</span>
+			</button>
+		
+
+	</ion-content>
 </ion-view>
