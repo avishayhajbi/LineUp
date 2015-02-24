@@ -7,7 +7,7 @@ angular.module('starter.controllers', ['ngCordova'])
   $scope.loginData = {};
 
   // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login.html', {
+  $ionicModal.fromTemplateUrl('templates/ionicModal/login.html', {
     scope: $scope
   }).then(function(modal) {
     $scope.modalMenu = modal;
@@ -38,7 +38,7 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('page1Ctrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate , $filter, outSideLineHandler) {
 
     $scope.lineIdToGet = '';
-    $scope.placeholder = 'TR_PAGE1ENTERLINEID';
+    $scope.placeholder = 'TR_1_ENTERLINEID';
     $scope.searchPlaceHolder = 'TR_SEARCH';
     $scope.LineList = outSideLineHandler.getLineList();
 
@@ -94,7 +94,7 @@ angular.module('starter.controllers', ['ngCordova'])
       }
     }
 
-    $ionicModal.fromTemplateUrl('templates/LineList.html', {
+    $ionicModal.fromTemplateUrl('templates/ionicModal/LineList.html', {
       scope: $scope,
       animation: 'slide-in-up'
     }).then(function(modal) {
@@ -105,8 +105,8 @@ angular.module('starter.controllers', ['ngCordova'])
       var listObject = outSideLineHandler.getLine();
       if (!listObject) {
         var alertPopup = $ionicPopup.alert({
-          title: $filter('translate')('TR_PAGE1POPTITLE'),
-          template: $filter('translate')('TR_PAGE1POPTEMPLATE')
+          title: $filter('translate')('TR_1_POPTITLE'),
+          template: $filter('translate')('TR_1_POPTEMPLATE')
         });
       } else {
         $state.transitionTo("app.page8");
@@ -164,9 +164,9 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 
-.controller('settingCtrl', function($scope) {
+.controller('settingCtrl', function($scope , $translate) {
    $scope.changeLanguage = function() {
-      localizationHandler.changeLanguage('he');
+      $translate.use('he');
     }
 })
 .controller('mainCtrl', function($scope, $ionicPopup, $timeout, $cordovaSocialSharing)  {
