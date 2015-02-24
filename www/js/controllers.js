@@ -1,6 +1,8 @@
 angular.module('starter.controllers', ['ngCordova'])
 
 .controller('menuCtrl', function($scope, $ionicModal, $timeout) {
+
+
   // Form data for the login modal
   $scope.loginData = {};
 
@@ -33,11 +35,13 @@ angular.module('starter.controllers', ['ngCordova'])
   };
 })
 
-.controller('page1Ctrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, outSideLineHandler) {
+.controller('page1Ctrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate , $filter, outSideLineHandler) {
 
     $scope.lineIdToGet = '';
-    $scope.placeholder = 'Enter Line ID..';
+    $scope.placeholder = 'TR_PAGE1ENTERLINEID';
+    $scope.searchPlaceHolder = 'TR_SEARCH';
     $scope.LineList = outSideLineHandler.getLineList();
+
 
     $scope.$on('lineListUpdated', function(event) {
       $scope.LineList = outSideLineHandler.getLineList();
@@ -58,10 +62,10 @@ angular.module('starter.controllers', ['ngCordova'])
     $scope.openChooseLine = function() {
         $scope.LineList = outSideLineHandler.getDefaultLineList();
         $scope.modal.show();
+        
       }
       //when click back
     $scope.closeChooseLine = function() {
-        $scope.placeholder = 'Enter Line ID..';
         $scope.lineIdToGet = '';
         $scope.modal.hide();
       }
@@ -101,8 +105,8 @@ angular.module('starter.controllers', ['ngCordova'])
       var listObject = outSideLineHandler.getLine();
       if (!listObject) {
         var alertPopup = $ionicPopup.alert({
-          title: 'line not found',
-          template: 'id not exist please insert different line ID.'
+          title: $filter('translate')('TR_PAGE1POPTITLE'),
+          template: $filter('translate')('TR_PAGE1POPTEMPLATE')
         });
       } else {
         $state.transitionTo("app.page8");
@@ -159,7 +163,13 @@ angular.module('starter.controllers', ['ngCordova'])
 
 })
 
-.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $cordovaSocialSharing) {
+
+.controller('settingCtrl', function($scope) {
+   $scope.changeLanguage = function() {
+      localizationHandler.changeLanguage('he');
+    }
+})
+.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $cordovaSocialSharing)  {
   //open screen delay 
   setTimeout(function() {
     $scope.$apply(function() {
@@ -171,16 +181,5 @@ angular.module('starter.controllers', ['ngCordova'])
       });
     });
   }, 3000);
-  var processDocumentOnce = false;
-  $scope.$on('$ionicView.afterEnter', function() {
-
-    if (processDocumentOnce === false) {
-      console.log('processDocument called');
-      i18n.processDocument();
-      processDocumentOnce = true;
-    }
-
-  });
-
 
 });

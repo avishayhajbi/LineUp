@@ -1,6 +1,6 @@
 
 
-angular.module('starter.controllers', ['ngCordova'])
+angular.module('starter.directives', ['ngCordova'])
 .directive('scrollOnClick', function() {
   return {
     restrict: 'A',

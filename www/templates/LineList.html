@@ -1,16 +1,16 @@
 <ion-modal-view>
  	<ion-header-bar>
-	    <h1 class="title"><span id="LA_PAGE1CHOOSELINE">Choose Line</span></h1>
+	    <h1 class="title">{{"TR_PAGE1CHOOSELINE" | translate}}</h1>
 	    <div class="buttons">
-	    	<button class="button button-clear" ng-click="closeChooseLine()"><span id="LA_PAGE1BACKFROMSEARCH">back</span></button>
+	    	<button class="button button-clear" ng-click="closeChooseLine()">{{"TR_BACK" | translate}}</button>
 	    </div>
 	</ion-header-bar>
 	<div class="bar bar-subheader">
 		<label class="item item-input">
 			<i class="icon ion-search placeholder-icon"></i>
-			<input type="search" placeholder="Search" ng-model="searchLine" ng-change="resetSearchBar(searchLine)">
+			<input type="search" placeholder="{{searchPlaceHolder | translate}}" ng-model="searchLine" ng-change="resetSearchBar(searchLine)">
 		</label>
-		<button class="button" id="page1searchLinesButton" ng-click="searchLineByName(searchLine);"><span id="LA_PAGE1SEARCHBUTTON">Search</span></button>
+		<button class="button" id="page1searchLinesButton" ng-click="searchLineByName(searchLine);">{{"TR_SEARCH" | translate}}</button>
 		
 	</div>
 	<ion-content scrollbar-y="true" id="page1ListLine">

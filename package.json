@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "bower": "^1.3.3",
+    "grunt": "^0.4.5",
     "gulp-util": "^2.2.14",
     "shelljs": "^0.3.0"
   },
@@ -23,6 +24,7 @@
     "https://github.com/phonegap-build/PushPlugin",
     "https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git",
     "https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git",
-    "org.apache.cordova.geolocation"
+    "org.apache.cordova.geolocation",
+    "https://git-wip-us.apache.org/repos/asf/cordova-plugin-globalization.git"
   ]
 }

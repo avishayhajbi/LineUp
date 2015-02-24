@@ -1,4 +1,4 @@
-angular.module('services', ['ngCordova']).config(['$provide', function($provide) {
+angular.module('starter.services', ['ngCordova']).config(['$provide', function($provide) {
 
   $provide.factory('phoneManager', function($ionicPopup, $cordovaSocialSharing, $rootScope) {
 
@@ -7,8 +7,8 @@ angular.module('services', ['ngCordova']).config(['$provide', function($provide)
       longitude: '',
       latitude: ''
     };
-    ionic.Platform.ready(function() {
 
+    ionic.Platform.ready(function() {
       device = ionic.Platform.device();
       uuid = device.uuid;
     });
@@ -50,11 +50,13 @@ angular.module('services', ['ngCordova']).config(['$provide', function($provide)
 
       // getListOfOpenLines from server with mygeo location
       $http.get('http://localHost:3030/api/lineList', {
-        params:  {location:myLocation}
+        params: {
+          location: myLocation
+        }
       }).then(function(response) {
         console.log(typeof response);
         lines = response.data;
-        defaultLines=lines;
+        defaultLines = lines;
         console.log(lines);
 
         $rootScope.$broadcast('lineListUpdated');
@@ -77,7 +79,10 @@ angular.module('services', ['ngCordova']).config(['$provide', function($provide)
       searchLineByName: function(value) {
 
         $http.get('http://localHost:3030/api/searchlineList', {
-          params:  {value : value ,location : myLocation }
+          params: {
+            value: value,
+            location: myLocation
+          }
         }).then(function(response) {
           if (response.data !== 'null') {
             lines = response.data;
