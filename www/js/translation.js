@@ -20,6 +20,8 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_Create_Line: 'Create Line',
       TR_join_line: 'Join Line',
       TR_get_in_line: 'Get in line',
+      TR_yourPositionIs : 'Your postion is:',
+      TR_timeToWait : 'Time to wait:',
       //settings Page
       TR_Settings_language: 'Change language',
       //page1

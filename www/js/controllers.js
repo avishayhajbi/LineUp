@@ -148,6 +148,7 @@ angular.module('starter.controllers', ['ngCordova'])
   })
   .controller('page8Ctrl', function($scope) {
 
+    $scope.myLineList = [{title:"line number1"},{title:"line number2"}];
 
   })
   .controller('page9Ctrl', function($scope, $state, $rootScope, meetingManager) {
