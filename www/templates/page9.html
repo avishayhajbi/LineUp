@@ -1,5 +1,51 @@
-<ion-view view-title="Browse">
-  <ion-content>
-    <h1>Browse</h1>
-  </ion-content>
+<ion-view view-title="LineUp">
+    <ion-content id="page9">
+        <div class="item item-thumbnail-left">
+            <img src="/img/temp.jpg">
+            <h2>jonny Line</h2>
+            <p>get in my belly line</p>
+        </div>
+        <div ng-show="line.configEnabeld">
+
+            <label class="item item-input item-select">
+                <div class="input-label">{{"TR_Type" | translate}}</div>
+                <select ng-options="option for option in line.type" ng-model="selectedType"></select>
+            </label>
+
+            <label class="item item-input item-select">
+                <div class="input-label">{{"TR_Date" | translate}}</div>
+                <select ng-options="date.day for date in line.availableDates" ng-model="selectedDate" ng-change="chooseDate(selectedDate)"></select>
+            </label>
+
+            <label class="item item-input item-select">
+                <div class="input-label">{{"TR_Time" | translate}}</div>
+                <select ng-options="time for time in selectedDate.availableMeetings" ng-model="selectedTime"></select>
+            </label>
+
+            <div class="item item-input row row-center">
+                <div class="col col-25">
+                    <div class="input-label">{{"TR_Reminder" | translate}}</div>
+                </div>
+                <div class="col col-25">
+                    <label class="toggle">
+                        <input type="checkbox">
+                        <div class="track">
+                            <div class="handle"></div>
+                        </div>
+                    </label>
+                </div>
+                <div class="col col-50 col-offset-10">
+                    <input type="time" style="float:right" ng-model="timeReminder" placeholder="HH:mm:ss" min="01:00:00" max="36:00:00" />{{timeReminder | date: "HH:mm"}}
+                </div>
+            </div>
+            <label class="item item-input row">
+                <textarea rows="4" placeholder="comments" style="border-left: 1px solid #DDD;border-right: 1px solid #DDD;" class="col col-80 col-offset-10"></textarea>
+            </label>
+
+            <button class="button button-positive" ng-click="joinLine()">{{"TR_1_JOINLINE" | translate}}
+            </button>
+
+
+        </div>
+    </ion-content>
 </ion-view>

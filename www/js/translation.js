@@ -12,6 +12,10 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_Password: 'Password',
       TR_Log_in: 'Log in',
       TR_page1: 'page1',
+      TR_Date:'Date',
+      TR_Time:'Time',
+      TR_Type: 'Type',
+      TR_Reminder:'Reminder',
       TR_Settings: 'Settings',
       //settings Page
       TR_Settings_language: 'Change language',
@@ -21,7 +25,11 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_1_ENTERLINEID: 'Enter Line ID..',
       TR_1_CHOOSELINE: 'Choose Line',
       TR_1_POPTITLE: 'line not found',
-      TR_1_POPTEMPLATE: 'id not exist please insert different line ID.'
+      TR_1_POPTEMPLATE: 'id not exist please insert different line ID.',
+        //page9
+      TR_9_POPTITLE: 'line not found',
+      TR_9_POPTEMPLATE: 'id not exist please insert different line ID.',
+
     });
     $translateProvider.translations('he', {
       //global
@@ -36,6 +44,10 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_Log_in: 'התחבר',
       TR_page1: 'דף1',
       TR_Settings: 'הגדרות',
+      TR_Date:'תאריך',
+      TR_Reminder:'תזכורת',
+      TR_Time:'זמן',
+      TR_Type: 'סוג',
       //settings Page
       TR_Settings_language: 'שנה שפה',
       //page1

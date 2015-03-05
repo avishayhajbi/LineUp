@@ -1,23 +1,24 @@
 <ion-modal-view>
- 	<ion-header-bar>
-	    <h1 class="title">{{"TR_1_CHOOSELINE" | translate}}</h1>
-	    <div class="buttons">
-	    	<button class="button button-clear" ng-click="closeChooseLine()">{{"TR_BACK" | translate}}</button>
-	    </div>
-	</ion-header-bar>
-	<div class="bar bar-subheader">
-		<label class="item item-input">
-			<i class="icon ion-search placeholder-icon"></i>
-			<input type="search" placeholder="{{searchPlaceHolder | translate}}" ng-model="searchLine" ng-change="resetSearchBar(searchLine)">
-		</label>
-		<button class="button" id="page1searchLinesButton" ng-click="searchLineByName(searchLine);">{{"TR_SEARCH" | translate}}</button>
-		
-	</div>
-	<ion-content scrollbar-y="true" id="page1ListLine">
-		<ion-list>
-			<ion-item ng-repeat="Line in LineList | filter:searchLine" ng-click="chooseLine(Line);">
-		        {{Line.title}}
-			</ion-item>
-		</ion-list>
-	</ion-content>
+    <ion-header-bar id="LineList">
+        <h1 class="title">{{"TR_1_CHOOSELINE" | translate}}</h1>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeChooseLine()">{{"TR_BACK" | translate}}</button>
+        </div>
+    </ion-header-bar>
+    <div class="bar bar-subheader row row-center">
+        <div class="col col-80">
+            <label class="item item-input">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="search" placeholder="{{searchPlaceHolder | translate}}" ng-model="searchLine" ng-change="resetSearchBar(searchLine)">
+            </label>
+        </div>
+        <button class="button button-block" ng-click="searchLineByName(searchLine);">{{"TR_SEARCH" | translate}}</button>
+    </div>
+    <ion-content scrollbar-y="true">
+        <ion-list>
+            <ion-item ng-repeat="Line in LineList | filter:searchLine" ng-click="chooseLine(Line);">
+                {{Line.title}}
+            </ion-item>
+        </ion-list>
+    </ion-content>
 </ion-modal-view>

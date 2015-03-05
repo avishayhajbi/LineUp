@@ -35,7 +35,7 @@ angular.module('starter.controllers', ['ngCordova'])
   };
 })
 
-.controller('page1Ctrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate , $filter, outSideLineHandler) {
+.controller('page1Ctrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, outSideLineHandler) {
 
     $scope.lineIdToGet = '';
     $scope.placeholder = 'TR_1_ENTERLINEID';
@@ -62,7 +62,7 @@ angular.module('starter.controllers', ['ngCordova'])
     $scope.openChooseLine = function() {
         $scope.LineList = outSideLineHandler.getDefaultLineList();
         $scope.modal.show();
-        
+
       }
       //when click back
     $scope.closeChooseLine = function() {
@@ -109,7 +109,7 @@ angular.module('starter.controllers', ['ngCordova'])
           template: $filter('translate')('TR_1_POPTEMPLATE')
         });
       } else {
-        $state.transitionTo("app.page8");
+        $state.transitionTo("app.page9");
       }
     }
 
@@ -148,11 +148,28 @@ angular.module('starter.controllers', ['ngCordova'])
 
 })
 
-.controller('page9Ctrl', function($scope) {
+.controller('page9Ctrl', function($scope ) {
+  $scope.line = {
+    configEnabeld: true,
+    type: ["1", "2", "3"],
+    availableDates: [{
+      day: "01-01-2013",
+      availableMeetings: ["07:00", "08:00", "09:00", "10:00"]
+    }, {
+      day: "01-01-2015",
+      availableMeetings: ["07:00", "08:00", "09:00", "10:00"]
+    }],
+    startDate: "01-01-2013",
+    endDate: "01-01-2015"
+  }
+  
+  $scope.chooseDate = function(value) {
+    $scope.selectedDate = value;
+    console.log($scope.selectedDate);
+  }
 
-
+  
 })
-
 .controller('page10Ctrl', function($scope) {
 
 
@@ -164,22 +181,22 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 
-.controller('settingCtrl', function($scope , $translate) {
-   $scope.changeLanguage = function() {
+.controller('settingCtrl', function($scope, $translate) {
+    $scope.changeLanguage = function() {
       $translate.use('he');
     }
-})
-.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $cordovaSocialSharing)  {
-  //open screen delay 
-  setTimeout(function() {
-    $scope.$apply(function() {
-      $("#welcomeScreen").animate({
-        opacity: 0,
-        top: "+1000"
-      }, 2000, function() {
-        $("#welcomeScreen").hide();
+  })
+  .controller('mainCtrl', function($scope, $ionicPopup, $timeout, $cordovaSocialSharing) {
+    //open screen delay 
+    setTimeout(function() {
+      $scope.$apply(function() {
+        $("#welcomeScreen").animate({
+          opacity: 0,
+          top: "+1000"
+        }, 2000, function() {
+          $("#welcomeScreen").hide();
+        });
       });
-    });
-  }, 3000);
+    }, 3000);
 
-});
+  });

@@ -6472,8 +6472,14 @@ a.button {
   align-self: center; }
 
 /* Column Offsets */
+.col-offset-5 {
+  margin-left: 5%; }
+
 .col-offset-10 {
   margin-left: 10%; }
+
+.col-offset-15 {
+  margin-left: 15%; }
 
 .col-offset-20 {
   margin-left: 20%; }
