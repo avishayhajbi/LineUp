@@ -17,11 +17,14 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_Type: 'Type',
       TR_Reminder:'Reminder',
       TR_Settings: 'Settings',
+      TR_Create_Line: 'Create Line',
+      TR_join_line: 'Join Line',
+      TR_get_in_line: 'Get in line',
       //settings Page
       TR_Settings_language: 'Change language',
       //page1
-      TR_1_BUTTON: 'Create Line',
-      TR_1_JOINLINE: 'Join Line',
+    
+      
       TR_1_ENTERLINEID: 'Enter Line ID..',
       TR_1_CHOOSELINE: 'Choose Line',
       TR_1_POPTITLE: 'line not found',
@@ -48,6 +51,7 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_Reminder:'תזכורת',
       TR_Time:'זמן',
       TR_Type: 'סוג',
+      TR_get_in_line: 'Get in line',
       //settings Page
       TR_Settings_language: 'שנה שפה',
       //page1

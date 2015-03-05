@@ -72,9 +72,21 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         return defaultLines;
       },
       getLine: function(lineId) {
-        //return object or false from server;
-        return true;
-        // List = get http  
+
+          $http.get('http://localHost:3030/api/getLine', {
+          params: {
+            lineId: lineId
+          }
+        }).then(function(response) {
+          console.log(response.data);
+          if (response.data != false) {
+            $rootScope.$broadcast('lineInfoArrived' , {successful:true ,lineInfo : response.data});
+          }
+          else {
+           $rootScope.$broadcast('lineInfoArrived' , {successful:false}); 
+          }
+        });
+    
       },
       searchLineByName: function(value) {
 
@@ -90,6 +102,69 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
             $rootScope.$broadcast('lineListUpdated');
           }
         });
+      }
+    }
+  });
+  $provide.factory('meetingSender', function($rootScope, $http) {
+
+    var meetings = [];
+    var currentMeeting;
+
+    return {
+      requestMeeting: function(meeting) {
+
+        $http.get('http://localHost:3030/api/requestMeeting', {
+          params: {
+            meeting: meeting
+          }
+        }).then(function(response) {
+          if (response.data !== 'null' && response.data.ok !== 'null' && response.data.meeting !== 'null') {
+            $rootScope.$broadcast('signedToNewMeet', {
+              successful: true,
+              meeting: response.data.meeting
+            });
+          } else {
+            $rootScope.$broadcast('signedToNewMeet', {
+              successful: false
+            });
+
+          }
+
+        });
+  
+      }
+
+    }
+  });
+
+  $provide.factory('meetingListener', function($rootScope, $http) {
+    return {
+
+    }
+  });
+
+  $provide.factory('meetingManager', function($rootScope, meetingSender, meetingListener) {
+
+    var meetings = [];
+    var currentMeeting;
+
+    //listen to meeting sender to confirm the meet
+    $rootScope.$on('signedToNewMeetTrue', function(event, args) {
+      if (args.ok === false) {
+        $rootScope.$broadcast('newMeetingArrived', {
+          successful: false
+        });
+      } else {
+        currentMeeting = args.meeting;
+        $rootScope.$broadcast('newMeetingArrived', {
+          successful: true
+        });
+      }
+    });
+
+    return {
+      requestMeeting: function(meeting) {
+        meetingSender.requestMeeting(meeting);
       }
     }
   });

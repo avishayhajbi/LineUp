@@ -1,7 +1,7 @@
 <ion-view view-title="LineUp">
     <ion-content id="page9">
         <div class="item item-thumbnail-left">
-            <img src="/img/temp.jpg">
+            <img src="./img/temp.jpg">
             <h2>jonny Line</h2>
             <p>get in my belly line</p>
         </div>
@@ -22,30 +22,33 @@
                 <select ng-options="time for time in selectedDate.availableMeetings" ng-model="selectedTime"></select>
             </label>
 
-            <div class="item item-input row row-center">
+            <div class="item item-input row row-center" >
                 <div class="col col-25">
-                    <div class="input-label">{{"TR_Reminder" | translate}}</div>
+                    <div class="input-label" ng-disabled="reminder">{{"TR_Reminder" | translate}}</div>
                 </div>
                 <div class="col col-25">
                     <label class="toggle">
-                        <input type="checkbox">
+                        <input type="checkbox" ng-model="reminder">
                         <div class="track">
                             <div class="handle"></div>
                         </div>
                     </label>
                 </div>
                 <div class="col col-50 col-offset-10">
-                    <input type="time" style="float:right" ng-model="timeReminder" placeholder="HH:mm:ss" min="01:00:00" max="36:00:00" />{{timeReminder | date: "HH:mm"}}
+                    <input type="time" name="input" ng-model="timeReminder" placeholder="HH:mm" min="01:00:00" max="36:00:00" ng-show="reminder"/>
                 </div>
             </div>
             <label class="item item-input row">
-                <textarea rows="4" placeholder="comments" style="border-left: 1px solid #DDD;border-right: 1px solid #DDD;" class="col col-80 col-offset-10"></textarea>
+                <textarea rows="4" placeholder="comments" type="submit" style="border-left: 1px solid #DDD;border-right: 1px solid #DDD;" class="col col-80 col-offset-10"></textarea>
             </label>
-
-            <button class="button button-positive" ng-click="joinLine()">{{"TR_1_JOINLINE" | translate}}
-            </button>
-
-
+            <div class="row row-center">
+                <div class="col col-80 col-offset-10">
+                    <br>
+                    <br>
+                    <button class="button button-positive button-block" ng-click="getInLine()">{{"TR_get_in_line" | translate}}
+                    </button>
+                </div>
+            </div>
         </div>
     </ion-content>
 </ion-view>

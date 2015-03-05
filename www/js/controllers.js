@@ -35,7 +35,7 @@ angular.module('starter.controllers', ['ngCordova'])
   };
 })
 
-.controller('page1Ctrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, outSideLineHandler) {
+.controller('page1Ctrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, outSideLineHandler, $ionicLoading) {
 
     $scope.lineIdToGet = '';
     $scope.placeholder = 'TR_1_ENTERLINEID';
@@ -102,8 +102,16 @@ angular.module('starter.controllers', ['ngCordova'])
     });
 
     $scope.joinLine = function() {
-      var listObject = outSideLineHandler.getLine();
-      if (!listObject) {
+
+      outSideLineHandler.getLine($scope.lineIdToGet);
+      $ionicLoading.show({
+        template: 'Loading...'
+      });
+    }
+
+    $scope.$on('lineInfoArrived', function(event, args) {
+      $ionicLoading.hide();
+      if (args.successful === false) {
         var alertPopup = $ionicPopup.alert({
           title: $filter('translate')('TR_1_POPTITLE'),
           template: $filter('translate')('TR_1_POPTEMPLATE')
@@ -111,8 +119,7 @@ angular.module('starter.controllers', ['ngCordova'])
       } else {
         $state.transitionTo("app.page9");
       }
-    }
-
+    });
 
   })
   .controller('page2Ctrl', function($scope) {
@@ -123,18 +130,15 @@ angular.module('starter.controllers', ['ngCordova'])
 
 
   })
-
-.controller('page4Ctrl', function($scope) {
-
-
-})
-
-.controller('page5Ctrl', function($scope) {
+  .controller('page4Ctrl', function($scope) {
 
 
-})
+  })
+  .controller('page5Ctrl', function($scope) {
 
-.controller('page6Ctrl', function($scope) {
+
+  })
+  .controller('page6Ctrl', function($scope) {
 
 
   })
@@ -142,38 +146,62 @@ angular.module('starter.controllers', ['ngCordova'])
 
 
   })
-
-.controller('page8Ctrl', function($scope) {
-
-
-})
-
-.controller('page9Ctrl', function($scope ) {
-  $scope.line = {
-    configEnabeld: true,
-    type: ["1", "2", "3"],
-    availableDates: [{
-      day: "01-01-2013",
-      availableMeetings: ["07:00", "08:00", "09:00", "10:00"]
-    }, {
-      day: "01-01-2015",
-      availableMeetings: ["07:00", "08:00", "09:00", "10:00"]
-    }],
-    startDate: "01-01-2013",
-    endDate: "01-01-2015"
-  }
-  
-  $scope.chooseDate = function(value) {
-    $scope.selectedDate = value;
-    console.log($scope.selectedDate);
-  }
-
-  
-})
-.controller('page10Ctrl', function($scope) {
+  .controller('page8Ctrl', function($scope) {
 
 
-})
+  })
+  .controller('page9Ctrl', function($scope, $state, $rootScope, meetingManager) {
+
+
+    $scope.reminder = true;
+    $scope.line = {
+      configEnabeld: true,
+      type: ["1", "2", "3"],
+      availableDates: [{
+        day: "01-01-2013",
+        availableMeetings: ["07:00", "08:00", "09:00", "10:00"]
+      }, {
+        day: "01-01-2015",
+        availableMeetings: ["07:00", "08:00", "09:00", "10:00"]
+      }],
+      startDate: "01-01-2013",
+      endDate: "01-01-2015"
+    }
+
+    $scope.chooseDate = function(value) {
+      $scope.selectedDate = value;
+      console.log($scope.selectedDate);
+    }
+
+    $scope.toggleReminder = function(value) {
+      $scope.reminderRow = value;
+    }
+
+
+
+    $scope.getInLine = function() {
+      meetingManager.requestMeeting();
+    }
+
+
+    $rootScope.$on('newMeetingArrived', function(event, args) {
+
+      if (!args.successful) {
+        var alertPopup = $ionicPopup.alert({
+          title: $filter('translate')('TR_1_POPTITLE'),
+          template: $filter('translate')('TR_1_POPTEMPLATE')
+        });
+      } else {
+        $state.transitionTo("app.page10");
+      }
+
+    });
+
+  })
+  .controller('page10Ctrl', function($scope) {
+
+
+  })
 
 .controller('page11Ctrl', function($scope) {
 
