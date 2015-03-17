@@ -112,7 +112,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
     return {
       requestMeeting: function(meeting) {
-
+        console.log("insert my meeting:"+meeting);
         $http.get('http://localHost:3030/api/requestMeeting', {
           params: {
             meeting: meeting

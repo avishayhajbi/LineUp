@@ -117,7 +117,7 @@ angular.module('starter.controllers', ['ngCordova'])
           template: $filter('translate')('TR_1_POPTEMPLATE')
         });
       } else {
-        $state.transitionTo("app.page9");
+        $state.transitionTo("app.page9" , {lineInfo :args.lineInfo});
       }
     });
 
@@ -151,9 +151,8 @@ angular.module('starter.controllers', ['ngCordova'])
     $scope.myLineList = [{title:"line number1"},{title:"line number2"}];
 
   })
-  .controller('page9Ctrl', function($scope, $state, $rootScope, meetingManager) {
-
-
+  .controller('page9Ctrl', function($scope, $state, $rootScope, $stateParams , meetingManager) {
+    var meeting =  {};
     $scope.reminder = true;
     $scope.line = {
       configEnabeld: true,
@@ -170,20 +169,20 @@ angular.module('starter.controllers', ['ngCordova'])
     }
 
     $scope.chooseDate = function(value) {
+      // console.log($stateParams.lineInfo);
       $scope.selectedDate = value;
-      console.log($scope.selectedDate);
+      // console.log($scope.selectedDate);
     }
 
     $scope.toggleReminder = function(value) {
       $scope.reminderRow = value;
     }
 
-
-
     $scope.getInLine = function() {
-      meetingManager.requestMeeting();
+      meetingManager.requestMeeting(meeting);
+      //temp to pass to page 10
+      $state.transitionTo("app.page10");
     }
-
 
     $rootScope.$on('newMeetingArrived', function(event, args) {
 
@@ -206,9 +205,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
 .controller('page11Ctrl', function($scope) {
 
-
 })
-
 
 .controller('settingCtrl', function($scope, $translate) {
     $scope.changeLanguage = function() {

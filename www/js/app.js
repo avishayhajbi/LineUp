@@ -113,7 +113,7 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
       }
     })
     .state('app.page9', {
-      url: "/page9",
+      url: "/page9/:lineInfo",
       views: {
         'menuContent': {
           templateUrl: "templates/page9.html",
