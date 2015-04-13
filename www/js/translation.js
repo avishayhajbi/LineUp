@@ -8,6 +8,7 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_Menu: 'Menu',
       TR_Login: 'Login',
       TR_Close: 'Close',
+      TR_Loading: 'Loading...',
       TR_Username: 'User Name',
       TR_Password: 'Password',
       TR_Log_in: 'Log in',

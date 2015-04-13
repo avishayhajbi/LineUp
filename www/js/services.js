@@ -1,8 +1,8 @@
 angular.module('starter.services', ['ngCordova']).config(['$provide', function($provide) {
 
   $provide.factory('phoneManager', function($ionicPopup, $cordovaSocialSharing, $rootScope) {
-
     var device, uuid;
+    var myID = "tempID";
     var myLocation = {
       longitude: '',
       latitude: ''
@@ -36,6 +36,9 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
       },
       getLocation: function() {
         return myLocation;
+      },
+      getMyId: function() {
+        return myID;
       }
     }
   });
@@ -45,24 +48,32 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
     var myLocation = false;
     var lines = false;
     var defaultLines = false;
+    var lineInfo;
     $rootScope.$on('geoishere', function(event) {
       myLocation = phoneManager.getLocation();
-
       // getListOfOpenLines from server with mygeo location
-      $http.get('http://localHost:3030/api/lineList', {
-        params: {
-          location: myLocation
-        }
-      }).then(function(response) {
-        console.log(typeof response);
-        lines = response.data;
-        defaultLines = lines;
-        console.log(lines);
-
-        $rootScope.$broadcast('lineListUpdated');
-      });
+      $http.get(serverUrl + 'lineList')
+        .then(function(response) {
+          lines = orderLineList(myLocation, response.data);
+          defaultLines = lines;
+          console.log(lines);
+          $rootScope.$broadcast('lineListUpdated');
+        });
     });
 
+    function orderLineList(myLocation, lines) {
+
+      for (var i = 0; i < lines.length; i++) {
+        var dX = Math.abs(myLocation.latitude - lines[i].location.latitude);
+        var dY = Math.abs(myLocation.longitude - lines[i].location.longitude);
+        var distance = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
+        lines[i].distanceFromMe = distance;
+      }
+      lines.sort(function(a, b) {
+        return a.distanceFromMe - b.distanceFromMe;
+      });
+      return lines;
+    }
 
     return {
       getLineList: function() {
@@ -72,33 +83,33 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         return defaultLines;
       },
       getLine: function(lineId) {
-
-          $http.get('http://localHost:3030/api/getLine', {
+        $http.get(serverUrl + 'getLine', {
           params: {
             lineId: lineId
           }
         }).then(function(response) {
-          console.log(response.data);
           if (response.data != false) {
-            $rootScope.$broadcast('lineInfoArrived' , {successful:true ,lineInfo : response.data});
-          }
-          else {
-           $rootScope.$broadcast('lineInfoArrived' , {successful:false}); 
+            lineInfo = response.data[0];
+            $rootScope.$broadcast('lineInfoArrived', true);
+          } else {
+            $rootScope.$broadcast('lineInfoArrived', false);
           }
         });
-    
+
+      },
+      getLineInfo: function() {
+        return lineInfo;
       },
       searchLineByName: function(value) {
-
-        $http.get('http://localHost:3030/api/searchlineList', {
+        $http.get(serverUrl + 'searchLineList', {
           params: {
-            value: value,
-            location: myLocation
+            value: value
           }
         }).then(function(response) {
           if (response.data !== 'null') {
-            lines = response.data;
-            console.log("new line list by search:" + lines);
+            lines = orderLineList(myLocation, response.data);
+            console.log("new line list by search:");
+            console.log(lines);
             $rootScope.$broadcast('lineListUpdated');
           }
         });
@@ -112,26 +123,23 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
     return {
       requestMeeting: function(meeting) {
-        console.log("insert my meeting:"+meeting);
-        $http.get('http://localHost:3030/api/requestMeeting', {
+        console.log("insert my meeting:" + meeting);
+        $http.get(serverUrl + 'requestMeeting', {
           params: {
             meeting: meeting
           }
         }).then(function(response) {
           if (response.data !== 'null' && response.data.ok !== 'null' && response.data.meeting !== 'null') {
             $rootScope.$broadcast('signedToNewMeet', {
-              successful: true,
               meeting: response.data.meeting
             });
           } else {
-            $rootScope.$broadcast('signedToNewMeet', {
-              successful: false
-            });
+            $rootScope.$broadcast('signedToNewMeet', false);
 
           }
 
         });
-  
+
       }
 
     }
@@ -151,20 +159,44 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
     //listen to meeting sender to confirm the meet
     $rootScope.$on('signedToNewMeetTrue', function(event, args) {
       if (args.ok === false) {
-        $rootScope.$broadcast('newMeetingArrived', {
-          successful: false
-        });
+        $rootScope.$broadcast('newMeetingArrived', false);
       } else {
         currentMeeting = args.meeting;
-        $rootScope.$broadcast('newMeetingArrived', {
-          successful: true
-        });
+        $rootScope.$broadcast('newMeetingArrived', true);
       }
     });
 
     return {
       requestMeeting: function(meeting) {
         meetingSender.requestMeeting(meeting);
+      }
+    }
+  });
+
+  $provide.factory('lineManager', function($rootScope, $http, phoneManager) {
+    var lineList = [];
+    var currentLine;
+    return {
+      createLine: function(line) {
+        line.lineManagerId = phoneManager.getMyId();
+        console.log('line is:' + line);
+        $http.get(serverUrl + 'createLine', {
+          params: {
+            line: line
+          }
+        }).then(function(response) {
+          if (response.data !== 'null' && response.data.ok !== 'null' && response.data._id !== 'null') {
+            console.log(response);
+            line._id = response.data._id;
+            lineList.push(line);
+            currentLine = line;
+            $rootScope.$broadcast('lineCreated', true);
+          } else {
+            $rootScope.$broadcast('lineCreated', false);
+          }
+        }, function(response) {
+          $rootScope.$broadcast('lineCreated', false);
+        });
       }
     }
   });

@@ -25,6 +25,8 @@
     "https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git",
     "https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git",
     "org.apache.cordova.geolocation",
-    "https://git-wip-us.apache.org/repos/asf/cordova-plugin-globalization.git"
+    "https://git-wip-us.apache.org/repos/asf/cordova-plugin-globalization.git",
+    "org.apache.cordova.camera",
+    "org.apache.cordova.file-transfer"
   ]
 }

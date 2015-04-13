@@ -19,7 +19,9 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
     }
   });
 })
-
+.config(function($compileProvider){
+ $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
+})
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
@@ -113,7 +115,7 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
       }
     })
     .state('app.page9', {
-      url: "/page9/:lineInfo",
+      url: "/page9",
       views: {
         'menuContent': {
           templateUrl: "templates/page9.html",

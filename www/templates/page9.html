@@ -2,8 +2,8 @@
     <ion-content id="page9">
         <div class="item item-thumbnail-left">
             <img src="./img/temp.jpg">
-            <h2>jonny Line</h2>
-            <p>get in my belly line</p>
+            <h2>{{line.title}}</h2>
+            <p>{{line.des}}</p>
         </div>
         <div ng-show="line.configEnabeld">
 
@@ -21,8 +21,8 @@
                 <div class="input-label">{{"TR_Time" | translate}}</div>
                 <select ng-options="time for time in selectedDate.availableMeetings" ng-model="selectedTime"></select>
             </label>
-
-            <div class="item item-input row row-center" >
+        </div>
+          <div class="item item-input row row-center" >
                 <div class="col col-25">
                     <div class="input-label" ng-disabled="reminder">{{"TR_Reminder" | translate}}</div>
                 </div>
@@ -38,7 +38,7 @@
                     <input type="time" name="input" ng-model="timeReminder" placeholder="HH:mm" min="01:00:00" max="36:00:00" ng-show="reminder"/>
                 </div>
             </div>
-            <label class="item item-input row">
+        <label class="item item-input row">
                 <textarea rows="4" placeholder="comments" type="submit" style="border-left: 1px solid #DDD;border-right: 1px solid #DDD;" class="col col-80 col-offset-10"></textarea>
             </label>
             <div class="row row-center">
@@ -49,6 +49,5 @@
                     </button>
                 </div>
             </div>
-        </div>
     </ion-content>
 </ion-view>

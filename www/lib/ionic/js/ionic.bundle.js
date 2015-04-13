@@ -47497,14 +47497,14 @@ function($scope, scrollViewOptions, $timeout, $window, $location, $document, $io
   };
 
   self.scrollTop = function(shouldAnimate) {
-    ionic.DomUtil.blurAll();
+    //ionic.DomUtil.blurAll();
     self.resize().then(function() {
       scrollView.scrollTo(0, 0, !!shouldAnimate);
     });
   };
 
   self.scrollBottom = function(shouldAnimate) {
-    ionic.DomUtil.blurAll();
+    //ionic.DomUtil.blurAll();
     self.resize().then(function() {
       var max = scrollView.getScrollMax();
       scrollView.scrollTo(max.left, max.top, !!shouldAnimate);
@@ -47512,7 +47512,7 @@ function($scope, scrollViewOptions, $timeout, $window, $location, $document, $io
   };
 
   self.scrollTo = function(left, top, shouldAnimate) {
-    ionic.DomUtil.blurAll();
+    //ionic.DomUtil.blurAll();
     self.resize().then(function() {
       scrollView.scrollTo(left, top, !!shouldAnimate);
     });

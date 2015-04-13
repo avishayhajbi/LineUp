@@ -1,5 +1,53 @@
 <ion-view view-title="Browse">
-  <ion-content>
-    <h1>Browse</h1>
-  </ion-content>
+    <ion-content>
+        <a class="item item-thumbnail-left" href="#">
+            <img src="aaa"  id="smallimage" ng-click="ShowPictures()"/>
+            <h2>Title:</h2>
+            <label class="item item-input">
+                <input type="text" ng-model="newLine.lineTitle">
+            </label>
+        </a>
+        <label class="item item-input row row-center">
+            <span class="col col-80">dates:</span>
+            <button class="button button-stable button-block col col-20" ng-click="insertNewDate()">+</button>
+        </label>
+        <ul class="list dateList">
+            <li class="item" ng-repeat="date in dates">
+                <div class="left">{{date.day}}</div><div class="right">{{date.from}} - {{date.to}}</div>
+            </li>
+        </ul>
+        <label class="item item-input row row-center">
+            <span class="col col-50">meeting title:</span>
+            <input type="text" class="col col-50" ng-model="newLine.meetingTitle">
+        </label>
+
+        <label class="item item-input row row-center">
+            <span class="col col-25">location</span>
+           <input id="autocomplete" class="col col-75" placeholder="Enter your address"
+             type="text"></input>
+        </label>
+
+        <label class="item item-input row row-center">
+            <span class="col col-75">druation:</span>
+            <input type="number" class="col col-25" ng-model="newLine.druation">
+        </label>
+        <div class="item item-input row row-center">
+            <div class="col col-80">
+                <div class="input-label" ng-disabled="newLine.manuall">manuall line</div>
+            </div>
+            <div class="col col-20">
+                <label class="toggle">
+                    <input type="checkbox" ng-model="newLine.manuall">
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                </label>
+            </div>
+        </div>
+        <label class="item item-input row row-center">
+            <span class="col col-75">confim before:</span>
+            <input type="number" class="col col-25" ng-model="newLine.confirmTime">
+        </label>
+         <a class="button button-positive button-block" ng-click="createLine()">{{"TR_Create_Line" | translate}}</a>
+    </ion-content>
 </ion-view>
