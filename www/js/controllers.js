@@ -132,7 +132,7 @@ angular.module('starter.controllers', ['ngCordova'])
       latitude: '',
       longitude: ''
     };
-    
+
     var autocomplete;
     (function() {
       autocomplete = new google.maps.places.Autocomplete(
@@ -143,15 +143,15 @@ angular.module('starter.controllers', ['ngCordova'])
         var place = autocomplete.getPlace();
         $scope.newLine.location.latitude = place.geometry.location.k;
         $scope.newLine.location.longitude = place.geometry.location.D;
+        $scope.newLine.location.address = place.formatted_address;
 
       });
     })();
 
     //image handeling
+    $scope.PicSourece = document.getElementById('smallimage');
+
     function UploadPicture(imageURI) {
-
-      $scope.PicSourece = document.getElementById('smallimage');
-
       if (imageURI.substring(0, 21) == "content://com.android") {
         var photo_split = imageURI.split("%3A");
         imageURI = "content://media/external/images/media/" + photo_split[1];
@@ -174,7 +174,7 @@ angular.module('starter.controllers', ['ngCordova'])
     $scope.insertNewDate = function() {
       $scope.data = {};
       var chooseDatePopUp = $ionicPopup.show({
-        template: '<label class="item item-input"><input type="date" ng-model="data.day" placeholder="date"></label><label class="item item-input row row-center"><span class="col col-25">from:</span><input type="time" class="col col-75" ng-model="data.from" placeholder="HH:mm"></label><label class="item item-input row row-center"><span class="col col-25">to:</span><input type="time" class="col col-75" ng-model="data.to" placeholder="HH:mm"></label>',
+        template: '<label class="item item-input"><input type="date" ng-model="data.day" placeholder="dd-MM-yyyy"></label><label class="item item-input row row-center"><span class="col col-25">from:</span><input type="time" class="col col-75" ng-model="data.from" placeholder="HH:mm"></label><label class="item item-input row row-center"><span class="col col-25">to:</span><input type="time" class="col col-75" ng-model="data.to" placeholder="HH:mm"></label>',
         title: 'choose date:',
         subTitle: '',
         scope: $scope,
@@ -193,41 +193,45 @@ angular.module('starter.controllers', ['ngCordova'])
         }]
       });
       chooseDatePopUp.then(function(data) {
-        data.day = dateHandler.getDay(data.day);
+
         data.fromMin = dateHandler.getTimeInMinutes(data.from);
-        data.from = dateHandler.getTime(data.from);
         data.toMin = dateHandler.getTimeInMinutes(data.to);
-        data.to = dateHandler.getTime(data.to);
         $scope.dates.push(data);
 
       });
 
     };
 
+    function populateDates(dates, druation) {
+      var availableDates = [];
+      for (var i = 0; i < dates.length; i++) {
+        var day = dates[i].day;
+        for (var j = dates[i].fromMin; j < dates[i].toMin; j += druation) {
+          var time = dateHandler.getTimeFromMinutes(j).split(":");
+          availableDates.push(new Date(day.getFullYear(), day.getMonth() + 1, day.getDate(), time[0], time[1], 0, 0));
+          
+        }
+      }
+
+      availableDates.sort(function(a , b) {
+        if (a > b) return 1;
+        if (a < b) return -1;
+        return 0;
+      });
+      return availableDates;
+    }
+
     $scope.createLine = function() {
-      var newLine = $scope.newLine;
-      var dates = $scope.dates;
-      if (!checkAtt(newLine.confirmTime) || !checkAtt(dates) || !checkAtt(newLine.meetingTitle) || !checkAtt(newLine.druation)) {
+      if (!checkAtt($scope.newLine.confirmTime) || !checkAtt($scope.dates) || !checkAtt($scope.newLine.druation)) {
         var alertPopup = $ionicPopup.alert({
           title: 'missing information',
           template: 'please fill all information'
         });
-        alertPopup.then(function(res) {});
-
       } else {
-        newLine.availableDates = [];
-        for (var i = 0; i < dates.length; i++) {
-          var day = dates[i].day;
-          var meetings = [];
-          for (var j = dates[i].fromMin; j < dates[i].toMin; j += newLine.druation) {
-            meetings.push(dateHandler.getTimeFromMinutes(j));
-          }
-          newLine.availableDates.push({
-            day: day,
-            meetings: meetings
-          });
-        }
-        console.log(newLine);
+        var newLine = $scope.newLine;
+        newLine.ImageURI = $scope.PicSourece.src;
+        var dates = $scope.dates;
+        newLine.availableDates = populateDates(dates, newLine.druation);
         lineManager.createLine(newLine);
         $ionicLoading.show({
           template: $filter('translate')('TR_Loading')
@@ -277,11 +281,21 @@ angular.module('starter.controllers', ['ngCordova'])
     }];
 
   })
-  .controller('page9Ctrl', function($scope, $state, $rootScope, $stateParams, meetingManager, outSideLineHandler) {
+  .controller('page9Ctrl', function($scope, $state, $rootScope, $stateParams, meetingManager, outSideLineHandler , $ionicLoading) {
 
     var meeting = {};
     $scope.reminder = true;
     $scope.line = outSideLineHandler.getLineInfo();
+    
+     $rootScope.$on('lineInfoArrived', function(event, args) {
+      if (!args) {
+        return;
+      } else {
+        $scope.line = outSideLineHandler.getLineInfo();
+        console.log("line here" ,$scope.line );
+      }
+    });
+
     $scope.chooseDate = function(value) {
       $scope.selectedDate = value;
     }
@@ -291,11 +305,8 @@ angular.module('starter.controllers', ['ngCordova'])
     }
 
     $scope.getInLine = function() {
-      meeting.lineID = line._ID;
-      if (line.configEnabeld) {
-        meeting.date = $scope.selectedDate;
-      }
-
+      meeting.lineID = $scope.line._id;
+      meeting.time = $scope.line.availableDates[0];
       meetingManager.requestMeeting(meeting);
       $ionicLoading.show({
         template: $filter('translate')('TR_Loading')

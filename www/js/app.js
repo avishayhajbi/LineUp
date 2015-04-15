@@ -4,8 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives', 'starter.services', 'starter.localization'   ,  'ngCordova' ])
-
+angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives', 'starter.services', 'starter.localization'   ,  'ngCordova'  ])
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -19,12 +18,13 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
     }
   });
 })
-.config(function($compileProvider){
- $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
-})
-.config(function($stateProvider, $urlRouterProvider) {
-  $stateProvider
+.config(function($compileProvider, $stateProvider, $urlRouterProvider , $httpProvider) {
+  //to show images
+  $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
 
+  $httpProvider.defaults.timeout = 1000;
+
+  $stateProvider
     .state('app', {
     url: "/app",
     abstract: true,
@@ -59,16 +59,6 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
         }
       }
     })
-
-  // .state('app.single', {
-  //   url: "/playlists/:playlistId",
-  //   views: {
-  //     'menuContent': {
-  //       templateUrl: "templates/playlist.html",
-  //       controller: 'PlaylistCtrl'
-  //     }
-  //   }
-  // })
   .state('app.page4', {
       url: "/page4",
       views: {

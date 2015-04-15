@@ -3,8 +3,16 @@
         <div class="item item-thumbnail-left">
             <img src="./img/temp.jpg">
             <h2>{{line.title}}</h2>
-            <p>{{line.des}}</p>
         </div>
+        <label class="item">
+              <div class="left">{{line.availableDates[0] | date: "dd-MM-yyyy"}}</div><div class="right">{{line.availableDates[0] | date: "HH:mm"}}</div>       
+        </label>
+
+        <label class="item">
+              <div class="left">{{line.location.address}}</div>
+        </label>
+
+
         <div ng-show="line.configEnabeld">
 
             <label class="item item-input item-select">
@@ -12,10 +20,7 @@
                 <select ng-options="option for option in line.type" ng-model="selectedType"></select>
             </label>
 
-            <label class="item item-input item-select">
-                <div class="input-label">{{"TR_Date" | translate}}</div>
-                <select ng-options="date.day for date in line.availableDates" ng-model="selectedDate" ng-change="chooseDate(selectedDate)"></select>
-            </label>
+            
 
             <label class="item item-input item-select">
                 <div class="input-label">{{"TR_Time" | translate}}</div>
