@@ -59,6 +59,15 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.placeholder = '';
         $scope.lineIdToGet = '';
       }
+
+    $ionicModal.fromTemplateUrl('templates/ionicModal/LineList.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal;
+    });
+
+
       //open the list of lines
     $scope.openChooseLine = function() {
         $scope.LineList = outSideLineHandler.getDefaultLineList();
@@ -96,12 +105,7 @@ angular.module('starter.controllers', ['ngCordova'])
       }
     }
 
-    $ionicModal.fromTemplateUrl('templates/ionicModal/LineList.html', {
-      scope: $scope,
-      animation: 'slide-in-up'
-    }).then(function(modal) {
-      $scope.modal = modal;
-    });
+
 
     $scope.joinLine = function() {
       console.log("try to connect to:" + $scope.lineIdToGet);
@@ -117,6 +121,17 @@ angular.module('starter.controllers', ['ngCordova'])
         var alertPopup = $ionicPopup.alert({
           title: $filter('translate')('TR_1_POPTITLE'),
           template: $filter('translate')('TR_1_POPTEMPLATE')
+        });
+      } else if (args === "noRoom") {
+        var alertPopup = $ionicPopup.alert({
+          title: "no room in line",
+          template: "no room in line"
+        });
+
+      } else if (args === "signed") {
+        var alertPopup = $ionicPopup.alert({
+          title: "already signed to this line",
+          template: "already signed to this line"
         });
       } else {
         $state.go("app.page9");
@@ -162,7 +177,7 @@ angular.module('starter.controllers', ['ngCordova'])
     }
     $scope.ShowPictures = function() {
       navigator.camera.getPicture(UploadPicture, function(message) {
-        alert('get picture failed');
+        console.log('get picture failed');
       }, {
         quality: 100,
         destinationType: navigator.camera.DestinationType.FILE_URI,
@@ -194,32 +209,19 @@ angular.module('starter.controllers', ['ngCordova'])
       });
       chooseDatePopUp.then(function(data) {
 
-        data.fromMin = dateHandler.getTimeInMinutes(data.from);
-        data.toMin = dateHandler.getTimeInMinutes(data.to);
+            data.from.setDate(data.day.getDate());
+            data.from.setMonth(data.day.getMonth());
+            data.from.setFullYear(data.day.getFullYear());
+            data.to.setDate(data.day.getDate());
+            data.to.setMonth(data.day.getMonth());
+            data.to.setFullYear(data.day.getFullYear());
+            delete data.day;
+
         $scope.dates.push(data);
 
       });
 
     };
-
-    function populateDates(dates, druation) {
-      var availableDates = [];
-      for (var i = 0; i < dates.length; i++) {
-        var day = dates[i].day;
-        for (var j = dates[i].fromMin; j < dates[i].toMin; j += druation) {
-          var time = dateHandler.getTimeFromMinutes(j).split(":");
-          availableDates.push(new Date(day.getFullYear(), day.getMonth() + 1, day.getDate(), time[0], time[1], 0, 0));
-          
-        }
-      }
-
-      availableDates.sort(function(a , b) {
-        if (a > b) return 1;
-        if (a < b) return -1;
-        return 0;
-      });
-      return availableDates;
-    }
 
     $scope.createLine = function() {
       if (!checkAtt($scope.newLine.confirmTime) || !checkAtt($scope.dates) || !checkAtt($scope.newLine.druation)) {
@@ -230,8 +232,7 @@ angular.module('starter.controllers', ['ngCordova'])
       } else {
         var newLine = $scope.newLine;
         newLine.ImageURI = $scope.PicSourece.src;
-        var dates = $scope.dates;
-        newLine.availableDates = populateDates(dates, newLine.druation);
+        newLine.availableDates = $scope.dates;
         lineManager.createLine(newLine);
         $ionicLoading.show({
           template: $filter('translate')('TR_Loading')
@@ -253,6 +254,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
   })
   .controller('page3Ctrl', function($scope) {
+  
 
 
   })
@@ -281,20 +283,18 @@ angular.module('starter.controllers', ['ngCordova'])
     }];
 
   })
-  .controller('page9Ctrl', function($scope, $state, $rootScope, $stateParams, meetingManager, outSideLineHandler , $ionicLoading) {
+  .controller('page9Ctrl', function($scope, $state, $rootScope, meetingManager, $ionicLoading, $filter, $ionicPopup) {
 
-    var meeting = {};
-    $scope.reminder = true;
-    $scope.line = outSideLineHandler.getLineInfo();
-    
-     $rootScope.$on('lineInfoArrived', function(event, args) {
-      if (!args) {
-        return;
-      } else {
-        $scope.line = outSideLineHandler.getLineInfo();
-        console.log("line here" ,$scope.line );
-      }
+    if (!$scope.meeting) {
+      $scope.meeting = meetingManager.getCurrentMeeting();
+      console.log("meeting:", $scope.meeting);
+    }
+
+    $rootScope.$on('LineInfoInManager', function() {
+      $scope.meeting = meetingManager.getCurrentMeeting();
+      console.log("meeting:", $scope.meeting);
     });
+
 
     $scope.chooseDate = function(value) {
       $scope.selectedDate = value;
@@ -305,15 +305,13 @@ angular.module('starter.controllers', ['ngCordova'])
     }
 
     $scope.getInLine = function() {
-      meeting.lineID = $scope.line._id;
-      meeting.time = $scope.line.availableDates[0];
-      meetingManager.requestMeeting(meeting);
+      meetingManager.confirmMeeting();
       $ionicLoading.show({
         template: $filter('translate')('TR_Loading')
       });
     }
 
-    $rootScope.$on('newMeetingArrived', function(event, args) {
+    $rootScope.$on('signedToNewMeet', function(event, args) {
       $ionicLoading.hide();
       if (!args) {
         var alertPopup = $ionicPopup.alert({
@@ -326,15 +324,77 @@ angular.module('starter.controllers', ['ngCordova'])
     });
 
   })
-  .controller('page10Ctrl', function($scope, outSideLineHandler) {
+  .controller('page10Ctrl', function($scope, meetingManager, $rootScope, $ionicPopup, $ionicLoading, $filter , $state) {
+    meetingManager.getPosition();
+    $scope.meeting = meetingManager.getCurrentMeeting();
     $scope.reminder = true;
-    $scope.line = outSideLineHandler.getLineInfo();
+
+
+    var updateInt = setInterval(function() {
+      meetingManager.getPosition();
+    }, 30000);
+
+    $scope.$on("$destroy", function() {
+      clearInterval(updateInt);
+    });
+
+    $scope.cancelLine = function() {
+
+      var cancelLinePopUp = $ionicPopup.show({
+        template: 'are u sure?',
+        title: 'alert',
+        subTitle: '',
+        scope: $scope,
+        buttons: [{
+          text: 'No'
+        }, {
+          text: '<b>Yes</b>',
+          type: 'button-positive',
+          onTap: function(e) {
+            meetingManager.cancelMeeting($scope.meeting);
+            $ionicLoading.show({
+              template: $filter('translate')('TR_Loading')
+            });
+          }
+        }]
+      });
+    }
+
+
+    $rootScope.$on('meetingCancled', function(event, args) {
+    
+      $ionicLoading.hide();
+      if (!args) {
+        var alertPopup = $ionicPopup.alert({
+          title: "please try again",
+          template: "please try again"
+        });
+      } else {
+        var canceledPopup = $ionicPopup.show({
+          template: 'meeting canceld',
+          title: 'meeting canceld',
+          subTitle: '',
+          scope: $scope,
+          buttons: [{
+            text: '<b>ok</b>',
+            type: 'button-positive',
+            onTap: function(e) {
+              return ;
+
+            }
+
+          }]
+        });
+        canceledPopup.then(function(data) {
+          $state.go("app.page1");
+        });
+      }
+    });
 
   })
+  .controller('page11Ctrl', function($scope) {
 
-.controller('page11Ctrl', function($scope) {
-
-})
+  })
 
 .controller('settingCtrl', function($scope, $translate) {
     $scope.changeLanguage = function() {

@@ -2,22 +2,22 @@
     <ion-content id="page9">
         <div class="item item-thumbnail-left">
             <img src="./img/temp.jpg">
-            <h2>{{line.title}}</h2>
+            <h2>{{meeting.title}}</h2>
         </div>
         <label class="item">
-              <div class="left">{{line.availableDates[0] | date: "dd-MM-yyyy"}}</div><div class="right">{{line.availableDates[0] | date: "HH:mm"}}</div>       
+              <div class="left">{{meeting.time | date: "dd-MM-yyyy"}}</div><div class="right">{{meeting.time | date: "HH:mm"}}</div>       
         </label>
 
         <label class="item">
-              <div class="left">{{line.location.address}}</div>
+              <div class="left">{{meeting.address}}</div>
         </label>
 
 
-        <div ng-show="line.configEnabeld">
+        <div ng-show="meeting.configEnabeld">
 
             <label class="item item-input item-select">
                 <div class="input-label">{{"TR_Type" | translate}}</div>
-                <select ng-options="option for option in line.type" ng-model="selectedType"></select>
+                <select ng-options="option for option in meeting.type" ng-model="selectedType"></select>
             </label>
 
             

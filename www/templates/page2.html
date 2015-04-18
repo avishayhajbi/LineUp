@@ -12,7 +12,7 @@
             <button class="button button-stable button-block col col-20" ng-click="insertNewDate()">+</button>
         </label>
             <li class="item" ng-repeat="date in dates">
-                <div class="left">{{date.day | date:'dd-MM-yyyy'}}</div><div class="right">{{date.from  | date:'HH:mm'}} - {{date.to  | date:'HH:mm'}}</div>
+                <div class="left">{{date.from | date:'dd-MM-yyyy'}}</div><div class="right">{{date.from  | date:'HH:mm'}} - {{date.to  | date:'HH:mm'}}</div>
             </li>
     
         <label class="item item-input row row-center">

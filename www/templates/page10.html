@@ -2,15 +2,12 @@
     <ion-content id="page10">
         <div class="item item-thumbnail-left">
             <img src="./img/temp.jpg">
-           <h2>{{line.title}}</h2>
-            <p>{{line.des}}</p>
+           <h2>{{meeting.title}}</h2>
         </div>
-        <div class="row row-center">
+        <div class="item">    
+            <h3>time: {{meeting.time | date : "HH:mm"}}</h3>
             <br>
-            <br>
-            <br>
-            <br>
-            <h3 class="col col-offset-20">{{"TR_yourPositionIs" | translate}} {{line.position}}</h3>
+            <h3>{{"TR_yourPositionIs" | translate}} {{meeting.position}}</h3>
         </div>
         <div class="row row-center">
             <br>
@@ -35,7 +32,7 @@
             </div>
         </div>
 
-        <button class="button button-positive button-block col col-80 col-offset-10" ng-click="getInLine()">{{"TR_cancelLine" | translate}}</button>
-        <button class="button button-positive button-block col col-80 col-offset-10" ng-click="getInLine()">{{"TR_messageAdmon" | translate}}</button>
+        <button class="button button-positive button-block col col-80 col-offset-10" ng-click="cancelLine()">{{"TR_cancelLine" | translate}}</button>
+        <button class="button button-positive button-block col col-80 col-offset-10" ng-click="messageAdmon()">{{"TR_messageAdmon" | translate}}</button>
     </ion-content>
 </ion-view>

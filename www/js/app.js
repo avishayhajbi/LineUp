@@ -22,8 +22,6 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
   //to show images
   $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
 
-  $httpProvider.defaults.timeout = 1000;
-
   $stateProvider
     .state('app', {
     url: "/app",
