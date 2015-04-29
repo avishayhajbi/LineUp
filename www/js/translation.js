@@ -9,7 +9,9 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_Login: 'Login',
       TR_Close: 'Close',
       TR_Loading: 'Loading...',
+      TR_emailDetails: 'Enter Details',
       TR_Username: 'User Name',
+      TR_EmailAddress:'Email Address',
       TR_Password: 'Password',
       TR_Log_in: 'Log in',
       TR_page1: 'page1',
@@ -25,9 +27,26 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_timeToWait : 'Time to wait:',
       //settings Page
       TR_Settings_language: 'Change language',
-      //page1
     
-      
+      //page 4
+      TR_4_ShareViaFacebook:'Share via FaceBook',
+      TR_4_ShareViaEmail:'Share via Email',
+      TR_4_ShareViaMobile:'Share via Mobile',
+
+      //page 5
+      TR_5_manualControl: 'Manual Control',
+      TR_5_lineAnalyze: 'Line Analyze',
+
+      //page 6
+      TR_6_nextMeeting: 'Move to next Meeting',
+      TR_6_postponeCurrentMeeting:'Postpone current Meeting',
+      TR_6_sendMessage:'Send message',
+      TR_6_switchMeetings:'Switch Meetings',
+      TR_6_fillEmptyMeeting:'Fill empty Meeting',
+      TR_6_Share: 'Share Line',
+      TR_6_endLine:'End line',
+
+      //page 1
       TR_1_ENTERLINEID: 'Enter Line ID..',
       TR_1_CHOOSELINE: 'Choose Line',
       TR_1_POPTITLE: 'line not found',
@@ -35,6 +54,19 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
         //page9
       TR_9_POPTITLE: 'line not found',
       TR_9_POPTEMPLATE: 'id not exist please insert different line ID.',
+
+      // page3
+      TR_3_SignIn_Facebook:"Sign in with Facebook",
+      TR_3_SignIn_Email:"Sign in with Email",
+
+      // login
+
+      // message
+      TR_Message:'Send Message',
+      TR_messageDetails: 'Enter Details',
+      TR_messageSubject:'Subject:',
+      TR_messageBody:'Body:',
+      TR_sendMessage:'Send',
 
     });
     $translateProvider.translations('he', {

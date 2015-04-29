@@ -5,7 +5,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
     var myID = "tempID";
     var myName = "tempName";
     var myLocation = {
-      longitude: '',
+      longitufde: '',
       latitude: ''
     };
 
@@ -135,6 +135,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
       }
     }
   });
+
   $provide.factory('meetingSender', function($rootScope, $http) {
 
     var meetings = [];
@@ -281,8 +282,38 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         }, function(response) {
           $rootScope.$broadcast('lineCreated', false);
         });
-      }
+
+      },
+
+      getCurrentLine: function (){
+        return currentLine;
+      },
     }
+  });
+
+
+  $provide.factory('userManager', function($rootScope, $http, meetingSender, meetingListener, phoneManager) {
+
+      return {
+        loginViaEmail: function(data) {
+          console.log(data);
+
+         $http.get(serverUrl + 'createLine', {
+          params: {
+            loginData: data
+          },
+          timeout: 8000
+        }).then(function(response) {
+          if (response.data !== 'null' && response.data !== false) {
+            $rootScope.$broadcast('loginAttempt', true);
+          } else {
+            $rootScope.$broadcast('loginAttempt', false);
+          }
+        });
+        }
+
+      }
+
   });
 
 }]);

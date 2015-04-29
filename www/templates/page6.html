@@ -1,5 +1,45 @@
-<ion-view view-title="Browse">
-  <ion-content>
-    <h1>Browse</h1>
-  </ion-content>
+<ion-view>
+    <ion-content id="page6">
+
+    <br>
+    <br>
+    <br>
+
+        <div class="row">
+            <div class="col-80 col-offset-10">
+                <button class="button icon-left ion-arrow-right-a button-positive button-block" ng-click="nextMeeting()">{{"TR_6_nextMeeting" | translate}}</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-80 col-offset-10">
+                <button class="button icon-left ion-clock button-positive button-block" ng-click="postponeMeeting()">{{"TR_6_postponeCurrentMeeting" | translate}}</button>
+            </div>
+        </div>
+                <div class="row">
+            <div class="col-80 col-offset-10">
+                <button class="button icon-left ion-email button-positive button-block" ng-click="sendMessage()">{{"TR_6_sendMessage" | translate}}</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-80 col-offset-10">
+                <button class="button icon-left ion-arrow-swap button-positive button-block" ng-click="switchMeetings()">{{"TR_6_switchMeetings" | translate}}</button>
+            </div>
+        </div>
+                <div class="row">
+            <div class="col-80 col-offset-10">
+                <button class="button icon-left ion-plus button-positive button-block" ng-click="fillEmptyMeeting()">{{"TR_6_fillEmptyMeeting" | translate}}</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-80 col-offset-10">
+                <button class="button icon-left ion-share button-positive button-block" ng-click="shareLine()">{{"TR_6_Share" | translate}}</button>
+            </div>
+        </div>
+                <div class="row">
+            <div class="col-80 col-offset-10">
+                <button class="button icon-left ion-close button-positive button-block" ng-click="endLine()">{{"TR_6_endLine" | translate}}</button>
+            </div>
+        </div>
+
+    </ion-content>
 </ion-view>

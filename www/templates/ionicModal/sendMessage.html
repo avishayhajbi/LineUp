@@ -1,0 +1,27 @@
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">{{"TR_Message" | translate}}</h1>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeMessage()">{{"TR_Close" | translate}}</button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+
+        <h4 class="col col-offset-20">{{"TR_messageDetails" | translate}}:</h4>
+        <form ng-submit="sendMessage()">
+            <div class="list">
+                <label class="item item-input">
+                    <span class="input-label">{{"TR_messageSubject" | translate}}</span>
+                    <input type="text" ng-model="messageData.subject">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">{{"TR_messageBody" | translate}}</span>
+                    <input type="text" ng-model="messageData.body">
+                </label>
+                <label class="item">
+                    <button class="button button-block button-positive" type="submit">{{"TR_sendMessage" | translate}}</button>
+                </label>
+            </div>
+        </form>
+    </ion-content>
+</ion-modal-view>

@@ -1,5 +1,46 @@
-<ion-view view-title="Browse">
-  <ion-content>
-    <h1>Browse</h1>
-  </ion-content>
+<ion-view>
+    <ion-content id="page5">
+
+        <div class="item item-thumbnail-left">
+            <img src="./img/temp.jpg">
+            <h2>{{line.title}}</h2>
+        </div>
+
+
+        <div class="row">
+            <div class="col-80 col-offset-10">
+                <div>Users in line: {{line.numOfusers}}</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-80 col-offset-10">
+                <div>Next meetings: </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-80 col-offset-10">
+                <div>Start Date: {{line.startDate}}</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-80 col-offset-10">
+                <div>End Date: {{line.endDate}}</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-80 col-offset-10">
+                <button class="button icon-left ion-wrench button-positive button-block" ng-click="manualControl()">{{"TR_5_manualControl" | translate}}</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-80 col-offset-10">
+                <button class="button icon-left ion-arrow-graph-up-right button-positive button-block" ng-click="lineAnalyze()">{{"TR_5_lineAnalyze" | translate}}</button>
+            </div>
+        </div>
+
+    </ion-content>
 </ion-view>

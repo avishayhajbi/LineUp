@@ -29,3 +29,14 @@
 .hidden {
 	display: hidden;
 }
+
+.title-center {
+	background:  url(../img/LineUp.png) no-repeat;
+	background-position: center;  
+}
+
+
+[id^=page] {
+	background:  url(../img/background.png);
+
+}

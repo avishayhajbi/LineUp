@@ -1,40 +1,62 @@
 <ion-side-menus enable-menu-with-back-views="false">
-  <ion-side-menu-content>
-    <ion-nav-bar class="bar-positive">
-      <ion-nav-back-button>
-      </ion-nav-back-button>
+    <ion-side-menu-content>
+        <ion-nav-bar class="bar-positive">
+            <ion-nav-back-button>
+            </ion-nav-back-button>
 
-      <ion-nav-buttons side="left">
-        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
-        </button>
-      </ion-nav-buttons>
-    </ion-nav-bar>
+            <ion-nav-buttons side="left">
+                <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+                </button>
+            </ion-nav-buttons>
+        </ion-nav-bar>
 
-    <ion-nav-view name="menuContent"></ion-nav-view>
-  </ion-side-menu-content>
+        <ion-nav-view name="menuContent"></ion-nav-view>
+    </ion-side-menu-content>
 
-  <ion-side-menu side="left">
-    <ion-header-bar class="bar-positive">
-      <h1 class="title">{{"TR_Menu" | translate}}</h1>
-    </ion-header-bar>
-    <ion-content>
-      <ion-list>
-        <ion-item nav-clear menu-close ng-click="login()">
-          {{"TR_Login" | translate}}
-        </ion-item>
-        <ion-item nav-clear menu-close href="#/app/page1">
-          {{"TR_page1" | translate}}
-        </ion-item>
-        <ion-item nav-clear menu-close href="#/app/page2">
-          page2
-        </ion-item>
-        <ion-item nav-clear menu-close href="#/app/page3">
-          page3
-        </ion-item>
-        <ion-item nav-clear menu-close href="#/app/settings">
-          {{"TR_Settings" | translate}}
-        </ion-item>
-      </ion-list>
-    </ion-content>
-  </ion-side-menu>
+    <ion-side-menu side="left">
+        <ion-header-bar class="bar-positive">
+            <h1 class="title">{{"TR_Menu" | translate}}</h1>
+        </ion-header-bar>
+        <ion-content>
+            <ion-list>
+                <ion-item nav-clear menu-close ng-click="login()">
+                    {{"TR_Login" | translate}}
+                </ion-item>
+                <ion-item nav-clear menu-close href="#/app/page1">
+                    {{"TR_page1" | translate}}
+                </ion-item>
+                <ion-item nav-clear menu-close href="#/app/page2">
+                    page2
+                </ion-item>
+                <ion-item nav-clear menu-close href="#/app/page3">
+                    page3
+                </ion-item>
+                <ion-item nav-clear menu-close href="#/app/page4">
+                    page4
+                </ion-item>
+                <ion-item nav-clear menu-close href="#/app/page5">
+                    page5
+                </ion-item>
+                <ion-item nav-clear menu-close href="#/app/page6">
+                    page6
+                </ion-item>
+                <ion-item nav-clear menu-close href="#/app/page7">
+                    page7
+                </ion-item>
+                <ion-item nav-clear menu-close href="#/app/page8">
+                    page8
+                </ion-item>
+                <ion-item nav-clear menu-close href="#/app/page9">
+                    page9
+                </ion-item>
+                <ion-item nav-clear menu-close href="#/app/page10">
+                    page10
+                </ion-item>
+    
+                <ion-item nav-clear menu-close href="#/app/settings">
+                    {{"TR_Settings" | translate}}
+                </ion-item>
+            </ion-list>
+        </ion-content>
+    </ion-side-menu>
 </ion-side-menus>

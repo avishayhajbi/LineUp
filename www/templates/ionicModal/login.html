@@ -1,29 +1,31 @@
 <ion-modal-view>
-  <ion-header-bar>
-    <h1 class="title">{{"TR_Login" | translate}}</h1>
-    <div class="buttons">
-      <button class="button button-clear" ng-click="closeLogin()">{{"TR_Close" | translate}}</button>
-    </div>
-  </ion-header-bar>
-  <ion-content>
-    <h4 class="col col-offset-20" >{{"TR_usingFaceBook" | translate}}:</h4>  
-   <button class="button button-block button-positive col col-80 col-offset-10">{{"TR_faceBookButton" | translate}}</button>
-   <br>
-   <h4 class="col col-offset-20" >{{"TR_orUsingEmail" | translate}}:</h4>
-    <form ng-submit="doLogin()">
-      <div class="list">
-        <label class="item item-input">
-          <span class="input-label">{{"TR_Username" | translate}}</span>
-          <input type="text" ng-model="loginData.username">
-        </label>
-        <label class="item item-input">
-          <span class="input-label">{{"TR_Password" | translate}}</span>
-          <input type="password" ng-model="loginData.password">
-        </label>
-        <label class="item">
-          <button class="button button-block button-positive" type="submit">{{"TR_Log_in" | translate}}</button>
-        </label>
-      </div>
-    </form>
-  </ion-content>
+    <ion-header-bar>
+        <h1 class="title">{{"TR_Login" | translate}}</h1>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeLogin()">{{"TR_Close" | translate}}</button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+
+        <h4 class="col col-offset-20">{{"TR_emailDetails" | translate}}:</h4>
+        <form ng-submit="doLogin()">
+            <div class="list">
+                <label class="item item-input">
+                    <span class="input-label">{{"TR_Username" | translate}}</span>
+                    <input type="text" ng-model="loginData.userName">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">{{"TR_EmailAddress" | translate}}</span>
+                    <input type="text" ng-model="loginData.emailAddress">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">{{"TR_Password" | translate}}</span>
+                    <input type="password" ng-model="loginData.password">
+                </label>
+                <label class="item">
+                    <button class="button button-block button-positive" type="submit">{{"TR_Log_in" | translate}}</button>
+                </label>
+            </div>
+        </form>
+    </ion-content>
 </ion-modal-view>
