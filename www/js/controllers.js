@@ -1,6 +1,6 @@
   angular.module('starter.controllers', ['ngCordova'])
 
-  .controller('menuCtrl', function($scope, $ionicModal, $timeout, userManager, $ionicLoading, $ionicPopup, $rootScope) {
+  .controller('menuCtrl', function($scope, $ionicModal, $timeout, userManagment, $ionicLoading, $ionicPopup) {
 
 
       // Form data for the login modal
@@ -10,8 +10,12 @@
       $ionicModal.fromTemplateUrl('templates/ionicModal/login.html', {
           scope: $scope
       }).then(function(modal) {
-          $scope.modalMenu = modal;
-      });
+    $scope.modalMenu = modal;
+  });
+
+  $scope.$on('connectedToFB' , function(event , result){
+    $scope.user = {id:userManagment.getMyId(),name:userManagment.getMyName(),connected:userManagment.isConnected()};
+  });
 
       // Triggered in the login modal to close it
       $scope.closeLogin = function() {
@@ -24,81 +28,147 @@
       };
 
       // Perform the login action when the user submits the login form
-      $scope.doLogin = function() {
-          userManager.loginViaEmail($scope.loginData);
+  $scope.fbLogin = function() {
+      userManagment.connectToFaceBook();
+    } 
+  
+      var pushNotification;
 
-          $ionicLoading.show({
-              template: $filter('translate')('TR_Loading')
+
+setTimeout(function() {
+        debugger;
+
+          pushNotification = window.plugins.pushNotification;
+
+          pushNotification.unregister(function(dat) {
+            debugger;
+
+           }, function(add){
+            debugger
+           });
+
+           if (device.platform == 'android' || device.platform == 'Android' || device.platform == "amazon-fireos") {
+        pushNotification.register(
+          successHandler,
+          errorHandler, {
+            "senderID": "205633341244",
+            "ecb": "onNotification"
           });
+      } else if (device.platform == 'blackberry10') {
+        pushNotification.register(
+          successHandler,
+          errorHandler, {
+            invokeTargetId: "replace_with_invoke_target_id",
+            appId: "replace_with_app_id",
+            ppgUrl: "replace_with_ppg_url", //remove for BES pushes
+            ecb: "pushNotificationHandler",
+            simChangeCallback: replace_with_simChange_callback,
+            pushTransportReadyCallback: replace_with_pushTransportReady_callback,
+            launchApplicationOnPush: true
+          });
+      } else {
+        pushNotification.register(
+          tokenHandler,
+          errorHandler, {
+            "badge": "true",
+            "sound": "true",
+            "alert": "true",
+            "ecb": "onNotificationAPN"
+          });
+      }
 
-          // Simulate a login delay. Remove this and replace with your login
-          // code if using a login system
-          $timeout(function() {
-              $scope.closeLogin();
-          }, 1000);
-      };
-
-
-      $rootScope.$on('loginAttempt', function(event, args) {
-          $ionicLoading.hide();
-          if (args === false) {
-              var alertPopup = $ionicPopup.alert({
-                  title: "Login failed",
-                  template: "Login failed"
-              });
-          } else {
-              $state.go("app.page1");
-          }
-      })
+} , 3000);
 
       // Form data for the message modal
       $scope.messageData = {};
 
       // Create the message modal that we will use later
-      $ionicModal.fromTemplateUrl('templates/ionicModal/sendMessage.html', {
-          scope: $scope
-      }).then(function(modal) {
-          $scope.modalMessageMenu = modal;
-      });
+  function successHandler (result) {
+    debugger;
+    console.log('result = ' + result);
+}
 
-      // Triggered in the message modal to close it
-      $scope.closeMessage = function() {
-          $scope.modalMessageMenu.hide();
-      };
+function errorHandler (error) {
+    console.log('error = ' + error);
+}    
+     
+//handle notification for ios 
+function onNotificationAPN (event) {
+    if ( event.alert )
+    {
+        navigator.notification.alert(event.alert);
+    }
 
-      // Open the message modal
-      $scope.message = function() {
-          $scope.modalMessageMenu.show();
-      };
+    if ( event.sound )
+    {
+        var snd = new Media(event.sound);
+        snd.play();
+    }
 
-      // Perform the message action when the user submits the login form
-      $scope.sendMessage = function() {
-          userManager.sendMessage($scope.messageData);
+    if ( event.badge )
+    {
+        pushNotification.setApplicationIconBadgeNumber(successHandler, errorHandler, event.badge);
+    }
+}
+//handle notification for android
+function onNotification(e) {
+   debugger;
+    $("#app-status-ul").append('<li>EVENT -> RECEIVED:' + e.event + '</li>');
 
-          $ionicLoading.show({
-              template: $filter('translate')('TR_Loading')
-          });
+    switch( e.event )
+    {
+    case 'registered':
+        if ( e.regid.length > 0 )
+        {
+            $("#app-status-ul").append('<li>REGISTERED -> REGID:' + e.regid + "</li>");
+            // Your GCM push server needs to know the regID before it can push to this device
+            // here is where you might want to send it the regID for later use.
+            console.log("regID = " + e.regid);
+        }
+    break;
 
-          // Simulate a message delay. Remove this and replace with your message
-          // code if using a message system
-          $timeout(function() {
-              $scope.closeMessage();
-          }, 1000);
-      };
+    case 'message':
+        // if this flag is set, this notification happened while we were in the foreground.
+        // you might want to play a sound to get the user's attention, throw up a dialog, etc.
+        if ( e.foreground )
+        {
+            $("#app-status-ul").append('<li>--INLINE NOTIFICATION--' + '</li>');
 
+            // on Android soundname is outside the payload.
+            // On Amazon FireOS all custom attributes are contained within payload
+            var soundfile = e.soundname || e.payload.sound;
+            // if the notification contains a soundname, play it.
+            var my_media = new Media("/android_asset/www/"+ soundfile);
+            my_media.play();
+        }
+        else
+        {  // otherwise we were launched because the user touched a notification in the notification tray.
+            if ( e.coldstart )
+            {
+                $("#app-status-ul").append('<li>--COLDSTART NOTIFICATION--' + '</li>');
+            }
+            else
+            {
+                $("#app-status-ul").append('<li>--BACKGROUND NOTIFICATION--' + '</li>');
+            }
+        }
 
-      $rootScope.$on('messageAttempt', function(event, args) {
-          $ionicLoading.hide();
-          if (args === false) {
-              var alertPopup = $ionicPopup.alert({
-                  title: "Message failed",
-                  template: "Message failed"
-              });
-          } else {
-              $state.go("app.page6");
-          }
-      })
+       $("#app-status-ul").append('<li>MESSAGE -> MSG: ' + e.payload.message + '</li>');
+           //Only works for GCM
+       $("#app-status-ul").append('<li>MESSAGE -> MSGCNT: ' + e.payload.msgcnt + '</li>');
+       //Only works on Amazon Fire OS
+       $status.append('<li>MESSAGE -> TIME: ' + e.payload.timeStamp + '</li>');
+    break;
 
+    case 'error':
+        $("#app-status-ul").append('<li>ERROR -> MSG:' + e.msg + '</li>');
+    break;
+
+    default:
+        $("#app-status-ul").append('<li>EVENT -> Unknown, an event was received and we do not know what it is</li>');
+    break;
+  }
+}
 
 
   })

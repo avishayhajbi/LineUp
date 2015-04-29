@@ -2,17 +2,18 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
   $provide.factory('phoneManager', function($ionicPopup, $cordovaSocialSharing, $rootScope) {
     var device, uuid;
-    var myID = "tempID";
-    var myName = "tempName";
+
     var myLocation = {
       longitufde: '',
       latitude: ''
     };
 
-    ionic.Platform.ready(function() {
+    ionic.Platform.ready(function() {      
       device = ionic.Platform.device();
       uuid = device.uuid;
     });
+
+
 
     navigator.geolocation.getCurrentPosition(onSuccess, onError);
 
@@ -37,17 +38,101 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
       },
       getLocation: function() {
         return myLocation;
-      },
-      getMyId: function() {
-        return myID;
-      },
-      getMyName: function() {
-        return myName;
       }
     }
   });
+  $provide.factory('userManagment', function($rootScope, $http) {
+    var myID = "";
+    var myName = "";
+    var myEmail = "";
+    var connected = false;
 
-  $provide.factory('outSideLineHandler', function($rootScope, $http, phoneManager , meetingManager ) {
+    setTimeout(function() {
+      facebookConnectPlugin.getLoginStatus(function(result) {
+        fbLoginSuccess(result);
+        console.log("login:", result);
+      }, function(result) {
+        console.log("err:", result);
+
+      });
+
+    }, 2000);
+
+
+    var fbLoginSuccess = function(userData) {
+      myID = userData.authResponse.userID;
+
+      facebookConnectPlugin.api(myID + "/?fields=id,email,name", [],
+        function(result) {
+          connected = true;
+          myEmail = result.email;
+          myName = result.name;
+          saveUser(result);
+        },
+        function(error) {
+          console.log("Failed: ", error);
+        });
+
+    }
+
+
+    function saveUser(user) {
+      user.userId = user.id;
+      delete user.id;
+      $http.get(serverUrl + 'connectToFB', {
+        params: {
+          user: user
+        }
+      }).then(function(response) {
+
+        if (response.data === "signed") {
+          console.log("welcome back:" + myName);
+        } else if (!response.data) {
+          console.log("fail to save user");
+        } else {
+          console.log("user saved in DB");
+        }
+        $rootScope.$broadcast('connectedToFB');
+      }, function(err) {
+        console.log("server not responding", err);
+        $rootScope.$broadcast('connectedToFB');
+      });
+    }
+
+
+    return {
+      getMyId: function() {
+        return myID;
+      },
+      isConnected: function() {
+        return connected;
+      },
+      getMyName: function() {
+        return myName;
+      },
+      connectToFaceBook: function() {
+        facebookConnectPlugin.login(["public_profile,email"],
+          fbLoginSuccess,
+          function(error) {
+            if (error) {
+              console.log("" + error);
+            } else {
+              console.log("connected");
+            }
+          }
+
+        );
+      },
+      logOutFaceBook: function() {
+        facebookConnectPlugin.logout(function() {
+          connected = false;
+          myEmail = "";
+          myName = "";
+        }, function() {})
+      }
+    }
+  });
+  $provide.factory('outSideLineHandler', function($rootScope, $http, meetingManager, userManagment) {
 
     var myLocation = false;
     var lines = false;
@@ -96,21 +181,19 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         $http.get(serverUrl + 'getLine', {
           params: {
             lineId: lineId,
-            userId: phoneManager.getMyId()
+            userId: userManagment.getMyId()
           },
           timeout: 8000
         }).then(function(response) {
-      
-          console.log("line info:",response.data);
+
+          console.log("line info:", response.data);
           if (!response.data) {
             $rootScope.$broadcast('lineInfoArrived', false);
             return;
-          }
-          else if (response.data==="noRoom") {
+          } else if (response.data === "noRoom") {
             $rootScope.$broadcast('lineInfoArrived', "noRoom");
             return;
-          }
-          else if (response.data==="signed") {
+          } else if (response.data === "signed") {
             $rootScope.$broadcast('lineInfoArrived', "signed");
             return;
           }
@@ -150,9 +233,9 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
           timeout: 8000
         }).then(function(response) {
           if (response.data !== 'null' && response.data !== '' && response.data !== false) {
-            $rootScope.$broadcast('signedToNewMeet' , true);
+            $rootScope.$broadcast('signedToNewMeet', true);
             return;
-          } 
+          }
           $rootScope.$broadcast('signedToNewMeet', false);
 
         }).then(function(response) {
@@ -170,7 +253,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
     }
   });
 
-  $provide.factory('meetingManager', function($rootScope, $http, meetingSender, meetingListener, phoneManager) {
+  $provide.factory('meetingManager', function($rootScope, $http, meetingSender, meetingListener, userManagment) {
 
     var meetings = [];
     var currentMeeting;
@@ -180,9 +263,9 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
       confirmMeeting: function() {
         var toConfirm = {
           lineId: currentMeeting._id,
-          time:currentMeeting.time,
-          userId:phoneManager.getMyId(),
-          userName:phoneManager.getMyName()
+          time: currentMeeting.time,
+          userId: userManagment.getMyId(),
+          userName: userManagment.getMyName()
         }
         $http.get(serverUrl + 'confirmMeeting', {
           params: {
@@ -193,9 +276,9 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
           if (response.data !== 'null' && response.data !== '' && response.data !== false) {
             currentMeeting.active = true;
             meetings.push(currentMeeting);
-            $rootScope.$broadcast('signedToNewMeet' , true);
+            $rootScope.$broadcast('signedToNewMeet', true);
             return;
-          } 
+          }
           $rootScope.$broadcast('signedToNewMeet', false);
 
         });
@@ -204,41 +287,46 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         return currentMeeting;
       },
       setLineInfo: function(line) {
-        
-        currentMeeting=line;
+
+        currentMeeting = line;
         currentMeeting.time = currentMeeting.nextMeeting;
         currentMeeting.position = 0;
         delete currentMeeting.availableDates;
-         $rootScope.$broadcast('LineInfoInManager');
+        $rootScope.$broadcast('LineInfoInManager');
       },
-      getPosition:function() { 
-        if (!currentMeeting){
+      getPosition: function() {
+        if (!currentMeeting) {
           return;
         }
-          var pos = {
-            lineId : currentMeeting._id,
-            userId:phoneManager.getMyId()
-          }
-         $http.get(serverUrl + 'getPosition', {
+        var pos = {
+          lineId: currentMeeting._id,
+          userId: userManagment.getMyId()
+        }
+        $http.get(serverUrl + 'getPosition', {
           params: {
             meeting: pos
           },
           timeout: 8000
         }).then(function(response) {
-      
+
           if (response.data !== 'null' && response.data !== '' && response.data !== false) {
             currentMeeting.position = response.data;
-            $rootScope.$broadcast('positionArrived' , currentMeeting.position);
+            $rootScope.$broadcast('positionArrived', currentMeeting.position);
             return;
-          } 
+          }
           $rootScope.$broadcast('positionArrived', false);
 
         });
 
       },
-      cancelMeeting:function(meeting) {
-        if(!meeting) return;
-        var toCancel = {lineId : meeting._id,userId:phoneManager.getMyId()};
+      cancelMeeting: function(meeting) {
+
+        if (!meeting) return;
+        var toCancel = {
+          lineId: meeting._id,
+          userId: userManagment.getMyId(),
+          time: meeting.time
+        };
 
         $http.get(serverUrl + 'cancelMeeting', {
           params: {
@@ -246,11 +334,11 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
           },
           timeout: 8000
         }).then(function(response) {
-        
+
           if (response.data !== 'null' && response.data !== '' && response.data !== false) {
-            $rootScope.$broadcast('meetingCancled' , true);
+            $rootScope.$broadcast('meetingCancled', true);
             return;
-          } 
+          }
           $rootScope.$broadcast('meetingCancled', false);
         });
 
@@ -258,12 +346,12 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
     }
   });
 
-  $provide.factory('lineManager', function($rootScope, $http, phoneManager) {
+  $provide.factory('lineManager', function($rootScope, $http, userManagment) {
     var lineList = [];
     var currentLine;
     return {
       createLine: function(line) {
-        line.lineManagerId = phoneManager.getMyId();
+        line.lineManagerId = userManagment.getMyId();
         console.log('line is:', line);
         $http.get(serverUrl + 'createLine', {
           params: {
