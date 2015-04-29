@@ -42,6 +42,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
     }
   });
   $provide.factory('userManagment', function($rootScope, $http) {
+    var myFBID = "";
     var myID = "";
     var myName = "";
     var myEmail = "";
@@ -60,13 +61,15 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
 
     var fbLoginSuccess = function(userData) {
-      myID = userData.authResponse.userID;
+      myFBID = userData.authResponse.userID;
 
-      facebookConnectPlugin.api(myID + "/?fields=id,email,name", [],
+      facebookConnectPlugin.api(myFBID + "/?fields=id,email,name", [],
         function(result) {
+          debugger;
           connected = true;
           myEmail = result.email;
           myName = result.name;
+          $rootScope.$broadcast('connectedToFB');
           saveUser(result);
         },
         function(error) {
@@ -92,10 +95,10 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         } else {
           console.log("user saved in DB");
         }
-        $rootScope.$broadcast('connectedToFB');
+        
       }, function(err) {
         console.log("server not responding", err);
-        $rootScope.$broadcast('connectedToFB');
+        
       });
     }
 
@@ -103,6 +106,9 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
     return {
       getMyId: function() {
         return myID;
+      },
+      getMyFBId: function() {
+        return myFBID;
       },
       isConnected: function() {
         return connected;
