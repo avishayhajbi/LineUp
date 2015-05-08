@@ -178,9 +178,9 @@ if (!window.cordova) {
 
 } else {
 
-    var exec = require("cordova/exec");
+    var exec = cordova.exec;
 
-    var facebookConnectPlugin = {
+    window.facebookConnectPlugin = {
 
         getLoginStatus: function (s, f) {
             exec(s, f, "FacebookConnectPlugin", "getLoginStatus", []);
@@ -225,5 +225,5 @@ if (!window.cordova) {
         }
     };
 
-    module.exports = facebookConnectPlugin;
+
 }

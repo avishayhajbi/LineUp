@@ -26,8 +26,10 @@
     <script src="lib/ngCordova/dist/ng-cordova.js"></script>
     <script src="cordova.js"></script>
 
+
+    
+    <script src="lib/push/PushNotification.js"></script>
     <!-- app -->
-   
     <script src="js/utils.js"></script>
     <script src="js/app.js"></script>
     <script src="js/services.js"></script>
@@ -43,12 +45,11 @@
     <div id="fb-root"></div>
     <script src="lib/faceBook/facebookConnectPlugin.js"></script>
     <script>
-  window.fbAsyncInit = function () {
-      if (!window.cordova) {
-        // Initialize - only executed when testing in the browser.
-        facebookConnectPlugin.browserInit(800206223408829);
-      }
-  }
-</script>
+        window.handleOpenURL = function(url) {
+      
+      window.goToLineId = url;
+      console.log("received url: " + url);
+    }
+    </script>
   </body>
 </html>

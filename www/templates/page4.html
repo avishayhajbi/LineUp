@@ -10,7 +10,7 @@
                 <br>
                 <br>
                 <label class="item item-input">
-                    <input type="text" ng-model="lineLine" input-disabled="editableInput" placeholder="{{line.link}}">
+                    <input type="text" readonly ng-model="line.link" ng-change="return;">
                 </label>
             </div> 
             <div class="col col-25">
@@ -22,9 +22,6 @@
         </div>
         <div class="col-80 col-offset-10">
             <button class="button icon-left ion-social-facebook button-positive button-block" ng-click="shareFackBook()">{{"TR_4_ShareViaFacebook" | translate}}</button>
-        </div>
-        <div class="col-80 col-offset-10">
-            <button class="button icon-left ion-email button-positive button-block" ng-click="shareEmail()">{{"TR_4_ShareViaEmail" | translate}}</button>
         </div>
         <div class="col-80 col-offset-10">
             <button class="button icon-left ion-iphone button-positive button-block" ng-click="shareMobile()">{{"TR_4_ShareViaMobile" | translate}}</button>

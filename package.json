@@ -27,6 +27,9 @@
     "org.apache.cordova.geolocation",
     "https://git-wip-us.apache.org/repos/asf/cordova-plugin-globalization.git",
     "org.apache.cordova.camera",
-    "org.apache.cordova.file-transfer"
-  ]
+    "org.apache.cordova.file-transfer",
+    "https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git",
+    "https://github.com/VersoSolutions/CordovaClipboard"
+  ],
+  "cordovaPlatforms": []
 }

@@ -20,5 +20,5 @@ checkAtt = function(prop) {
   return true;
 }
 
-var serverUrl =  "http://localHost:3030/api/";
-// var serverUrl =  "http://10.0.0.1:3030/api/";
+// var serverUrl =  "http://localHost:3030/api/";
+var serverUrl =  "http://192.168.1.17:3030/api/";
