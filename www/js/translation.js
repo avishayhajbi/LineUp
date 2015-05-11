@@ -18,13 +18,15 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_Date:'Date',
       TR_Time:'Time',
       TR_Type: 'Type',
-      TR_Reminder:'Reminder',
+      TR_Reminder:'Reminder:',
       TR_Settings: 'Settings',
       TR_Create_Line: 'Create Line',
       TR_join_line: 'Join Line',
       TR_get_in_line: 'Get in line',
-      TR_yourPositionIs : 'Your postion is:',
-      TR_timeToWait : 'Time to wait:',
+      TR_yourPositionIs : 'Your position is:',
+      TR_timeToWait: 'Time to wait:',
+      TR_cancelLine: 'Cancel Line', 
+      TR_messageAdmin: 'Message Admin',
       //settings Page
       TR_Settings_language: 'Change language',
     
@@ -36,6 +38,10 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       //page 5
       TR_5_manualControl: 'Manual Control',
       TR_5_lineAnalyze: 'Line Analyze',
+      TR_5_UsersInLine: 'Users in Line:',
+      TR_5_nextMeetings: 'Next meetings:',
+      TR_5_startDate: 'Start Date:',
+      TR_5_endDate: 'End Date:',
 
       //page 6
       TR_6_nextMeeting: 'Move to next Meeting',
@@ -51,10 +57,21 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_1_CHOOSELINE: 'Choose Line',
       TR_1_POPTITLE: 'line not found',
       TR_1_POPTEMPLATE: 'id not exist please insert different line ID.',
+      TR_1_myLines:'My Lines:',
+      TR_1_myMeetings: 'My Meetings:',
+
+      //page 2
+      TR_2_Dates:'Dates:',
+      TR_2_Location: 'Location:',
+      TR_2_Duration: 'Duration:',
         //page9
       TR_9_POPTITLE: 'line not found',
       TR_9_POPTEMPLATE: 'id not exist please insert different line ID.',
+      TR_9_Type: 'Type:',
+      TR_9_Location: 'Location:',
+      TR_9_Time: 'Time:',
 
+      TR_9_Comments: 'Comments:',
       // page3
       TR_3_SignIn_Facebook:"Sign in with Facebook",
       TR_3_SignIn_Email:"Sign in with Email",

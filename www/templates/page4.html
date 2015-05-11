@@ -1,33 +1,43 @@
 <ion-view>
     <ion-content id="page4">
-        <div class="item item-thumbnail-left">
-            <img src="./img/temp.jpg">
-            <h2>{{line.title}}</h2>
+
+        <!-- Line info -->
+        <div class="col col-80 col-offset-10 Meeting info">
+            <div class="row">
+                <div class="col">
+                    <img width=100px src="./img/temp.jpg">
+                </div>
+                <div class="col">
+                    <div class="row">Title:</div>
+                    <div class="row">
+                        <h3>My Line{{meeting.title}}</h3></div>
+                </div>
+            </div>
         </div>
-        <div class="row row-center">
-     <div class="col col-65">
-                <br>
-                <br>
-                <br>
+
+
+        <div class="row">
+            <div class="col-50 col-offset-10">
                 <label class="item item-input">
                     <input type="text" readonly ng-model="line.link" ng-change="return;">
                 </label>
-            </div> 
-            <div class="col col-25">
-                <br>
-                <br>
-                <br>
-                <button class="button button-stable button-block " ng-click="copyLineLink()">Copy</button>
+            </div>
+            <div class="col-20 col-offset-10">
+                <button class="button button-stable button-block copyBtn" ng-click="copyLineLink()">Copy</button>
             </div>
         </div>
-        <div class="col-80 col-offset-10">
-            <button class="button icon-left ion-social-facebook button-positive button-block" ng-click="shareFackBook()">{{"TR_4_ShareViaFacebook" | translate}}</button>
-        </div>
-        <div class="col-80 col-offset-10">
-            <button class="button icon-left ion-iphone button-positive button-block" ng-click="shareMobile()">{{"TR_4_ShareViaMobile" | translate}}</button>
 
+        <div class="row row-center">
+            <div class="col-80 col-offset-10">
+                <button class="button icon-left ion-social-facebook button-positive button-block" ng-click="shareFackBook()">{{"TR_4_ShareViaFacebook" | translate}}</button>
+            </div>
         </div>
 
+        <div class="row row-bottom">
+            <div class="col-80 col-offset-10">
+                <button class="button icon-left ion-iphone button-positive button-block" ng-click="shareMobile()">{{"TR_4_ShareViaMobile" | translate}}</button>
+            </div>
+        </div>
 
     </ion-content>
 </ion-view>

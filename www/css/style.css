@@ -1,4 +1,11 @@
 
+@font-face {
+	font-family: OpenSans-Light;
+	src: url('./../fonts/OpenSans-Light.ttf') format('opentype');
+}
+
+
+
 #welcomeScreen {
 	display: none;
 	position: absolute;
@@ -9,6 +16,27 @@
 	background-size: 113 39px;
 	background-position: center;  
 }
+
+/*
+body {
+	font-family: OpenSans-Light;
+}
+
+.button {
+	font-family: OpenSans-Light;
+}
+
+.modal {
+	font-family: OpenSans-Light;
+}
+.col  {
+	font-family: OpenSans-Light;
+}
+
+.title  {
+	font-family: OpenSans-Light;
+}
+*/
 
 .dateList {
 	min-height: 20px;
@@ -37,6 +65,60 @@
 
 
 [id^=page] {
-	background:  url(./../img/background.png);
+	background:  url(./../img/background.png)no-repeat;
+	background-position: left;  
+	font-family: OpenSans-Light;
+}
 
+[class*=item]  {
+	font-family: OpenSans-Light;
+}
+
+.pane {
+	font-family: OpenSans-Light;
+}
+
+.ng-binding {
+	font-family: OpenSans-Light;
+}
+
+
+.button {
+	border-radius: 5px;
+}
+
+.container {
+	margin:10%;
+	background: #fff;
+	border-radius: 5px;
+}
+
+.input-label {
+	width: 0%;
+}
+
+.progressBar {
+	margin:10%;
+	background-color: #fff;
+	border-radius: 5px;
+	height: 75px;
+}
+
+.progressBarImage {
+	position: absolute;
+    clip: rect(0px,100px,64px,0px);
+}
+
+.button.copyBtn {
+	margin-top: 0px;
+	font-size: 12px;
+}
+
+.reminder {
+	text-align: right;
+
+}
+
+.item-input {
+	border-radius: 5px;
 }

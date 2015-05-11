@@ -1,47 +1,86 @@
 <ion-view>
-    <ion-content>
-        <label class="item item-thumbnail-left" href="#">
-            <img src="./img/choose.jpg" onerror="this.src = './img/choose.jpg';" ng-src="newLine.ImageURI"   id="smallimage" ng-click="ShowPictures()"/>
-            <label class="item item-input" style="margin-top:5%;">
-                <input type="text" ng-model="newLine.title" placeholder="title">
-            </label>
-        </label>
-       
-            <label class="item item-input row row-center">
-            <span class="col col-80">dates:</span>
-            <button class="button button-stable button-block col col-20" ng-click="insertNewDate()">+</button>
-        </label>
-            <li class="item" ng-repeat="date in dates">
-                <div class="left">{{date.from | date:'dd-MM-yyyy'}}</div><div class="right">{{date.from  | date:'HH:mm'}} - {{date.to  | date:'HH:mm'}}</div>
-            </li>
-    
-        <label class="item item-input row row-center">
-            <span class="col col-25">location:</span>
-           <input id="autocomplete" class="col col-75" placeholder="Enter your address"
-             type="text"></input>
-        </label>
+    <ion-content id="page2">
 
-        <label class="item item-input row row-center">
-            <span class="col col-25">druation:</span>
-            <input type="number" class="col col-75" ng-model="newLine.druation">
-        </label>
-        <div class="item item-input row row-center">
-            <div class="col col-80">
-                <div class="input-label" ng-disabled="newLine.manuall">manuall line:</div>
-            </div>
-            <div class="col col-20">
-                <label class="toggle">
-                    <input type="checkbox" ng-model="newLine.manuall">
-                    <div class="track">
-                        <div class="handle"></div>
+        <!-- Line info -->
+        <div class="col col-80 col-offset-10">
+            <div class="row">
+                <div class="col">
+                    <img width=100px; src="./img/choose.jpg" onerror="this.src = './img/choose.jpg';" ng-src="newLine.ImageURI" id="smallimage" ng-click="ShowPictures()" />
+                </div>
+                <div class="col col-center">
+                    <div class="item item-input">
+                        <input type="text" ng-model="newLine.title" placeholder="Title">
                     </div>
-                </label>
+                </div>
             </div>
         </div>
-        <label class="item item-input row row-center">
-            <span class="col col-35">confim:</span>
-            <input type="number" class="col col-75" ng-model="newLine.confirmTime">
-        </label>
-         <a class="button button-positive button-block" menu-close ng-click="createLine()">{{"TR_Create_Line" | translate}}</a>
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col col-40 col-offset-5">
+                    <div class="input-label">{{"TR_2_Dates" | translate}}</div>
+                </div>
+                <div class="col col-40">
+                    <button class="button button-stable button-block col col-20" ng-click="insertNewDate()">+</button>
+                    <li class="item" ng-repeat="date in dates">
+                        <div class="left">{{date.from | date:'dd-MM-yyyy'}}</div>
+                        <div class="right">{{date.from | date:'HH:mm'}} - {{date.to | date:'HH:mm'}}</div>
+                    </li>
+
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col col-40 col-offset-5">
+                    <div class="input-label">{{"TR_2_Location" | translate}}</div>
+                </div>
+                <div class="col col-40">
+                    <input id="autocomplete" class="col col-75" placeholder="Enter your address" type="text">
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col col-40 col-offset-5">
+                    <div class="input-label">{{"TR_2_Duration" | translate}}</div>
+                </div>
+                <div class="col col-40">
+                    <input type="number" class="col col-75" ng-model="newLine.druation">
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col col-40 col-offset-5">
+                    <div class="input-label" ng-disabled="newLine.manuall">Manuall line:</div>
+                </div>
+                <div class="col col-40">
+                    <label class="toggle">
+                        <input type="checkbox" ng-model="newLine.manuall">
+                        <div class="track">
+                            <div class="handle"></div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-40 col-offset-5">
+                    <div class="input-label">Confim:</div>
+                </div>
+                <div class="col col-40">
+                    <input type="number" class="col col-75" ng-model="newLine.confirmTime">
+                </div>
+
+            </div>
+
+
+            <button class="button icon-left ion-wrench button-positive button-block col-80 col-offset-10" menu-close ng-click="createLine()">{{"TR_Create_Line" | translate}}</button>
+
+
     </ion-content>
 </ion-view>
