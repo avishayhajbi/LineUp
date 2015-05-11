@@ -30,13 +30,13 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
     });
 
     return {
-
       getLocation: function() {
         return myLocation;
       }
     }
   });
   $provide.factory('$userManagment', function($rootScope, $http) {
+
     var myId = "";
     var fbId = "";
     var myName = "";
@@ -136,7 +136,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
     //handle notification
     window.onNotification = function(e) {
-        debugger;
+
         if (ionic.Platform.isAndroid()) {
           window.handleAndroid(e);
         } else if (ionic.Platform.isIOS()) {
@@ -157,7 +157,12 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         //send device token to server
         sendTokenToServer(notification.regid);
       } else if (notification.event == "message") {
-        $cordovaDialogs.alert(notification.message, "Push Notification Received");
+        if (notification.message == "newUserSignedToLine") {
+          $rootScope.$broadcast("newUserSignedToLine" , notification.key1);
+        }
+        else {
+          $cordovaDialogs.alert(notification.message, "Push Notification Received");
+        }
 
       } else if (notification.event == "error")
         $cordovaDialogs.alert(notification.msg, "Push notification error event");
@@ -305,7 +310,8 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
       }
     }
   });
-  $provide.factory('$outSideLineHandler', function($rootScope, $http, $meetingManager, $userManagment , $phoneManager) {
+
+  $provide.factory('$outSideLineHandler', function($rootScope, $http, $meetingManager, $userManagment, $phoneManager) {
 
     var myLocation = false;
     var lines = false;
@@ -369,7 +375,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
             $rootScope.$broadcast('lineInfoArrived', "signed");
             return;
           }
-          var meetingWaitingAproval =  response.data;
+          var meetingWaitingAproval = response.data;
           meetingWaitingAproval.id = lineId;
           $meetingManager.setLineInfo(meetingWaitingAproval);
           $rootScope.$broadcast('lineInfoArrived', true);
@@ -382,7 +388,8 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
             value: value
           }
         }).then(function(response) {
-          if (response.data !== 'null') {
+
+          if (response.data) {
             lines = orderLineList(myLocation, response.data);
             $rootScope.$broadcast('lineListUpdated');
           }
@@ -391,75 +398,114 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
     }
   });
 
-  $provide.factory('meetingSender', function($rootScope, $http) {
+  $provide.factory('$meetingManager', function($rootScope, $http, $userManagment, $localstorage) {
 
     var meetings = [];
+    var canceldMeetings = [];
     var currentMeeting;
 
-    return {
-      confirmMeeting: function(meeting) {
-        $http.get(serverUrl + 'confirmMeeting', {
-          params: {
-            meeting: meeting
-          },
-          timeout: 8000
-        }).then(function(response) {
-          if (response.data !== 'null' && response.data !== '' && response.data !== false) {
-            $rootScope.$broadcast('signedToNewMeet', true);
-            return;
-          }
-          $rootScope.$broadcast('signedToNewMeet', false);
 
-        }).then(function(response) {
-          $rootScope.$broadcast('signedToNewMeet', false);
-        });
+    (function() {
+      // $localstorage.setObject('meetings', []);
+      // $localstorage.setObject('canceldMeetings', []);
 
+      if ($localstorage.getObject('meetings')) {
+        var list = $localstorage.getObject('meetings');
+        if (list.constructor === Array) {
+          meetings = list;
+        } else meetings.push(list);
       }
+      console.log("meetings list:", meetings);
 
-    }
-  });
+      if ($localstorage.getObject('canceldMeetings')) {
+        var list = $localstorage.getObject('canceldMeetings');
+        if (list.constructor === Array) {
+          canceldMeetings = list;
+        } else canceldMeetings.push(list);
+      }
+      console.log("canceldMeetings list:", canceldMeetings);
+    }());
 
-  $provide.factory('meetingListener', function($rootScope, $http) {
-    return {
 
-    }
-  });
-
-  $provide.factory('$meetingManager', function($rootScope, $http, meetingSender, meetingListener, $userManagment, $localstorage) {
-
-    var meetings = [];
-    var currentMeeting;
-
-       $localstorage.setObject('meetings', []);
-   if( $localstorage.getObject('meetings')) {
-    var list = $localstorage.getObject('meetings');
-    if (list.constructor === Array)  {
-      meetings = list;
-    }
-    else  meetings.push(list);
-   }
-    console.log("meetings list:",meetings);
     function saveMeetingLocal() {
       $localstorage.setObject('meetings', meetings);
+      $localstorage.setObject('canceldMeetings', canceldMeetings);
     }
 
+    function moveToCanceld(id) {
 
+      meetings = meetings.filter(function(obj) {
+        if (obj.id === id) {
+          canceldMeetings.push(obj);
+          return false;
+        }
+        return true;
+      });
+      saveMeetingLocal();
+
+    }
+
+    function saveCurrnet() {
+      for (var i = 0; i < meetings.length; i++) {
+        if (meetings[i].id == currentMeeting.id) {
+          meetings[i].position = currentMeeting.position;
+          meetings[i].timeLeft = currentMeeting.timeLeft;
+          saveMeetingLocal();
+          break;
+        }
+      }
+    }
+
+    function calculateTimeLeft() {
+      var time = new Date(currentMeeting.time);
+      var now = new Date();
+      var difference = new Date(time - now);
+
+      tz_correction_minutes = now.getTimezoneOffset() - difference.getTimezoneOffset();
+      difference.setMinutes(time.getMinutes() + tz_correction_minutes);
+      currentMeeting.timeLeft = {
+        days: difference.getDate() - 1,
+        hours: difference.getHours(),
+        minutes: difference.getMinutes()
+      };
+    }
+
+    function updatePosition() {
+      $http.get(serverUrl + 'meetingPosition', {
+        params: {
+          lineId: currentMeeting.id,
+          userId: $userManagment.getmyId()
+        },
+        timeout: 8000
+      }).then(function(response) {
+        if (response.data) {
+          if (currentMeeting.position != response.data) {
+            currentMeeting.position = response.data;
+            $rootScope.$broadcast('positionUpdated');
+            saveCurrnet();
+          }
+        }
+
+      }, function(response) {
+        console.log("answer from meetingPosition timeout");
+      });
+    }
     return {
-      confirmMeeting: function() {
+      approveMeeting: function() {
         var toConfirm = {
           lineId: currentMeeting.id,
           time: currentMeeting.time,
           userId: $userManagment.getmyId(),
           userName: $userManagment.getMyName()
         }
-        $http.get(serverUrl + 'confirmMeeting', {
+        $http.get(serverUrl + 'approveMeeting', {
           params: {
             meeting: toConfirm
           },
           timeout: 8000
         }).then(function(response) {
-          if (response.data !== 'null' && response.data !== '' && response.data !== false) {
-            currentMeeting.active = true;
+          if (response.data) {
+            calculateTimeLeft();
             meetings.push(currentMeeting);
             $rootScope.$broadcast('signedToNewMeet', true);
             saveMeetingLocal();
@@ -473,34 +519,16 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         return currentMeeting;
       },
       setLineInfo: function(line) {
-        console.log("setLineInfo:",line);
+        console.log("setLineInfo:", line);
         currentMeeting = line;
         $rootScope.$broadcast('LineInfoInManager');
       },
-      getPosition: function() {
+      updateMeeting: function() {
         if (!currentMeeting) {
           return;
         }
-        var pos = {
-          lineId: currentMeeting.id,
-          userId: $userManagment.getmyId()
-        }
-        $http.get(serverUrl + 'getPosition', {
-          params: {
-            meeting: pos
-          },
-          timeout: 8000
-        }).then(function(response) {
-
-          if (response.data !== 'null' && response.data !== '' && response.data !== false) {
-            currentMeeting.position = response.data;
-            $rootScope.$broadcast('positionArrived', currentMeeting.position);
-            return;
-          }
-          $rootScope.$broadcast('positionArrived', false);
-
-        });
-
+        calculateTimeLeft();
+        updatePosition();
       },
       cancelMeeting: function(meeting) {
 
@@ -508,7 +536,8 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         var toCancel = {
           lineId: meeting.id,
           userId: $userManagment.getmyId(),
-          time: meeting.time
+          time: meeting.time,
+          userName: $userManagment.getMyName()
         };
 
         $http.get(serverUrl + 'cancelMeeting', {
@@ -517,14 +546,22 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
           },
           timeout: 8000
         }).then(function(response) {
-
-          if (response.data !== 'null' && response.data !== '' && response.data !== false) {
+          if (response.data) {
+            moveToCanceld(meeting.id);
             $rootScope.$broadcast('meetingCancled', true);
             return;
           }
           $rootScope.$broadcast('meetingCancled', false);
         });
 
+      },
+      chooseMeeting: function(id) {
+        for (var i = 0; i < meetings.length; i++) {
+          if (meetings.id === id) {
+            currentMeeting = meetings[i];
+            break;
+          }
+        }
       },
       getMeetingList: function() {
         return meetings;
@@ -544,22 +581,43 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
     var lineList = [];
     var currentLine;
 
-
-
-   $localstorage.setObject('lineList', []);
-   if( $localstorage.getObject('lineList')) {
-    var list = $localstorage.getObject('lineList');
-    if (list.constructor === Array)  {
-      lineList = list;
+    $localstorage.setObject('lineList', []);
+    if ($localstorage.getObject('lineList')) {
+      var list = $localstorage.getObject('lineList');
+      if (list.constructor === Array) {
+        lineList = list;
+      } else lineList.push(list);
     }
-    else  lineList.push(list);
-   }
-    console.log("lineList list:",lineList);
+    console.log("lineList list:", lineList);
+
     function saveLineLocal() {
       $localstorage.setObject('lineList', lineList);
     }
 
+    $rootScope.$on("newUserSignedToLine" , function (evt , lineId){
 
+
+         $http.get(serverUrl + 'createLine', {
+          params: {
+            line: line
+          },
+          timeout: 8000
+        }).then(function(response) {
+          if (checkAtt(response.data)) {
+            line.id = response.data;
+            lineList.push(line);
+            currentLine = line;
+            saveLineLocal();
+            $rootScope.$broadcast('lineCreated', true);
+          } else {
+            $rootScope.$broadcast('lineCreated', false);
+          }
+        }, function(response) {
+          $rootScope.$broadcast('lineCreated', false);
+        });
+
+    });
+    
 
     return {
       createLine: function(line) {
@@ -571,8 +629,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
           },
           timeout: 8000
         }).then(function(response) {
-          debugger;
-          if (response.data !== 'null' && response.data !== 'null' && response.data !== false) {
+          if (checkAtt(response.data)) {
             line.id = response.data;
             lineList.push(line);
             currentLine = line;
@@ -594,11 +651,11 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         }
       },
       getLineList: function() {
-         if (!lineList) return false;
-          else {
-          return lineList;    
-          }
-        
+        if (!lineList) return false;
+        else {
+          return lineList;
+        }
+
       },
       setCurrent: function(id) {
         for (var i = 0; i < lineList.length; i++) {
@@ -607,34 +664,12 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
             break;
           }
         }
+      },
+      nextMeeting : function() { 
+
       }
     }
   });
-
-
-  // $provide.factory('userManager', function($rootScope, $http, meetingSender, meetingListener, $phoneManager) {
-
-  //   return {
-  //     loginViaEmail: function(data) {
-  //       console.log(data);
-
-  //       $http.get(serverUrl + 'createLine', {
-  //         params: {
-  //           loginData: data
-  //         },
-  //         timeout: 8000
-  //       }).then(function(response) {
-  //         if (response.data !== 'null' && response.data !== false) {
-  //           $rootScope.$broadcast('loginAttempt', true);
-  //         } else {
-  //           $rootScope.$broadcast('loginAttempt', false);
-  //         }
-  //       });
-  //     }
-
-  //   }
-
-  // });
 
 
   $provide.factory('$localstorage', ['$window', function($window) {

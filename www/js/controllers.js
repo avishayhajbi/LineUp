@@ -1,6 +1,6 @@
   angular.module('starter.controllers', ['ngCordova'])
 
-  .controller('menuCtrl', function($scope, $ionicModal, $timeout, $userManagment, $ionicLoading, $ionicPopup) {
+  .controller('menuCtrl', function($scope, $ionicModal, $timeout, $userManagment, $ionicLoading, $ionicPopup , $state) {
 
 
       // Create the login modal that we will use later
@@ -32,6 +32,21 @@
 
     })
     .controller('page1Ctrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading) {
+
+      if(window.jumpToPage) {
+        
+        var type = window.jumpToPage[0];
+        var id = window.jumpToPage[1];
+        if (type === "line") {
+          $outSideLineHandler.getLine(id);
+
+        }
+        else if (type === "meeting") { 
+
+        }
+    
+
+      }
 
       $scope.lineIdToGet = '';
       $scope.placeholder = 'TR_1_ENTERLINEID';
@@ -135,7 +150,7 @@
       });
 
     })
-    .controller('page2Ctrl', function($scope, $filter, $rootScope, $state, $ionicPopup, $ionicLoading, $lineManager) {
+    .controller('page2Ctrl', function($scope, $filter, $state, $ionicPopup, $ionicLoading, $lineManager) {
 
       $scope.newLine = {};
       $scope.dates = [];
@@ -185,7 +200,7 @@
       $scope.insertNewDate = function() {
         $scope.data = {};
         var chooseDatePopUp = $ionicPopup.show({
-          template: '<label class="item item-input"><input type="date" ng-model="data.day" placeholder="dd-MM-yyyy"></label><label class="item item-input row row-center"><span class="col col-25">from:</span><input type="time" class="col col-75" ng-model="data.from" placeholder="HH:mm"></label><label class="item item-input row row-center"><span class="col col-25">to:</span><input type="time" class="col col-75" ng-model="data.to" placeholder="HH:mm"></label>',
+          template: '<label class="item item-input"><input type="date" ng-model="data.day" placeholder="dd/MM/yyyy"></label><label class="item item-input row row-center"><span class="col col-25">from:</span><input type="time" class="col col-75" ng-model="data.from" placeholder="HH:mm"></label><label class="item item-input row row-center"><span class="col col-25">to:</span><input type="time" class="col col-75" ng-model="data.to" placeholder="HH:mm"></label>',
           title: 'choose date:',
           subTitle: '',
           scope: $scope,
@@ -261,7 +276,7 @@
 
     })
 
-  .controller('page4Ctrl', function($scope, $rootScope, $lineManager , $cordovaSocialSharing) {
+  .controller('page4Ctrl', function($scope, $lineManager , $cordovaSocialSharing) {
 
     $scope.line = $lineManager.getCurrentLine();
     if(!$scope.line) {
@@ -352,10 +367,9 @@
     })
     .controller('page8Ctrl', function($scope ,$state, $lineManager , $meetingManager) {
 
-
-      $scope.lineList = $lineManager.getLineList();
-
-      $scope.meetingList =  $meetingManager.getMeetingList();
+        $scope.lineList = $lineManager.getLineList();
+        $scope.meetingList = $meetingManager.getMeetingList();
+      
 
         $scope.chooseLine =  function(id) {
           $lineManager.setCurrent(id);
@@ -368,14 +382,14 @@
       }
 
     })
-    .controller('page9Ctrl', function($scope, $state, $rootScope, $meetingManager, $ionicLoading, $filter, $ionicPopup) {
+    .controller('page9Ctrl', function($scope, $state, $meetingManager, $ionicLoading, $filter, $ionicPopup) {
 
       if (!$scope.meeting) {
         $scope.meeting = $meetingManager.getCurrentMeeting();
         console.log("meeting:", $scope.meeting);
       }
 
-      $rootScope.$on('LineInfoInManager', function() {
+      $scope.$on('LineInfoInManager', function() {
         $scope.meeting = $meetingManager.getCurrentMeeting();
         console.log("meeting:", $scope.meeting);
       });
@@ -390,13 +404,13 @@
       }
 
       $scope.getInLine = function() {
-        $meetingManager.confirmMeeting();
+        $meetingManager.approveMeeting();
         $ionicLoading.show({
           template: $filter('translate')('TR_Loading')
         });
       }
 
-      $rootScope.$on('signedToNewMeet', function(event, args) {
+      $scope.$on('signedToNewMeet', function(event, args) {
         $ionicLoading.hide();
         if (!args) {
           var alertPopup = $ionicPopup.alert({
@@ -409,19 +423,24 @@
       });
 
     })
-    .controller('page10Ctrl', function($scope, $meetingManager, $rootScope, $ionicPopup, $ionicLoading, $filter, $state) {
+    .controller('page10Ctrl', function($scope, $meetingManager, $ionicPopup, $ionicLoading, $filter, $state) {
       // $meetingManager.getPosition();
       $scope.meeting = $meetingManager.getCurrentMeeting();
       $scope.reminder = true;
 
+      $meetingManager.updateMeeting();
+      var updateInt = setInterval(function() {
+        $meetingManager.updateMeeting();
+      }, 60000);
 
-      // var updateInt = setInterval(function() {
-      //   $meetingManager.getPosition();
-      // }, 30000);
+      $scope.$on("positionUpdated", function() {
+        $scope.meeting = $meetingManager.getCurrentMeeting();
 
-      // $scope.$on("$destroy", function() {
-      //   clearInterval(updateInt);
-      // });
+      });
+      $scope.$on("$destroy", function() {
+        debugger;
+        clearInterval(updateInt);
+      });
 
       $scope.cancelLine = function() {
 
@@ -444,9 +463,7 @@
           }]
         });
       }
-
-
-      $rootScope.$on('meetingCancled', function(event, args) {
+      $scope.$on('meetingCancled', function(event, args) {
 
         $ionicLoading.hide();
         if (!args) {

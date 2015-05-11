@@ -5,9 +5,11 @@
            <h2>{{meeting.title}}</h2>
         </div>
         <div class="item">    
-            <h3>time: {{meeting.time | date : "HH:mm"}}</h3>
+            <h3>time: {{meeting.time | date : "HH:mm"}} date: {{meeting.time | date : "dd:MM:yyyy"}}</h3>
             <br>
             <h3>{{"TR_yourPositionIs" | translate}} {{meeting.position}}</h3>
+            <br>
+            <h3>time left: {{meeting.timeLeft.days}} days , {{meeting.timeLeft.hours}} hours and {{meeting.timeLeft.minutes}} minutes</h3>
         </div>
         <div class="row row-center">
             <br>
