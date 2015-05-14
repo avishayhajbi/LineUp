@@ -1,3 +1,16 @@
+var tempLine = {
+confirmTime: 30,
+endDate: "2015-01-01T04:00:00.000Z",
+lineId: "5554c1bd06184ea24b852352",
+meeting: "2014-12-31T23:20:00.000Z",
+meetingDruation: 10,
+startDate: "2014-12-31T23:00:00.000Z",
+title: "My Line"
+
+}
+
+
+
 var tmpLines = [{
     title: 'Collect coins',
     id: 123,

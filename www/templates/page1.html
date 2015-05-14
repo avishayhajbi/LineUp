@@ -9,7 +9,7 @@
         </ion-list>
 
         <!--Create Line button-->
-        <button class="row button button-positive button-block col col-80 col-offset-10" menu-close href="#/app/page2">{{"TR_Create_Line" | translate}}</button>
+        <button class="row button button-positive button-block col col-80 col-offset-10" menu-close ng-click="createLine()">{{"TR_Create_Line" | translate}}</button>
 
 
        <h4 class="col col-offset-20" ng-show="meeting.active">{{"TR_1_myMeetings" | translate}}{{timeToWait}}</h4>

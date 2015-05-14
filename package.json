@@ -31,5 +31,7 @@
     "https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git",
     "https://github.com/VersoSolutions/CordovaClipboard"
   ],
-  "cordovaPlatforms": []
+  "cordovaPlatforms": [
+    "android"
+  ]
 }

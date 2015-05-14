@@ -10,13 +10,13 @@
                 <div class="col">
                     <div class="row">Title:</div>
                     <div class="row">
-                        <h3>My Line{{meeting.title}}</h3></div>
+                        <h3>{{meeting.title}}</h3></div>
                 </div>
             </div>
         </div>
 
 
-        <div class="row">
+
             <div class="col-50 col-offset-10">
                 <label class="item item-input">
                     <input type="text" readonly ng-model="line.link" ng-change="return;">
@@ -25,19 +25,17 @@
             <div class="col-20 col-offset-10">
                 <button class="button button-stable button-block copyBtn" ng-click="copyLineLink()">Copy</button>
             </div>
-        </div>
 
-        <div class="row row-center">
+
+
             <div class="col-80 col-offset-10">
                 <button class="button icon-left ion-social-facebook button-positive button-block" ng-click="shareFackBook()">{{"TR_4_ShareViaFacebook" | translate}}</button>
             </div>
-        </div>
 
-        <div class="row row-bottom">
             <div class="col-80 col-offset-10">
                 <button class="button icon-left ion-iphone button-positive button-block" ng-click="shareMobile()">{{"TR_4_ShareViaMobile" | translate}}</button>
             </div>
-        </div>
+
 
     </ion-content>
 </ion-view>
