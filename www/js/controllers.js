@@ -31,7 +31,7 @@
 
 
     })
-    .controller('page1Ctrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading) {
+    .controller('page1Ctrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading , $lineManager , $meetingManager) {
 
       if(window.jumpToPage) {
         
@@ -39,13 +39,28 @@
         var id = window.jumpToPage[1];
         if (type === "line") {
           $outSideLineHandler.getLine(id);
-
         }
         else if (type === "meeting") { 
 
         }
     
 
+      }
+
+      $scope.lineList = $lineManager.getLineList();
+      $scope.meetingList = $meetingManager.getMeetingList();
+      
+
+      $scope.chooseLineNew =  function(id) {
+    
+          $lineManager.setCurrent(id);
+          $state.go("app.page4");
+      }
+
+      $scope.chooseMeeting =  function(id) {
+    
+          $meetingManager.setCurrent(id);
+          $state.go("app.page10");
       }
 
       $scope.lineIdToGet = '';
@@ -118,7 +133,7 @@
 
 
 
-      $scope.joinLine = function() {
+      $scope.getLine = function() {
         console.log("try to connect to:" + $scope.lineIdToGet);
         $outSideLineHandler.getLine($scope.lineIdToGet);
         $ionicLoading.show({
@@ -127,6 +142,7 @@
       }
 
       $scope.$on('lineInfoArrived', function(event, args) {
+        
         $ionicLoading.hide();
         if (args === false) {
           var alertPopup = $ionicPopup.alert({
@@ -244,6 +260,7 @@
           var newLine = $scope.newLine;
           newLine.ImageURI = $scope.PicSourece.src;
           newLine.availableDates = $scope.dates;
+          newLine.active = false;
           $lineManager.createLine(newLine);
           $ionicLoading.show({
             template: $filter('translate')('TR_Loading')
@@ -359,52 +376,19 @@
 
   })
 
-
-
   .controller('page7Ctrl', function($scope) {
 
 
     })
-    .controller('page8Ctrl', function($scope ,$state, $lineManager , $meetingManager) {
 
-        $scope.lineList = $lineManager.getLineList();
-        $scope.meetingList = $meetingManager.getMeetingList();
-      
+    .controller('page9Ctrl', function($scope, $state, $meetingManager,$outSideLineHandler, $ionicLoading, $filter, $ionicPopup) {
 
-        $scope.chooseLine =  function(id) {
-          $lineManager.setCurrent(id);
-          $state.go("app.page4");
-      }
-
-      $scope.chooseMeeting =  function(id) {
-          $meetingManager.setCurrent(id);
-          $state.go("app.page10");
-      }
-
-    })
-    .controller('page9Ctrl', function($scope, $state, $meetingManager, $ionicLoading, $filter, $ionicPopup) {
-
-      if (!$scope.meeting) {
-        $scope.meeting = $meetingManager.getCurrentMeeting();
-        console.log("meeting:", $scope.meeting);
-      }
-
-      $scope.$on('LineInfoInManager', function() {
-        $scope.meeting = $meetingManager.getCurrentMeeting();
-        console.log("meeting:", $scope.meeting);
-      });
+      $scope.meeting = $outSideLineHandler.getLineInfo();
 
 
-      $scope.chooseDate = function(value) {
-        $scope.selectedDate = value;
-      }
-
-      $scope.toggleReminder = function(value) {
-        $scope.reminderRow = value;
-      }
-
-      $scope.getInLine = function() {
-        $meetingManager.approveMeeting();
+      $scope.joinLine = function() {
+        
+        $meetingManager.joinLine($scope.meeting);
         $ionicLoading.show({
           template: $filter('translate')('TR_Loading')
         });
@@ -437,11 +421,6 @@
         $scope.meeting = $meetingManager.getCurrentMeeting();
 
       });
-      $scope.$on("$destroy", function() {
-        debugger;
-        clearInterval(updateInt);
-      });
-
       $scope.cancelLine = function() {
 
         var cancelLinePopUp = $ionicPopup.show({

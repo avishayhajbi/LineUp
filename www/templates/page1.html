@@ -1,20 +1,16 @@
 <ion-view>
     <ion-content id="page1">
 
-        <h4 class="col col-offset-20" ng-show="Line.active">{{"TR_1_myLines" | translate}}{{timeToWait}}</h4>
         <ion-list class="col col-80 col-offset-10">
-            <ion-item ng-repeat="Line in lineList" ng-click="chooseLine(Line.id);" ng-show="Line.active">
-                {{Line.title}}
+            <ion-item ng-repeat="Line in lineList" ng-click="chooseLineNew(Line.id)">
+                {{Line.title}} --- {{Line.id}}
             </ion-item>
         </ion-list>
-
         <!--Create Line button-->
-        <button class="row button button-positive button-block col col-80 col-offset-10" menu-close href="#/app/page2">{{"TR_Create_Line" | translate}}</button>
+        <a class="row button button-positive button-block col col-80 col-offset-10" menu-close href="#/app/page2">{{"TR_Create_Line" | translate}}</a>
 
-
-       <h4 class="col col-offset-20" ng-show="meeting.active">{{"TR_1_myMeetings" | translate}}{{timeToWait}}</h4>
         <ion-list class="col col-80 col-offset-10" style="padding:0px !important;">
-            <ion-item ng-repeat="meeting in meetingList" ng-click="chooseMeeting(meeting.id);" ng-show="meeting.active">
+            <ion-item ng-repeat="meeting in meetingList" ng-click="chooseMeeting(meeting.id);">
                 {{meeting.title}} ---- {{meeting.time | date : "HH:mm"}}
             </ion-item>
         </ion-list>
@@ -33,7 +29,7 @@
 
 
         <!--Join Line button-->
-        <button class="row row-bottom button button-positive button-block col col-80 col-offset-10" menu-close ng-disabled="lineIdToGet===''" ng-click="joinLine()">{{"TR_join_line" | translate}}</button>
+        <button class="row row-bottom button button-positive button-block col col-80 col-offset-10" menu-close ng-disabled="lineIdToGet===''" ng-click="getLine()">{{"TR_join_line" | translate}}</button>
 
 
     </ion-content>
