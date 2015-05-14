@@ -55,7 +55,7 @@
       
       $scope.chooseLineNew =  function(id) {
           $lineManager.setCurrent(id);
-          $state.go("app.page4");
+          $state.go("app.page5");
       }
 
       $scope.chooseMeeting =  function(id) {
