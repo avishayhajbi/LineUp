@@ -21,4 +21,10 @@ checkAtt = function(prop) {
 }
 
 var serverUrl =  "http://localHost:3030/api/";
+<<<<<<< HEAD
 // var serverUrl =  "http://10.0.0.1:3030/api/";
+=======
+// var serverUrl =  "http://192.168.1.17:3030/api/";
+
+//http://localhost:8080/auth/facebook/callback
+>>>>>>> 8fad72f273cd6629577e0711d935bb8dc017fc9a

@@ -93,15 +93,7 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
         }
       }
     })
-    .state('app.page8', {
-      url: "/page8",
-      views: {
-        'menuContent': {
-          templateUrl: "templates/page8.html",
-          controller: 'page8Ctrl'
-        }
-      }
-    })
+
     .state('app.page9', {
       url: "/page9",
       views: {

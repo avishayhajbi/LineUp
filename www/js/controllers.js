@@ -1,6 +1,10 @@
   angular.module('starter.controllers', ['ngCordova'])
 
+<<<<<<< HEAD
   .controller('menuCtrl', function($scope, $ionicModal, $timeout, userManager, $ionicLoading, $ionicPopup, $rootScope) {
+=======
+  .controller('menuCtrl', function($scope, $ionicModal, $timeout, $userManagment, $ionicLoading, $ionicPopup , $state) {
+>>>>>>> 8fad72f273cd6629577e0711d935bb8dc017fc9a
 
 
       // Form data for the login modal
@@ -31,12 +35,47 @@
               template: $filter('translate')('TR_Loading')
           });
 
+<<<<<<< HEAD
           // Simulate a login delay. Remove this and replace with your login
           // code if using a login system
           $timeout(function() {
               $scope.closeLogin();
           }, 1000);
       };
+=======
+    })
+    .controller('page1Ctrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading , $lineManager , $meetingManager) {
+
+      if(window.jumpToPage) {
+        
+        var type = window.jumpToPage[0];
+        var id = window.jumpToPage[1];
+        if (type === "line") {
+          $outSideLineHandler.getLine(id);
+        }
+        else if (type === "meeting") { 
+
+        }
+    
+
+      }
+
+      $scope.lineList = $lineManager.getLineList();
+      $scope.meetingList = $meetingManager.getMeetingList();
+      
+
+      $scope.chooseLineNew =  function(id) {
+    
+          $lineManager.setCurrent(id);
+          $state.go("app.page4");
+      }
+
+      $scope.chooseMeeting =  function(id) {
+    
+          $meetingManager.setCurrent(id);
+          $state.go("app.page10");
+      }
+>>>>>>> 8fad72f273cd6629577e0711d935bb8dc017fc9a
 
 
       $rootScope.$on('loginAttempt', function(event, args) {
@@ -106,6 +145,7 @@
   .controller('page1Ctrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, outSideLineHandler, $ionicLoading) {
 
           $scope.lineIdToGet = '';
+<<<<<<< HEAD
           $scope.placeholder = 'TR_1_ENTERLINEID';
           $scope.searchPlaceHolder = 'TR_SEARCH';
 
@@ -115,6 +155,58 @@
           $scope.$on('lineListUpdated', function(event) {
               $scope.LineList = outSideLineHandler.getLineList();
               console.log('lineListUpdated:', $scope.LineList);
+=======
+          $scope.modal.hide();
+        }
+        //click on one Line
+      $scope.chooseLine = function(line) {
+        $scope.placeholder = line.title;
+        $scope.lineIdToGet = line._id;
+        $scope.modal.hide();
+      }
+
+      //iside  chooseLine function : 
+      $scope.scrollToTop = function() {
+
+      }
+
+      $scope.searchLineByName = function(value) {
+        console.log("search Value:" + value);
+        if (value !== '') {
+          $outSideLineHandler.searchLineByName(value);
+        }
+
+      }
+      $scope.resetSearchBar = function(value) {
+        $ionicScrollDelegate.scrollTop();
+        if (value === '') {
+          $scope.LineList = $outSideLineHandler.getDefaultLineList();
+        }
+      }
+
+
+
+      $scope.getLine = function() {
+        console.log("try to connect to:" + $scope.lineIdToGet);
+        $outSideLineHandler.getLine($scope.lineIdToGet);
+        $ionicLoading.show({
+          template: $filter('translate')('TR_Loading')
+        });
+      }
+
+      $scope.$on('lineInfoArrived', function(event, args) {
+        
+        $ionicLoading.hide();
+        if (args === false) {
+          var alertPopup = $ionicPopup.alert({
+            title: $filter('translate')('TR_1_POPTITLE'),
+            template: $filter('translate')('TR_1_POPTEMPLATE')
+          });
+        } else if (args === "noRoom") {
+          var alertPopup = $ionicPopup.alert({
+            title: "no room in line",
+            template: "no room in line"
+>>>>>>> 8fad72f273cd6629577e0711d935bb8dc017fc9a
           });
 
           $scope.createLine = function() {
@@ -139,6 +231,11 @@
               $scope.modal = modal;
           });
 
+<<<<<<< HEAD
+=======
+    })
+    .controller('page2Ctrl', function($scope, $filter, $state, $ionicPopup, $ionicLoading, $lineManager) {
+>>>>>>> 8fad72f273cd6629577e0711d935bb8dc017fc9a
 
           //open the list of lines
           $scope.openChooseLine = function() {
@@ -178,6 +275,7 @@
           }
 
 
+<<<<<<< HEAD
 
           $scope.joinLine = function() {
               console.log("try to connect to:" + $scope.lineIdToGet);
@@ -205,6 +303,23 @@
                       title: "already signed to this line",
                       template: "already signed to this line"
                   });
+=======
+      $scope.insertNewDate = function() {
+        $scope.data = {};
+        var chooseDatePopUp = $ionicPopup.show({
+          template: '<label class="item item-input"><input type="date" ng-model="data.day" placeholder="dd/MM/yyyy"></label><label class="item item-input row row-center"><span class="col col-25">from:</span><input type="time" class="col col-75" ng-model="data.from" placeholder="HH:mm"></label><label class="item item-input row row-center"><span class="col col-25">to:</span><input type="time" class="col col-75" ng-model="data.to" placeholder="HH:mm"></label>',
+          title: 'choose date:',
+          subTitle: '',
+          scope: $scope,
+          buttons: [{
+            text: 'Cancel'
+          }, {
+            text: '<b>Save</b>',
+            type: 'button-positive',
+            onTap: function(e) {
+              if (!checkAtt($scope.data.day) && !checkAtt($scope.data.from) && !checkAtt($scope.data.to)) {
+                e.preventDefault();
+>>>>>>> 8fad72f273cd6629577e0711d935bb8dc017fc9a
               } else {
                   $state.go("app.page9");
               }
@@ -281,6 +396,7 @@
               });
               chooseDatePopUp.then(function(data) {
 
+<<<<<<< HEAD
                   data.from.setDate(data.day.getDate());
                   data.from.setMonth(data.day.getMonth());
                   data.from.setFullYear(data.day.getFullYear());
@@ -322,6 +438,32 @@
               } else {
                   $state.go("app.page3");
               }
+=======
+      $scope.createLine = function() {
+        if (!checkAtt($scope.newLine.confirmTime) || !checkAtt($scope.dates) || !checkAtt($scope.newLine.druation)) {
+          var alertPopup = $ionicPopup.alert({
+            title: 'missing information',
+            template: 'please fill all information'
+          });
+        } else {
+          var newLine = $scope.newLine;
+          newLine.ImageURI = $scope.PicSourece.src;
+          newLine.availableDates = $scope.dates;
+          newLine.active = false;
+          $lineManager.createLine(newLine);
+          $ionicLoading.show({
+            template: $filter('translate')('TR_Loading')
+          });
+        }
+      }
+
+      $scope.$on('lineCreated', function(event, args) {
+        $ionicLoading.hide();
+        if (args === false) {
+          var alertPopup = $ionicPopup.alert({
+            title: $filter('translate')('TR_1_POPTITLE'),
+            template: $filter('translate')('TR_1_POPTEMPLATE')
+>>>>>>> 8fad72f273cd6629577e0711d935bb8dc017fc9a
           });
 
       })
@@ -351,6 +493,38 @@
           console.log("share via Email");
       };
 
+<<<<<<< HEAD
+=======
+    })
+
+  .controller('page4Ctrl', function($scope, $lineManager , $cordovaSocialSharing) {
+
+    $scope.line = $lineManager.getCurrentLine();
+    if(!$scope.line) {
+      $scope.line = {};
+      $scope.line.link = "link not avilable";
+    }
+    else {
+      $scope.line.link = "lineup://?line="+$scope.line.id;
+    }
+
+    $scope.copyLineLink = function() {
+      cordova.plugins.clipboard.copy($scope.line.link);
+    };
+   
+    $scope.shareFackBook = function() {
+      console.log("share via FaceBook");
+      facebookConnectPlugin.showDialog({
+        method: 'share',
+        href: $scope.line.link,
+      }, function (data){
+        console.log(data);
+      }, function (data){
+        console.log(data);
+      });
+      //$cordovaSocialSharing.shareViaFacebook( "hi check my Line", false, $scope.line.link);
+    };
+>>>>>>> 8fad72f273cd6629577e0711d935bb8dc017fc9a
 
       $scope.shareMobile = function() {
           console.log("share via Mobile");
@@ -409,12 +583,17 @@
               console.log("End line");
           };
 
+<<<<<<< HEAD
       })
 
 
+=======
+  .controller('page7Ctrl', function($scope) {
+>>>>>>> 8fad72f273cd6629577e0711d935bb8dc017fc9a
 
       .controller('page7Ctrl', function($scope) {
 
+<<<<<<< HEAD
 
       })
       .controller('page8Ctrl', function($scope) {
@@ -479,8 +658,32 @@
 
           $scope.$on("$destroy", function() {
               clearInterval(updateInt);
+=======
+    })
+
+    .controller('page9Ctrl', function($scope, $state, $meetingManager,$outSideLineHandler, $ionicLoading, $filter, $ionicPopup) {
+
+      $scope.meeting = $outSideLineHandler.getLineInfo();
+
+
+      $scope.joinLine = function() {
+        
+        $meetingManager.joinLine($scope.meeting);
+        $ionicLoading.show({
+          template: $filter('translate')('TR_Loading')
+        });
+      }
+
+      $scope.$on('signedToNewMeet', function(event, args) {
+        $ionicLoading.hide();
+        if (!args) {
+          var alertPopup = $ionicPopup.alert({
+            title: $filter('translate')('TR_1_POPTITLE'),
+            template: $filter('translate')('TR_1_POPTEMPLATE')
+>>>>>>> 8fad72f273cd6629577e0711d935bb8dc017fc9a
           });
 
+<<<<<<< HEAD
 
           //var progressBar = setProgressBar(function() {
 
@@ -513,6 +716,45 @@
                   }]
               });
           }
+=======
+    })
+    .controller('page10Ctrl', function($scope, $meetingManager, $ionicPopup, $ionicLoading, $filter, $state) {
+      // $meetingManager.getPosition();
+      $scope.meeting = $meetingManager.getCurrentMeeting();
+      $scope.reminder = true;
+
+      $meetingManager.updateMeeting();
+      var updateInt = setInterval(function() {
+        $meetingManager.updateMeeting();
+      }, 60000);
+
+      $scope.$on("positionUpdated", function() {
+        $scope.meeting = $meetingManager.getCurrentMeeting();
+
+      });
+      $scope.cancelLine = function() {
+
+        var cancelLinePopUp = $ionicPopup.show({
+          template: 'are u sure?',
+          title: 'alert',
+          subTitle: '',
+          scope: $scope,
+          buttons: [{
+            text: 'No'
+          }, {
+            text: '<b>Yes</b>',
+            type: 'button-positive',
+            onTap: function(e) {
+              $meetingManager.cancelMeeting($scope.meeting);
+              $ionicLoading.show({
+                template: $filter('translate')('TR_Loading')
+              });
+            }
+          }]
+        });
+      }
+      $scope.$on('meetingCancled', function(event, args) {
+>>>>>>> 8fad72f273cd6629577e0711d935bb8dc017fc9a
 
 
           $rootScope.$on('meetingCancled', function(event, args) {
