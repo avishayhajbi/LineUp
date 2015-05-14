@@ -19,6 +19,7 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
   });
 })
 .config(function($compileProvider, $stateProvider, $urlRouterProvider , $httpProvider) {
+  // openFB.init({appId: '800206223408829'});
   //to show images
   $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
 
