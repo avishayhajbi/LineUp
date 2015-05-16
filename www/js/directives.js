@@ -11,4 +11,4 @@ angular.module('starter.directives', ['ngCordova'])
       });
     }
   }
-});
+})

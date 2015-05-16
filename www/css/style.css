@@ -103,16 +103,11 @@ body {
 }
 
 .progressBar {
-	margin:10%;
 	background-color: #fff;
 	border-radius: 5px;
 	height: 75px;
 }
 
-.progressBarImage {
-	position: absolute;
-    clip: rect(0px,100px,64px,0px);
-}
 
 .button.copyBtn {
 	margin-top: 0px;
@@ -126,4 +121,37 @@ body {
 
 .item-input {
 	border-radius: 5px;
+}
+
+.progress {
+  height: 3em; 
+}
+
+
+  .progress i {
+    line-height: 3.5em; 
+}
+
+.progress-bar {
+  transition: width 1s ease-in-out; 
+}
+
+
+.bar-footer {
+	padding:0px;
+}
+
+.tab-item {
+	color:#1b445c;
+	opacity: 1;
+}
+
+.scroll-bar-v {
+	display: none;
+}
+
+.progressBarImage {
+	background: url(./../img/progressBarFull.png);
+	height:65px;
+
 }

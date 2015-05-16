@@ -103,9 +103,14 @@ var tmpLines = [{
 
 
 
-tempLine = {
-  lineId: 234234234,
-  Title: "asdaskpdjiaso",
-  startTime: new Date(),
-  endTime: new Date(new Date().getTime() + 600 * 60000)
+var tempLine = {
+confirmTime: 30,
+endDate: "2015-01-01T04:00:00.000Z",
+lineId: "5554c1bd06184ea24b852352",
+time: "2014-12-31T23:20:00.000Z",
+meetingDruation: 10,
+startDate: "2014-12-31T23:00:00.000Z",
+title: "My Line",
+address: "Dizingoff Center"
 };
+

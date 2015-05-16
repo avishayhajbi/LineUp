@@ -356,7 +356,13 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         return defaultLines;
       },
       getLine: function(lineId) {
-
+        
+        lineInfo = tempLine;
+        setTimeout(function() {
+            $rootScope.$broadcast('lineInfoArrived', true);
+        }, 1000);
+        
+        /*
         $http.get(serverUrl + 'getLine', {
           params: {
             lineId: lineId
@@ -369,6 +375,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
           $rootScope.$broadcast('lineInfoArrived', false);  
         });
 
+        */
       },
       searchLineByName: function(value) {
         $http.get(serverUrl + 'searchLineList', {

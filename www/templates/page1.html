@@ -7,9 +7,7 @@
             </ion-item>
         </ion-list>
         <!--Create Line button-->
-
-        <button class="row button button-positive button-block col col-80 col-offset-10" menu-close ng-click="createLine()">{{"TR_Create_Line" | translate}}</button>
-
+            <button class="button icon-left ion-compose button-positive button-block col-80 col-offset-10" menu-close ng-click="createLine()">{{"TR_Create_Line" | translate}}</button>
 
         <ion-list class="col col-80 col-offset-10" style="padding:0px !important;">
             <ion-item ng-repeat="meeting in meetingList" ng-click="chooseMeeting(meeting.id);">
@@ -31,7 +29,7 @@
 
 
         <!--Join Line button-->
-        <button class="row row-bottom button button-positive button-block col col-80 col-offset-10" menu-close ng-disabled="lineIdToGet===''" ng-click="getLine()">{{"TR_join_line" | translate}}</button>
+        <button class="button icon-left ion-plus button-positive button-block col-80 col-offset-10" menu-close ng-disabled="lineIdToGet===''" ng-click="getLine()">{{"TR_join_line" | translate}}</button>
 
 
     </ion-content>

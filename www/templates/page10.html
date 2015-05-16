@@ -10,46 +10,48 @@
                 <div class="col">
                     <div class="row">Title:</div>
                     <div class="row">
-                        <h3>My Line{{meeting.title}}</h3></div>
+                        <h4>My Line{{meeting.title}}</h4></div>
                 </div>
             </div>
         </div>
 
         <!-- progress bar -->
-        <div class="col col-80 col-offset-10 progressBar" id="progressBar"><img class="progressBarImage" src="./img/progressBarFull.png"></div>
+
+        <div class="col col-80 col-offset-10 progressBar">
+        <div class="progressBarImage" style="width:{{style.width}}px;"></div>
         </div>
 
+  
         <!--meeting status container-->
         <div class="container">
-            <!--time of meeting-->
-            <div class="row">
-                <div class="col col-40 col-offset-5">
-                    <div class="input-label" ng-disabled="reminder">{{"TR_meetingTimeStart" | translate}}</div>
-                </div>
-                <div class="col col-40">
-                     <h3>time: {{meeting.time | date : "HH:mm"}} date: {{meeting.time | date : "dd:MM:yyyy"}}</h3>
-                </div>
-            </div>
-            <!--position row-->
+                    <!--position row-->
             <div class="row">
                 <div class="col col-40 col-offset-5">
                     <div class="input-label" ng-disabled="reminder">{{"TR_yourPositionIs" | translate}}</div>
                 </div>
                 <div class="col col-40">
-                    <h3>{{meeting.position}}</h3>
+                    <h4>{{meeting.position}}</h4>
                 </div>
-            </div>
+            </div>  
+            <!--time of meeting-->
+                <div class="col-80 col-offset-10">
+                    <div class="input-label" ng-disabled="reminder">{{"TR_meetingTimeStart" | translate}}</div>
+                </div>
+                <div class="col-80 col-offset-10">
+                    <h4>{{meeting.time | date : "HH:mm"}} {{meeting.time | date : "dd:MM:yyyy"}}</h4>
+                </div>
+
             <!--time to wait row-->
-            <div class="row row-center">
-                <div class="col col-40 col-offset-5">
+
+                <div class="col-80 col-offset-10">
                     <div class="input-label" ng-disabled="reminder">{{"TR_timeToWait" | translate}}</div>
                 </div>
-                <div class="col col-40">
-                     <h3>time left: {{meeting.timeLeft.days}} days , {{meeting.timeLeft.hours}} hours and {{meeting.timeLeft.minutes}} minutes</h3>
+                <div class="col-80 col-offset-10">
+                    <h4>{{meeting.timeLeft.days}} days , {{meeting.timeLeft.hours}} hours and {{meeting.timeLeft.minutes}} minutes</h4>
                 </div>
-            </div>
+
             <!--timmer row-->
-            <div class="row row-bottom">
+            <div class="row">
                 <div class="col col-40 col-offset-5">
                     <div class="input-label" ng-disabled="reminder">{{"TR_Reminder" | translate}}</div>
                 </div>
@@ -63,9 +65,24 @@
                 </div>
             </div>
         </div>
-        <!--cancel Line button-->
-        <button class="button button-positive button-block col col-80 col-offset-10" ng-click="cancelLine()">{{"TR_cancelLine" | translate}}</button>
-        <!--cancel Line button-->
-        <button class="button button-positive button-block col col-80 col-offset-10" ng-click="messageAdmin()">{{"TR_messageAdmin" | translate}}</button>
+         <br><br>
     </ion-content>
+
+
+    <div class="bar bar-footer">
+            <div class="tabs tabs-icon-top">
+                            <a class="tab-item">
+                    <i class="icon ion-checkmark"></i> Confirm Meeting
+                </a>
+                <a class="tab-item">
+                    <i class="icon ion-email"></i> {{"TR_messageAdmin" | translate}}
+                </a>
+                <a class="tab-item" ng-click="shareLine()">
+                    <i class="icon ion-android-share"></i> Share Line
+                </a>
+                <a class="tab-item">
+                    <i class="icon ion-close"></i>{{"TR_cancelLine" | translate}}
+                </a>
+            </div>
+        </div>
 </ion-view>

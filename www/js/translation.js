@@ -14,11 +14,19 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_EmailAddress:'Email Address',
       TR_Password: 'Password',
       TR_Log_in: 'Log in',
-      TR_page1: 'page1',
+      TR_page1: 'My Lines',
+      TR_page2: 'Create New Line',
+      TR_page3: 'Sign in',
+      TR_page4: 'Share Line',
+      TR_page5: 'Line Status',
+      TR_page6: 'Line Operations',
+      TR_page7: 'Line Analyze',
+      TR_page9: 'Join Line',
+      TR_page10: 'Meeting Status',
       TR_Date:'Date',
       TR_Time:'Time',
       TR_Type: 'Type',
-      TR_Reminder:'Reminder:',
+      TR_Reminder:'Set Reminder:',
       TR_Settings: 'Settings',
       TR_Create_Line: 'Create Line',
       TR_join_line: 'Join Line',
@@ -69,12 +77,15 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_9_POPTEMPLATE: 'id not exist please insert different line ID.',
       TR_9_Type: 'Type:',
       TR_9_Location: 'Location:',
-      TR_9_Time: 'Time:',
-
+      TR_9_Time: 'Next Meeting:',
       TR_9_Comments: 'Comments:',
+
       // page3
       TR_3_SignIn_Facebook:"Sign in with Facebook",
       TR_3_SignIn_Email:"Sign in with Email",
+
+      //page 10 
+      TR_meetingTimeStart: 'Meeting time:',
 
       // login
 
