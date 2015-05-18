@@ -122,6 +122,15 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
         }
       }
     })
+        .state('app.page12', {
+      url: "/page12",
+      views: {
+        'menuContent': {
+          templateUrl: "templates/page12.html",
+          controller: 'page12Ctrl'
+        }
+      }
+    })
     .state('app.settings', {
       url: "/settings",
       views: {

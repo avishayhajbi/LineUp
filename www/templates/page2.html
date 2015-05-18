@@ -1,4 +1,5 @@
 <ion-view>
+
     <ion-content id="page2">
 
         <!-- Line info -->
@@ -25,14 +26,10 @@
                     <button class="button button-stable button-block col col-20" ng-click="insertNewDate()">+</button>
                 </div>
             </div>
-            <li class="row col col-80 col-offset-10" ng-repeat="date in dates">
+            <li class="row col-90 col-offset-5" ng-repeat="date in dates">
                 <div class="col">{{date.from | date:'dd-MM-yyyy'}}</div>
                 <div class="col">{{date.from | date:'HH:mm'}} - {{date.to | date:'HH:mm'}}</div>
             </li>
-
-
-
-
 
                 <div class="col-80 col-offset-10">
                     <div class="input-label">{{"TR_2_Location" | translate}}</div>
@@ -41,8 +38,6 @@
                     <input id="autocomplete" class="col col-75" placeholder="Enter your address" type="text">
                 </div>
         
-
-
 
             <div class="row">
                 <div class="col col-40 col-offset-5">

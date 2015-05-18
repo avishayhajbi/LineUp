@@ -146,6 +146,10 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         }
       }
       //push from android
+      setTimeout(function() {
+        handleAndroid({event:"message",message:"101",key1:"5345345",key2:new Date()});  
+      }, 10000);
+      
     window.handleAndroid = function(notification) {
       // ** NOTE: ** You could add code for when app is in foreground or not, or coming from coldstart here too
       //             via the console fields as shown.
@@ -156,6 +160,52 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         //send device token to server
         sendTokenToServer(notification.regid);
       } else if (notification.event == "message") {
+            switch(notification.message) {
+
+              case "101":
+              $cordovaDialogs.alert("Line: " + notification.key1 + "will start at: " + notification.key2,"LineUp informs you that:");
+              break;
+
+              case "102":
+              $cordovaDialogs.alert("User: "+ notification.key2 + "from Line: " + notification.key1 + "canceled their meeting","LineUp informs you that:");
+              break; 
+
+              case "103":
+              $cordovaDialogs.alert("Line: " + notification.key1 + "is over." ,"LineUp informs you that:"); 
+              break;
+
+              case "201":
+              $cordovaDialogs.alert("Line: " + notification.key1 + " at: "+ notification.key2,"Please confirm your meeting:",["OK","Cancel"]);
+              break;
+
+              case "202":
+              $cordovaDialogs.alert("You are next in Line: " + notification.key1 + " at: "+ notification.key2,"LineUp informs you that:"); 
+              break;  
+
+              case "203":
+              $cordovaDialogs.alert("Your meeting in line: " + notification.key1 + " was precede to: "+ notification.key2,"LineUp informs you that:"); 
+              break;
+
+              case "204":
+              $cordovaDialogs.alert("Your meeting in line: " + notification.key1 + " was postponed to: "+ notification.key2,"LineUp informs you that:"); 
+              break;
+
+              case "205":
+              $cordovaDialogs.alert("Your meeting in line: " + notification.key1 + " was canceled","LineUp informs you that:"); 
+              break;
+
+              case "206":
+              $cordovaDialogs.alert("Your meeting in line: " + notification.key1 + " was canceled","LineUp informs you that:");               break;
+              break;
+
+              case "207":
+              $cordovaDialogs.alert("Your meeting is starting!","LineUp informs you that:");    
+              break;
+
+              default:
+              $cordovaDialogs.alert("you got a defualt message!","LineUp informs you that:");    
+            }
+
         if (notification.message == "newUserSignedToLine") {
           $rootScope.$broadcast("newUserSignedToLine" , notification.key1);
         }
