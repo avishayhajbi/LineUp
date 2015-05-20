@@ -19,7 +19,6 @@
   "cordovaPlugins": [
     "org.apache.cordova.console",
     "org.apache.cordova.device",
-    "org.apache.cordova.dialogs",
     "org.apache.cordova.file",
     "org.apache.cordova.media",
     "https://github.com/phonegap-build/PushPlugin",
@@ -30,7 +29,11 @@
     "org.apache.cordova.camera",
     "org.apache.cordova.file-transfer",
     "https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git",
-    "https://github.com/VersoSolutions/CordovaClipboard"
+    "https://github.com/VersoSolutions/CordovaClipboard",
+    "cordova-plugin-dialogs",
+    "https://github.com/phonegap-build/PushPlugin.git"
   ],
-  "cordovaPlatforms": []
+  "cordovaPlatforms": [
+    "android"
+  ]
 }

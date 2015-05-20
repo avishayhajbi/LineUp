@@ -35,6 +35,7 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_timeToWait: 'Time to wait:',
       TR_cancelLine: 'Cancel Line', 
       TR_messageAdmin: 'Message Admin',
+      TR_Settings_logOutFaceBook: 'Log out via Facebook',
       //settings Page
       TR_Settings_language: 'Change language',
     

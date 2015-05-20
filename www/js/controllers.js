@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['ngCordova'])
 
-.controller('menuCtrl', function($scope, $ionicModal, $timeout, $userManagment, $ionicLoading, $ionicPopup, $state) {
+.controller('menuCtrl', function($scope, $ionicModal, $timeout, $pushNotificationHere, $userManagment, $ionicLoading, $ionicPopup, $state) {
 
 
         // Create the login modal that we will use later
