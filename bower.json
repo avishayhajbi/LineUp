@@ -2,10 +2,15 @@
   "name": "LineUp",
   "private": "true",
   "devDependencies": {
-    "ionic": "driftyco/ionic-bower#1.0.0-beta.14"
+    "ionic": "driftyco/ionic-bower#1.0.0"
   },
-  "dependencies": {
+   "dependencies": {
     "ionic-timepicker": "*",
-    "ionic": "~0.9.27"
+    "ionic": "*",
+    "angular":"*",
+    "angular-translate":"*",
+    "jquery":"*",
+    "jquery-ui":"*",
+    "ngCordova":"*"
   }
 }

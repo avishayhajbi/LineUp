@@ -85,8 +85,6 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         //   console.log("err:", result);
         // });
 
-        //active push notification
-
 
 
         //connect to facebook
@@ -156,17 +154,17 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
             },
             connectToFaceBook: function() {
                 //user first login
-                // facebookConnectPlugin.login(["public_profile,email"],
-                //   fbLoginSuccess,
-                //   function(error) {
-                //     if (error) {
-                //       console.log(error);
-                //     } else {
-                //       console.log("connected");
-                //     }
-                //   }
+                facebookConnectPlugin.login(["public_profile,email"],
+                  fbLoginSuccess,
+                  function(error) {
+                    if (error) {
+                      console.log(error);
+                    } else {
+                      console.log("connected");
+                    }
+                  }
 
-                // );
+                );
             },
             logOutFaceBook: function() {
                 facebookConnectPlugin.logout(function() {
@@ -191,15 +189,14 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                 myLocation = $phoneManager.getLocation();
             }
             // getListOfOpenLines from server with mygeo location
-            $http.get(serverUrl + 'lineList')
+            $http.get("https://immense-sierra-3659.herokuapp.com/getBookByName" , {
+                  params: {
+                    id: 3
+                  },
+                  timeout: 8000
+                })
                 .then(function(response) {
-                    lines = response.data;
-                    if (args) {
-                        lines = orderLineList(myLocation, response.data);
-                    }
-                    defaultLines = lines;
-                    console.log(lines);
-                    $rootScope.$broadcast('lineListUpdated');
+                    debugger;
                 });
         });
 
