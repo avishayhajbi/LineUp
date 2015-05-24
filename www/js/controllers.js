@@ -31,7 +31,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
 
     })
-    .controller('page1Ctrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
+.controller('page1Ctrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
 
         if (window.jumpToPage) {
 
@@ -70,7 +70,7 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.LineList = $outSideLineHandler.getLineList();
 
 
-        $scope.$on('lineListUpdated', function(event) {
+        $scope.$on('lineListUpdated', function() {
             $scope.LineList = $outSideLineHandler.getLineList();
             console.log('lineListUpdated:', $scope.LineList);
         });
@@ -131,8 +131,6 @@ angular.module('starter.controllers', ['ngCordova'])
             }
         }
 
-
-
         $scope.getLine = function() {
             console.log("try to connect to:" + $scope.lineIdToGet);
             $outSideLineHandler.getLine($scope.lineIdToGet);
@@ -166,7 +164,7 @@ angular.module('starter.controllers', ['ngCordova'])
         });
 
     })
-    .controller('page2Ctrl', function($scope, $filter, $state, $ionicPopup, $ionicLoading, $lineManager) {
+.controller('page2Ctrl', function($scope, $filter, $state, $ionicPopup, $ionicLoading, $lineManager) {
 
         $scope.newLine = {};
         $scope.dates = [];
@@ -281,7 +279,7 @@ angular.module('starter.controllers', ['ngCordova'])
         });
 
     })
-    .controller('page3Ctrl', function($scope, $userManagment, $phoneManager) {
+.controller('page3Ctrl', function($scope, $userManagment, $phoneManager) {
 
         $scope.signInEmail = function() {
             $scope.modalMenu.show();
@@ -300,7 +298,7 @@ angular.module('starter.controllers', ['ngCordova'])
             $scope.line = {};
             $scope.line.link = "link not avilable";
         } else {
-            $scope.line.link = "lineup://?line=" + $scope.line.id;
+            $scope.line.link = "https://fathomless-eyrie-8332.herokuapp.com/lineRedirect?lineId=" + $scope.line.id;
         }
 
         $scope.copyLineLink = function() {
@@ -332,7 +330,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
 
     })
-    .controller('page5Ctrl', function($scope, $state, $lineManager) {
+.controller('page5Ctrl', function($scope, $state, $lineManager) {
 
         $scope.line = $lineManager.getCurrentLine();
 
@@ -375,14 +373,11 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 .controller('page7Ctrl', function($scope) {
-
-
 })
 
 .controller('page9Ctrl', function($scope, $state, $meetingManager, $outSideLineHandler, $ionicLoading, $filter, $ionicPopup) {
 
         $scope.meeting = $outSideLineHandler.getLineInfo();
-
 
         $scope.joinLine = function() {
 
@@ -404,20 +399,11 @@ angular.module('starter.controllers', ['ngCordova'])
             }
         });
 
-    })
-    .controller('page10Ctrl', function($scope, $meetingManager, $ionicPopup, $ionicLoading, $filter, $state, $timeout) {
+ })
+.controller('page10Ctrl', function($scope, $meetingManager, $ionicPopup, $ionicLoading, $filter, $state, $timeout) {
         // $meetingManager.getPosition();
 
-        //$scope.meeting = $meetingManager.getCurrentMeeting();
-        $scope.meeting = {
-            time: new Date(new Date().getTime() + 120 * 60000),
-            confirmTime: 180,
-            druation: 60,
-            position:5,
-            timeLeft :  { days: 1,
-                     hours: 1,
-                     minutes: 1
-        }};
+        $scope.meeting = $meetingManager.getCurrentMeeting();
 
         $scope.style = {};
         $scope.reminder = true;
@@ -514,14 +500,13 @@ angular.module('starter.controllers', ['ngCordova'])
         });
 
 
-    })
-    .controller('page11Ctrl', function($scope) {
+})
+.controller('page11Ctrl', function($scope) {
+})
 
-    })
+.controller('page12Ctrl', function($scope) {
 
-        .controller('page12Ctrl', function($scope) {
-
-    })
+})
 
 .controller('settingCtrl', function($scope, $translate, $userManagment) {
         $scope.changeLanguage = function() {
@@ -532,17 +517,8 @@ angular.module('starter.controllers', ['ngCordova'])
         }
 
     })
-    .controller('mainCtrl', function($scope, $ionicPopup, $timeout, $cordovaSocialSharing) {
+.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $cordovaSocialSharing) {
         //open screen delay 
-        setTimeout(function() {
-            $scope.$apply(function() {
-                $("#welcomeScreen").animate({
-                    opacity: 0,
-                    top: "+1000"
-                }, 2000, function() {
-                    $("#welcomeScreen").hide();
-                });
-            });
-        }, 3000);
+     
 
     });

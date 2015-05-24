@@ -1,17 +1,12 @@
 angular.module('starter.services', ['ngCordova']).config(['$provide', function($provide) {
 
     $provide.factory('$phoneManager', function($ionicPopup, $rootScope) {
-        var device;
 
         var myLocation = {
             longitufde: '',
             latitude: ''
         };
 
-        ionic.Platform.ready(function() {
-            device = ionic.Platform.device();
-
-        });
 
         //handle geolocation
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -19,13 +14,10 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
             myLocation.latitude = position.coords.latitude;
             myLocation.longitude = position.coords.longitude;
             console.log('geoLocationSuccess : longitude:' + myLocation.longitude + ' latitude:' + myLocation.latitude);
-            $rootScope.$broadcast('geoishere', true);
         }, function(error) {
             console.log('geoLocationError');
             myLocation.longitude = false;
             myLocation.latitude = false;
-            $rootScope.$broadcast('geoishere', false);
-
         });
 
         return {
@@ -109,7 +101,6 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
         //save user in db
         function saveUser() {
-
             var send = {
                 fbId: fbId,
                 userId: myId,
@@ -155,14 +146,14 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
             connectToFaceBook: function() {
                 //user first login
                 facebookConnectPlugin.login(["public_profile,email"],
-                  fbLoginSuccess,
-                  function(error) {
-                    if (error) {
-                      console.log(error);
-                    } else {
-                      console.log("connected");
+                    fbLoginSuccess,
+                    function(error) {
+                        if (error) {
+                            console.log(error);
+                        } else {
+                            console.log("connected");
+                        }
                     }
-                  }
 
                 );
             },
@@ -184,21 +175,22 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         var defaultLines = false;
         var lineInfo;
 
-        $rootScope.$on('geoishere', function(event, args) {
-            if (args) {
-                myLocation = $phoneManager.getLocation();
-            }
-            // getListOfOpenLines from server with mygeo location
-            $http.get("https://immense-sierra-3659.herokuapp.com/getBookByName" , {
-                  params: {
-                    id: 3
-                  },
-                  timeout: 8000
-                })
+
+        setTimeout(function() {
+            myLocation = $phoneManager.getLocation();
+            $http.get(serverUrl + 'lineList')
                 .then(function(response) {
-                    debugger;
+                    lines = response.data;
+                    if (myLocation) {
+                        lines = orderLineList(myLocation, response.data);
+                    }
+                    defaultLines = lines;
+                    console.log(lines);
+                    $rootScope.$broadcast('lineListUpdated');
                 });
-        });
+        }, 2000);
+
+
 
         function orderLineList(myLocation, lines) {
 
@@ -221,14 +213,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
             getDefaultLineList: function() {
                 return defaultLines;
             },
-            getLine: function(lineId) {
-
-                lineInfo = tempLine;
-                setTimeout(function() {
-                    $rootScope.$broadcast('lineInfoArrived', true);
-                }, 1000);
-
-                /*
+            getLine: function(lineId) {                
                 $http.get(serverUrl + 'getLine', {
                   params: {
                     lineId: lineId
@@ -241,7 +226,6 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                   $rootScope.$broadcast('lineInfoArrived', false);  
                 });
 
-                */
             },
             searchLineByName: function(value) {
                 $http.get(serverUrl + 'searchLineList', {
@@ -358,16 +342,13 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         }
         return {
             joinLine: function(lineInfo) {
-
                 currentMeeting = lineInfo;
-                var info = {
-                    lineId: currentMeeting.lineId,
-                    userId: $userManagment.getMyId(),
-                    userName: $userManagment.getMyName()
                 }
                 $http.get(serverUrl + 'joinLine', {
                     params: {
-                        meeting: info
+                    lineId: currentMeeting.lineId,
+                    userId: $userManagment.getMyId(),
+                    userName: $userManagment.getMyName()
                     },
                     timeout: 8000
                 }).then(function(response) {
@@ -656,31 +637,31 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
 
                         $cordovaDialogs.alert("You are next in Line:\n" + notification.payload.key1 + "\n\nYour meeting will start at: " + meetingHours + ":" + meetingMinutes, " LineUp informs you that:");
-                      $lineManager.setCurrent(notification.key2);
+                        $lineManager.setCurrent(notification.key2);
                         $state.go("app.page10");
                         break;
 
                     case "203":
 
-                    var str = notification.payload.key5;
-    				var res = str.substr(0, 10);
-					var meetingMinutes = new Date(notification.payload.key5).getMinutes();
-                    var meetingHours = new Date(notification.payload.key5).getHours();
+                        var str = notification.payload.key5;
+                        var res = str.substr(0, 10);
+                        var meetingMinutes = new Date(notification.payload.key5).getMinutes();
+                        var meetingHours = new Date(notification.payload.key5).getHours();
 
 
                         $cordovaDialogs.alert("Your meeting in line:\n" + notification.payload.key1 + "\n\nwas preceded to:\n" + res + " " + meetingHours + ":" + meetingMinutes, "LineUp informs you that:");
-                      $lineManager.setCurrent(notification.key2);
+                        $lineManager.setCurrent(notification.key2);
                         $state.go("app.page10");
                         break;
 
                     case "204":
 
-					var str = notification.payload.key5;
-    				var res = str.substr(0, 10);
-					var meetingMinutes = new Date(notification.payload.key5).getMinutes();
-                    var meetingHours = new Date(notification.payload.key5).getHours();
+                        var str = notification.payload.key5;
+                        var res = str.substr(0, 10);
+                        var meetingMinutes = new Date(notification.payload.key5).getMinutes();
+                        var meetingHours = new Date(notification.payload.key5).getHours();
                         $cordovaDialogs.alert("Your meeting in line:\n" + notification.payload.key1 + "\n\nwas postponed to:\n" + res + " " + meetingHours + ":" + meetingMinutes, "LineUp informs you that:");
-                      $lineManager.setCurrent(notification.key2);
+                        $lineManager.setCurrent(notification.key2);
                         $state.go("app.page10");
                         break;
 
@@ -689,8 +670,8 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                         break;
 
                     case "207":
-                        $cordovaDialogs.alert("Your meeting in line:\n" + notification.payload.key1  +"\nis starting!", "LineUp informs you that:");
-                      $lineManager.setCurrent(notification.key2);
+                        $cordovaDialogs.alert("Your meeting in line:\n" + notification.payload.key1 + "\nis starting!", "LineUp informs you that:");
+                        $lineManager.setCurrent(notification.key2);
                         $state.go("app.page10");
                         break;
 
@@ -771,6 +752,5 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
             }
         }
     }]);
-
 
 }]);

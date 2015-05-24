@@ -35,7 +35,22 @@
     "https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git",
     "https://github.com/VersoSolutions/CordovaClipboard",
     "https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git",
-    "https://github.com/Wizcorp/phonegap-facebook-plugin/"
+    {
+      "locator": "https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git",
+      "id": "nl.x-services.plugins.launchmyapp",
+      "variables": {
+        "URL_SCHEME"="lineup"
+      }
+    }
+    "https://github.com/Wizcorp/phonegap-facebook-plugin/",
+    {
+      "locator": "https://github.com/Wizcorp/phonegap-facebook-plugin/",
+      "id": "com.phonegap.plugins.facebookconnect",
+      "variables": {
+        "APP_ID": "800206223408829",
+        "APP_NAME": "LineUp"
+      }
+    }
   ],
   "cordovaPlatforms": [
     {
