@@ -405,26 +405,7 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('page10Ctrl', function($scope, $meetingManager, $ionicPopup, $ionicLoading, $filter, $state, $timeout) {
 
         $scope.meeting = $meetingManager.getCurrentMeeting();
-
-        $scope.style = {};
         $scope.reminder = true;
-        $scope.ProgressCounter = false;
-
-        // var startCount = new Date($scope.meeting.time.getTime() - (($scope.meeting.confirmTime + $scope.meeting.druation) * 60000));
-        // var timeToWait = $scope.meeting.time.getTime() - startCount;
-        // var timeInMs = Date.now();
-
-
-        // //TODO move it to services
-        // if (timeInMs > startCount.getTime()) {
-
-        //     $scope.ProgressCounter = true;
-        //     var remainingTime = timeInMs - startCount;
-        //     var progressWidth = (100 * remainingTime) / timeToWait;
-
-        //     $scope.style.width = progressWidth;
-        // }
-
 
         $meetingManager.updateMeeting();
         var updateInt = setInterval(function() {

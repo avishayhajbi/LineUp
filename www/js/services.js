@@ -327,38 +327,54 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                 hours: difference.getHours(),
                 minutes: difference.getMinutes()
             };
+
+            currentMeeting.ProgressCounter = false;
+            var startCount = new Date(time.getTime() - ((currentMeeting.confirmTime + currentMeeting.druation) * 60000));
+            var timeToWait = time.getTime() - startCount;
+            var timeInMs = Date.now();
+
+
+            //TODO move it to services
+            if (timeInMs > startCount.getTime()) {
+
+                currentMeeting.ProgressCounter = true;
+                var remainingTime = timeInMs - startCount;
+                var progressWidth = (100 * remainingTime) / timeToWait;
+                currentMeeting.progressWidth = progressWidth;
+            }
+
         }
 
         function updateMeetingInfo() {
-            debugger;
-                   if (!currentMeeting) {
-                    return;
+
+            if (!currentMeeting) {
+                return;
+            }
+            $http.get(serverUrl + 'updateMeetingInfo', {
+                params: {
+                    lineId: currentMeeting.lineId,
+                    userId: $userManagment.getMyId()
+                },
+                timeout: 8000
+            }).then(function(response) {
+
+                if (response.data) {
+                    currentMeeting.time = response.data.time;
+                    currentMeeting.position = response.data.position;
+                    currentMeeting.confirmed = response.data.confirmed;
+                    currentMeeting.confirmTime = response.data.confirmTime;
+                    currentMeeting.druation = response.data.druation;
+                    currentMeeting.active = response.data.active;
+                    calculateTimeLeft();
+                    $rootScope.$broadcast('meetingUpdated', true);
                 }
-              $http.get(serverUrl + 'updateMeetingInfo', {
-                    params: {
-                        lineId: currentMeeting.lineId,
-                        userId: $userManagment.getMyId()
-                    },
-                    timeout: 8000
-                }).then(function(response) {
-                    debugger;
-                    if (response.data) {
-                        currentMeeting.time = response.data.time;
-                        currentMeeting.position = response.data.position;
-                        currentMeeting.confirmed = response.data.confirmed;
-                        currentMeeting.confirmTime = response.data.confirmTime;
-                        currentMeeting.druation = response.data.druation;
-                        currentMeeting.active = response.data.active;
-                        calculateTimeLeft();
-                        $rootScope.$broadcast('meetingUpdated', true);
-                    }
-                  
-                });
+
+            });
 
         }
         return {
             joinLine: function(lineInfo) {
-                
+
                 currentMeeting = lineInfo;
 
                 $http.get(serverUrl + 'joinLine', {
@@ -369,9 +385,11 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                     },
                     timeout: 8000
                 }).then(function(response) {
-                
+
                     if (response.data) {
                         currentMeeting.time = response.data;
+                        currentMeeting.ProgressCounter = false;
+                        currentMeeting.progressWidth = 0;
                         updateMeetingInfo();
                         meetings.push(currentMeeting);
                         $rootScope.$broadcast('signedToNewMeet', true);
@@ -391,7 +409,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                     return;
                 }
                 updateMeetingInfo();
-    
+
             },
             cancelMeeting: function(meeting) {
                 if (!meeting) return;
@@ -414,7 +432,10 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                 });
 
             },
-            chooseMeeting: function(id) {
+            getMeetingList: function() {
+                return meetings;
+            },
+            setCurrent: function(id) {
                 for (var i = 0; i < meetings.length; i++) {
                     if (meetings.id === id) {
                         currentMeeting = meetings[i];
@@ -422,18 +443,6 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                         break;
                     }
                 }
-            },
-            getMeetingList: function() {
-                return meetings;
-            },
-            setCurrent: function(id) {
-             for (var i = 0; i < meetings.length; i++) {
-                        if (meetings.id === id) {
-                            currentMeeting = meetings[i];
-                            updateMeetingInfo();
-                            break;
-                        }
-                    }
             }
         }
     });
@@ -536,40 +545,40 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
         ionic.Platform.ready(function() {
             var device = ionic.Platform.device();
-            
+
             if (!window.cordova) return;
-                
-                window.pushNotification = window.plugins.pushNotification;
-                if (device.platform == 'android' || device.platform == 'Android' || device.platform == "amazon-fireos") {
-                    pushNotification.register(
-                        pushSuccess,
-                        pushError, {
-                            "senderID": '205633341244',
-                            "ecb": "onNotification"
-                        });
-                } else if (device.platform == 'blackberry10') {
-                    pushNotification.register(
-                        pushSuccess,
-                        pushError, {
-                            invokeTargetId: "replace_with_invoke_target_id",
-                            appId: "replace_with_app_id",
-                            ppgUrl: "replace_with_ppg_url", //remove for BES pushes
-                            ecb: "onNotification",
-                            simChangeCallback: replace_with_simChange_callback,
-                            pushTransportReadyCallback: replace_with_pushTransportReady_callback,
-                            launchApplicationOnPush: true
-                        });
-                } else {
-                    pushNotification.register(
-                        pushIosSuccess,
-                        pushError, {
-                            "badge": "true",
-                            "sound": "true",
-                            "alert": "true",
-                            "ecb": "onNotification"
-                        });
-                }
-           
+
+            window.pushNotification = window.plugins.pushNotification;
+            if (device.platform == 'android' || device.platform == 'Android' || device.platform == "amazon-fireos") {
+                pushNotification.register(
+                    pushSuccess,
+                    pushError, {
+                        "senderID": '205633341244',
+                        "ecb": "onNotification"
+                    });
+            } else if (device.platform == 'blackberry10') {
+                pushNotification.register(
+                    pushSuccess,
+                    pushError, {
+                        invokeTargetId: "replace_with_invoke_target_id",
+                        appId: "replace_with_app_id",
+                        ppgUrl: "replace_with_ppg_url", //remove for BES pushes
+                        ecb: "onNotification",
+                        simChangeCallback: replace_with_simChange_callback,
+                        pushTransportReadyCallback: replace_with_pushTransportReady_callback,
+                        launchApplicationOnPush: true
+                    });
+            } else {
+                pushNotification.register(
+                    pushIosSuccess,
+                    pushError, {
+                        "badge": "true",
+                        "sound": "true",
+                        "alert": "true",
+                        "ecb": "onNotification"
+                    });
+            }
+
         });
 
         function pushSuccess(result) {
