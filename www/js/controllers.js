@@ -29,6 +29,9 @@ angular.module('starter.controllers', ['ngCordova'])
             $scope.modalMenu.show();
         };
 
+         $scope.doLogin = function() {
+           login
+        };
 
     })
 .controller('page1Ctrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
@@ -376,11 +379,10 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 .controller('page9Ctrl', function($scope, $state, $meetingManager, $outSideLineHandler, $ionicLoading, $filter, $ionicPopup) {
-
+        debugger;
         $scope.meeting = $outSideLineHandler.getLineInfo();
 
         $scope.joinLine = function() {
-
             $meetingManager.joinLine($scope.meeting);
             $ionicLoading.show({
                 template: $filter('translate')('TR_Loading')
@@ -401,7 +403,6 @@ angular.module('starter.controllers', ['ngCordova'])
 
  })
 .controller('page10Ctrl', function($scope, $meetingManager, $ionicPopup, $ionicLoading, $filter, $state, $timeout) {
-        // $meetingManager.getPosition();
 
         $scope.meeting = $meetingManager.getCurrentMeeting();
 
@@ -409,33 +410,20 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.reminder = true;
         $scope.ProgressCounter = false;
 
-        var startCount = new Date($scope.meeting.time.getTime() - (($scope.meeting.confirmTime + $scope.meeting.druation) * 60000));
-        var timeToWait = $scope.meeting.time.getTime() - startCount;
-        var timeInMs = Date.now();
+        // var startCount = new Date($scope.meeting.time.getTime() - (($scope.meeting.confirmTime + $scope.meeting.druation) * 60000));
+        // var timeToWait = $scope.meeting.time.getTime() - startCount;
+        // var timeInMs = Date.now();
 
 
-        if (timeInMs > startCount.getTime()) {
+        // //TODO move it to services
+        // if (timeInMs > startCount.getTime()) {
 
-            $scope.ProgressCounter = true;
-            var remainingTime = timeInMs - startCount;
-            var progressWidth = (100 * remainingTime) / timeToWait;
+        //     $scope.ProgressCounter = true;
+        //     var remainingTime = timeInMs - startCount;
+        //     var progressWidth = (100 * remainingTime) / timeToWait;
 
-            $scope.style.width = progressWidth;
-
-            // window.proInt = 0;
-            // var prog = setInterval(function() {
-
-            //     if (window.proInt =>  progressWidth) {
-            //         clearInterval(prog);
-            //         break;
-            //     } else {
-            //         $scope.style.width = window.proInt;
-            //         window.proInt++;
-            //     }
-
-            // }, 200);
-
-        }
+        //     $scope.style.width = progressWidth;
+        // }
 
 
         $meetingManager.updateMeeting();
@@ -443,10 +431,9 @@ angular.module('starter.controllers', ['ngCordova'])
             $meetingManager.updateMeeting();
         }, 60000);
 
-        $scope.$on("positionUpdated", function() {
+        $scope.$on("meetingUpdated", function() {
             $scope.meeting = $meetingManager.getCurrentMeeting();
         });
-
 
         $scope.cancelLine = function() {
 

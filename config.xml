@@ -1,11 +1,15 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.ionicframework.lineup228361" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>LineUp</name>
-    <description>
-        An Ionic Framework and Cordova project.
+    <description>
+
+        An Ionic Framework and Cordova project.
+
     </description>
-    <author email="hi@ionicframework" href="http://ionicframework.com/">
-      Ionic Framework Team
+    <author email="hi@ionicframework" href="http://ionicframework.com/">
+
+      Ionic Framework Team
+
     </author>
     <content src="index.html" />
     <access origin="*" />
@@ -40,8 +44,5 @@
     </platform>
     <icon src="resources\android\icon\drawable-xhdpi-icon.png" />
     <splash src="resources\android\splash\drawable-land-xhdpi-screen.png" />
-    <plugin name="com.phonegap.plugins.facebookconnect" spec="https://github.com/Wizcorp/phonegap-facebook-plugin/">
-        <variable name="APP_ID" value="800206223408829" />
-        <variable name="APP_NAME" value="LineUp" />
-    </plugin>
+
 </widget>

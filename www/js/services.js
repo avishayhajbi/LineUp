@@ -132,38 +132,44 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
         return {
             getMyId: function() {
-                return myId;
+                if (myId)
+                    return myId;
+                return "noId";
             },
             getfbId: function() {
-                return fbId;
+                if (fbId)
+                    return fbId;
+                return "noId";
             },
             isConnected: function() {
                 return connected;
             },
             getMyName: function() {
-                return myName;
+                if (myName)
+                    return myName;
+                return "noName";
             },
             connectToFaceBook: function() {
                 //user first login
-                facebookConnectPlugin.login(["public_profile,email"],
-                    fbLoginSuccess,
-                    function(error) {
-                        if (error) {
-                            console.log(error);
-                        } else {
-                            console.log("connected");
-                        }
-                    }
+                // facebookConnectPlugin.login(["public_profile,email"],
+                //     fbLoginSuccess,
+                //     function(error) {
+                //         if (error) {
+                //             console.log(error);
+                //         } else {
+                //             console.log("connected");
+                //         }
+                //     }
 
-                );
+                // );
             },
             logOutFaceBook: function() {
-                facebookConnectPlugin.logout(function() {
-                    connected = false;
-                    myEmail = "";
-                    myName = "";
-                    fbId = "";
-                }, function() {})
+                // facebookConnectPlugin.logout(function() {
+                //     connected = false;
+                //     myEmail = "";
+                //     myName = "";
+                //     fbId = "";
+                // }, function() {})
             }
         }
     });
@@ -213,17 +219,17 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
             getDefaultLineList: function() {
                 return defaultLines;
             },
-            getLine: function(lineId) {                
+            getLine: function(lineId) {
                 $http.get(serverUrl + 'getLine', {
-                  params: {
-                    lineId: lineId
-                  },
-                  timeout: 8000
+                    params: {
+                        lineId: lineId
+                    },
+                    timeout: 8000
                 }).then(function(response) {
-                  lineInfo = response.data;
-                  $rootScope.$broadcast('lineInfoArrived', true);  
-                },function(res){
-                  $rootScope.$broadcast('lineInfoArrived', false);  
+                    lineInfo = response.data;
+                    $rootScope.$broadcast('lineInfoArrived', true);
+                }, function(res) {
+                    $rootScope.$broadcast('lineInfoArrived', false);
                 });
 
             },
@@ -256,8 +262,8 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
 
         (function() {
-            $localstorage.setObject('meetings', []);
-            $localstorage.setObject('canceldMeetings', []);
+            // $localstorage.setObject('meetings', []);
+            // $localstorage.setObject('canceldMeetings', []);
 
             if ($localstorage.getObject('meetings')) {
                 var list = $localstorage.getObject('meetings');
@@ -299,6 +305,9 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
             for (var i = 0; i < meetings.length; i++) {
                 if (meetings[i].id == currentMeeting.id) {
                     meetings[i].position = currentMeeting.position;
+                    meetings[i].time = currentMeeting.time;
+                    meetings[i].druation = currentMeeting.druation;
+                    meetings[i].confirmTime = currentMeeting.confirmTime;
                     meetings[i].timeLeft = currentMeeting.timeLeft;
                     saveMeetingLocal();
                     break;
@@ -320,41 +329,50 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
             };
         }
 
-        function updatePosition() {
-            $http.get(serverUrl + 'meetingPosition', {
-                params: {
-                    lineId: currentMeeting.id,
-                    userId: $userManagment.getMyId()
-                },
-                timeout: 8000
-            }).then(function(response) {
-                if (response.data) {
-                    if (currentMeeting.position != response.data) {
-                        currentMeeting.position = response.data;
-                        $rootScope.$broadcast('positionUpdated');
-                        saveCurrnet();
-                    }
+        function updateMeetingInfo() {
+            debugger;
+                   if (!currentMeeting) {
+                    return;
                 }
-
-            }, function(response) {
-                console.log("answer from meetingPosition timeout");
-            });
-        }
-        return {
-            joinLine: function(lineInfo) {
-                currentMeeting = lineInfo;
-                }
-                $http.get(serverUrl + 'joinLine', {
+              $http.get(serverUrl + 'updateMeetingInfo', {
                     params: {
-                    lineId: currentMeeting.lineId,
-                    userId: $userManagment.getMyId(),
-                    userName: $userManagment.getMyName()
+                        lineId: currentMeeting.lineId,
+                        userId: $userManagment.getMyId()
                     },
                     timeout: 8000
                 }).then(function(response) {
+                    debugger;
+                    if (response.data) {
+                        currentMeeting.time = response.data.time;
+                        currentMeeting.position = response.data.position;
+                        currentMeeting.confirmed = response.data.confirmed;
+                        currentMeeting.confirmTime = response.data.confirmTime;
+                        currentMeeting.druation = response.data.druation;
+                        currentMeeting.active = response.data.active;
+                        calculateTimeLeft();
+                        $rootScope.$broadcast('meetingUpdated', true);
+                    }
+                  
+                });
+
+        }
+        return {
+            joinLine: function(lineInfo) {
+                
+                currentMeeting = lineInfo;
+
+                $http.get(serverUrl + 'joinLine', {
+                    params: {
+                        lineId: currentMeeting.lineId,
+                        userId: $userManagment.getMyId(),
+                        userName: $userManagment.getMyName()
+                    },
+                    timeout: 8000
+                }).then(function(response) {
+                
                     if (response.data) {
                         currentMeeting.time = response.data;
-                        calculateTimeLeft();
+                        updateMeetingInfo();
                         meetings.push(currentMeeting);
                         $rootScope.$broadcast('signedToNewMeet', true);
                         saveMeetingLocal();
@@ -365,33 +383,25 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                 });
             },
             getCurrentMeeting: function() {
+                if (!currentMeeting) return;
                 return currentMeeting;
-            },
-            setLineInfo: function(line) {
-                console.log("setLineInfo:", line);
-                currentMeeting = line;
-                $rootScope.$broadcast('LineInfoInManager');
             },
             updateMeeting: function() {
                 if (!currentMeeting) {
                     return;
                 }
-                calculateTimeLeft();
-                updatePosition();
+                updateMeetingInfo();
+    
             },
             cancelMeeting: function(meeting) {
-
                 if (!meeting) return;
-                var toCancel = {
-                    lineId: meeting.id,
-                    userId: $userManagment.getMyId(),
-                    time: meeting.time,
-                    userName: $userManagment.getMyName()
-                };
 
                 $http.get(serverUrl + 'cancelMeeting', {
                     params: {
-                        toCancel: toCancel
+                        lineId: meeting.id,
+                        userId: $userManagment.getMyId(),
+                        time: meeting.time,
+                        userName: $userManagment.getMyName()
                     },
                     timeout: 8000
                 }).then(function(response) {
@@ -408,6 +418,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                 for (var i = 0; i < meetings.length; i++) {
                     if (meetings.id === id) {
                         currentMeeting = meetings[i];
+                        updateMeetingInfo();
                         break;
                     }
                 }
@@ -416,12 +427,13 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                 return meetings;
             },
             setCurrent: function(id) {
-                for (var i = 0; i < meetings.length; i++) {
-                    if (meetings[i].id === id) {
-                        currentMeeting = meetings[i];
-                        break;
+             for (var i = 0; i < meetings.length; i++) {
+                        if (meetings.id === id) {
+                            currentMeeting = meetings[i];
+                            updateMeetingInfo();
+                            break;
+                        }
                     }
-                }
             }
         }
     });
@@ -440,7 +452,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         console.log("lineList list:", lineList);
 
         function saveLineLocal() {
-            $localstorage.setObject('lineList', lineList);
+            // $localstorage.setObject('lineList', lineList);
         }
 
         $rootScope.$on("newUserSignedToLine", function(evt, lineId) {
@@ -520,43 +532,44 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         }
     });
 
-
     $provide.factory('$pushNotificationHere', function($rootScope, $http, $cordovaDialogs, $userManagment, $lineManager, $state) {
 
         ionic.Platform.ready(function() {
             var device = ionic.Platform.device();
-
-            window.pushNotification = window.plugins.pushNotification;
-            if (device.platform == 'android' || device.platform == 'Android' || device.platform == "amazon-fireos") {
-                pushNotification.register(
-                    pushSuccess,
-                    pushError, {
-                        "senderID": '205633341244',
-                        "ecb": "onNotification"
-                    });
-            } else if (device.platform == 'blackberry10') {
-                pushNotification.register(
-                    pushSuccess,
-                    pushError, {
-                        invokeTargetId: "replace_with_invoke_target_id",
-                        appId: "replace_with_app_id",
-                        ppgUrl: "replace_with_ppg_url", //remove for BES pushes
-                        ecb: "onNotification",
-                        simChangeCallback: replace_with_simChange_callback,
-                        pushTransportReadyCallback: replace_with_pushTransportReady_callback,
-                        launchApplicationOnPush: true
-                    });
-            } else {
-                pushNotification.register(
-                    pushIosSuccess,
-                    pushError, {
-                        "badge": "true",
-                        "sound": "true",
-                        "alert": "true",
-                        "ecb": "onNotification"
-                    });
-            }
-
+            
+            if (!window.cordova) return;
+                
+                window.pushNotification = window.plugins.pushNotification;
+                if (device.platform == 'android' || device.platform == 'Android' || device.platform == "amazon-fireos") {
+                    pushNotification.register(
+                        pushSuccess,
+                        pushError, {
+                            "senderID": '205633341244',
+                            "ecb": "onNotification"
+                        });
+                } else if (device.platform == 'blackberry10') {
+                    pushNotification.register(
+                        pushSuccess,
+                        pushError, {
+                            invokeTargetId: "replace_with_invoke_target_id",
+                            appId: "replace_with_app_id",
+                            ppgUrl: "replace_with_ppg_url", //remove for BES pushes
+                            ecb: "onNotification",
+                            simChangeCallback: replace_with_simChange_callback,
+                            pushTransportReadyCallback: replace_with_pushTransportReady_callback,
+                            launchApplicationOnPush: true
+                        });
+                } else {
+                    pushNotification.register(
+                        pushIosSuccess,
+                        pushError, {
+                            "badge": "true",
+                            "sound": "true",
+                            "alert": "true",
+                            "ecb": "onNotification"
+                        });
+                }
+           
         });
 
         function pushSuccess(result) {
