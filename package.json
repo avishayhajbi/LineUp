@@ -41,14 +41,14 @@
       "variables": {
         "URL_SCHEME": "lineup"
       }
-    },
-    "https://github.com/Wizcorp/phonegap-facebook-plugin/"
+    }
   ],
   "cordovaPlatforms": [
     {
       "platform": "android",
       "locator": "browser"
     },
-    "browser"
+    "browser",
+    "android"
   ]
 }

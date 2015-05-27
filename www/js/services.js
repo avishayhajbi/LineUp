@@ -226,6 +226,10 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                     },
                     timeout: 8000
                 }).then(function(response) {
+                    if (!response.data) {
+                        $rootScope.$broadcast('lineInfoArrived', false);
+                        return;
+                    }
                     lineInfo = response.data;
                     $rootScope.$broadcast('lineInfoArrived', true);
                 }, function(res) {

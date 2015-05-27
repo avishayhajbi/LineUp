@@ -159,3 +159,8 @@ body {
 .lineLable {
 	border-width: 0px;
 }
+
+.button.button-icon.button-clear.ion-navicon.hide {
+display: block;
+
+}
