@@ -336,16 +336,21 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('page5Ctrl', function($scope, $state, $lineManager) {
 
         $scope.line = $lineManager.getCurrentLine();
+        $scope.$on("getLineInfo", function() {
+            $scope.line = $lineManager.getCurrentLine();
+        });
 
         $scope.shareLine = function() {
             $state.go("app.page4");
         };
 
     })
+.controller('page6Ctrl', function($scope, $state ,  $lineManager) {
 
-
-.controller('page6Ctrl', function($scope, $state) {
-
+    $scope.line = $lineManager.getCurrentLine();
+    $scope.$on("getLineInfo", function() {
+            $scope.line = $lineManager.getCurrentLine();
+        });
 
     $scope.nextMeeting = function() {
         console.log("Move to next Meeting");
@@ -414,6 +419,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
         $scope.$on("meetingUpdated", function() {
             $scope.meeting = $meetingManager.getCurrentMeeting();
+            debugger;
         });
 
         $scope.cancelLine = function() {

@@ -262,8 +262,8 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
 
         (function() {
-            // $localstorage.setObject('meetings', []);
-            // $localstorage.setObject('canceldMeetings', []);
+            $localstorage.setObject('meetings', []);
+            $localstorage.setObject('canceldMeetings', []);
 
             if ($localstorage.getObject('meetings')) {
                 var list = $localstorage.getObject('meetings');
@@ -359,6 +359,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
             }).then(function(response) {
 
                 if (response.data) {
+                    debugger;
                     currentMeeting.time = response.data.time;
                     currentMeeting.position = response.data.position;
                     currentMeeting.confirmed = response.data.confirmed;
@@ -451,7 +452,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         var lineList = [];
         var currentLine;
 
-        $localstorage.setObject('lineList', []);
+        // $localstorage.setObject('lineList', []);
         if ($localstorage.getObject('lineList')) {
             var list = $localstorage.getObject('lineList');
             if (list.constructor === Array) {
@@ -460,37 +461,37 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         }
         console.log("lineList list:", lineList);
 
-        function saveLineLocal() {
-            // $localstorage.setObject('lineList', lineList);
+        function saveLineLocal(line) {
+            $localstorage.setObject('lineList', line);
         }
 
-        $rootScope.$on("newUserSignedToLine", function(evt, lineId) {
-
-
-            $http.get(serverUrl + 'createLine', {
+        function getLineInfo () {
+            
+            $http.get(serverUrl + 'getLineInfo', {
                 params: {
-                    line: line
+                     lineId: currentLine.lineId,
+                    lineManagerId:$userManagment.getMyId()
                 },
                 timeout: 8000
             }).then(function(response) {
+                
                 if (checkAtt(response.data)) {
-                    line.id = response.data;
-                    lineList.push(line);
-                    currentLine = line;
-                    saveLineLocal();
-                    $rootScope.$broadcast('lineCreated', true);
+                    currentLine = response.data;   
+                    $rootScope.$broadcast('getLineInfo');
                 } else {
-                    $rootScope.$broadcast('lineCreated', false);
+                    $rootScope.$broadcast('getLineInfo', false);
                 }
             }, function(response) {
-                $rootScope.$broadcast('lineCreated', false);
+
+                $rootScope.$broadcast('getLineInfo', false);
             });
 
-        });
+        }
 
 
         return {
             createLine: function(line) {
+                var save = {title:line.title};
                 line.lineManagerId = $userManagment.getMyId();
                 console.log('line is:', line);
                 $http.get(serverUrl + 'createLine', {
@@ -500,10 +501,11 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                     timeout: 8000
                 }).then(function(response) {
                     if (checkAtt(response.data)) {
-                        line.id = response.data;
-                        lineList.push(line);
+                        line.lineId = response.data;
+                        save.lineId = response.data
+                        lineList.push(save);
                         currentLine = line;
-                        saveLineLocal();
+                        saveLineLocal(save);
                         $rootScope.$broadcast('lineCreated', true);
                     } else {
                         $rootScope.$broadcast('lineCreated', false);
@@ -513,7 +515,17 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                 });
 
             },
+            updateLineInfo: function(lineId) {
+                for (var i = 0; i < lineList.length; i++) {
+                    if (lineList[i].lindId === lindId) {
+                        currentLine = lineList[i];
+                        getLineInfo();
+                        break;
+                    }
+                }
 
+        
+            },
             getCurrentLine: function() {
                 if (!currentLine) return false;
                 else {
@@ -531,11 +543,28 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                 for (var i = 0; i < lineList.length; i++) {
                     if (lineList[i].id === id) {
                         currentLine = lineList[i];
+                        getLineInfo();
                         break;
                     }
                 }
             },
             nextMeeting: function() {
+                console.log('line is:', line);
+                $http.get(serverUrl + 'nextMeeting', {
+                    params: {
+                        lineId: currentLine.lineId,
+                        lineManagerId:$userManagment.getMyId()
+                    },
+                    timeout: 8000
+                }).then(function(response) {
+                    if (checkAtt(response.data)) {
+                        
+                    } else {
+                        $rootScope.$broadcast('nextMeeting', false);
+                    }
+                }, function(response) {
+                    $rootScope.$broadcast('nextMeeting', false);
+                });
 
             }
         }
@@ -696,7 +725,14 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                         $lineManager.setCurrent(notification.key2);
                         $state.go("app.page10");
                         break;
-
+                    case "newUserInLine" :
+                        $lineManager.updateLineInfo(notification.key1);
+                        $cordovaDialogs.alert("new user in line");
+                        break;    
+                    case "userCancelDmeeting" : 
+                        $lineManager.updateLineInfo(notification.key1);
+                        $cordovaDialogs.alert("user canceld meeting");
+                        break;
                     default:
                         $cordovaDialogs.alert("you got a defualt message!", "LineUp informs you that:");
                 }
