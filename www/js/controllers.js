@@ -217,7 +217,7 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.insertNewDate = function() {
             $scope.data = {};
             var chooseDatePopUp = $ionicPopup.show({
-                template: '<label class="item item-input"><input type="date" ng-model="data.day" placeholder="dd/MM/yyyy"></label><label class="item item-input row row-center"><span class="col col-25">from:</span><input type="time" class="col col-75" ng-model="data.from" placeholder="HH:mm"></label><label class="item item-input row row-center"><span class="col col-25">to:</span><input type="time" class="col col-75" ng-model="data.to" placeholder="HH:mm"></label>',
+                template: '<label class="item item-input"><span class="col col-25">Date:</span><input type="date" ng-model="data.day" placeholder="dd/MM/yyyy"></label><label class="item item-input row row-center"><span class="col col-25">From:</span><input type="time" class="col col-75" ng-model="data.from" placeholder="HH:mm"></label><label class="item item-input row row-center"><span class="col col-25">To:</span><input type="time" class="col col-75" ng-model="data.to" placeholder="HH:mm"></label>',
                 title: 'choose date:',
                 subTitle: '',
                 scope: $scope,
@@ -379,7 +379,6 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 .controller('page9Ctrl', function($scope, $state, $meetingManager, $outSideLineHandler, $ionicLoading, $filter, $ionicPopup) {
-        debugger;
         $scope.meeting = $outSideLineHandler.getLineInfo();
 
         $scope.joinLine = function() {
@@ -469,17 +468,140 @@ angular.module('starter.controllers', ['ngCordova'])
 
 
 })
-.controller('page11Ctrl', function($scope) {
-})
+.controller('page11Ctrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
 
-.controller('page12Ctrl', function($scope) {
+
+        // $scope.meetingList = $meetingManager.getMeetingList();
+
+
+        // $scope.chooseMeeting = function(id) {
+
+        //     $meetingManager.setCurrent(id);
+        //     $state.go("app.page10");
+        // }
+
+        // $scope.lineIdToGet = '';
+        // $scope.placeholder = 'TR_1_ENTERLINEID';
+        // $scope.searchPlaceHolder = 'TR_SEARCH';
+
+
+        // $scope.$on('lineListUpdated', function() {
+        //     $scope.LineList = $outSideLineHandler.getLineList();
+        //     console.log('lineListUpdated:', $scope.LineList);
+        // });
+
+        // //when typing on inputbox
+        // $scope.changeInput = function(manualId) {
+        //     $scope.lineIdToGet = manualId;
+        // }
+
+        // // clear the placeholder when click
+        // $scope.clearPlaceHolder = function() {
+        //     $scope.placeholder = '';
+        //     $scope.lineIdToGet = '';
+        // }
+
+        // $ionicModal.fromTemplateUrl('templates/ionicModal/LineList.html', {
+        //     scope: $scope,
+        //     animation: 'slide-in-up'
+        // }).then(function(modal) {
+        //     $scope.modal = modal;
+        // });
+
+
+        // //open the list of lines
+        // $scope.openChooseLine = function() {
+        //         $scope.LineList = $outSideLineHandler.getDefaultLineList();
+        //         $scope.modal.show();
+
+        //     }
+        //     //when click back
+        // $scope.closeChooseLine = function() {
+        //         $scope.lineIdToGet = '';
+        //         $scope.modal.hide();
+        //     }
+        //     //click on one Line
+        // $scope.chooseLine = function(line) {
+        //     $scope.placeholder = line.title;
+        //     $scope.lineIdToGet = line._id;
+        //     $scope.modal.hide();
+        // }
+
+        // //iside  chooseLine function : 
+        // $scope.scrollToTop = function() {
+
+        // }
+
+        // $scope.searchLineByName = function(value) {
+        //     console.log("search Value:" + value);
+        //     if (value !== '') {
+        //         $outSideLineHandler.searchLineByName(value);
+        //     }
+
+        // }
+        // $scope.resetSearchBar = function(value) {
+        //     $ionicScrollDelegate.scrollTop();
+        //     if (value === '') {
+        //         $scope.LineList = $outSideLineHandler.getDefaultLineList();
+        //     }
+        // }
+
+        // $scope.getLine = function() {
+        //     console.log("try to connect to:" + $scope.lineIdToGet);
+        //     $outSideLineHandler.getLine($scope.lineIdToGet);
+        //     $ionicLoading.show({
+        //         template: $filter('translate')('TR_Loading')
+        //     });
+        // }
+
+        // $scope.$on('lineInfoArrived', function(event, args) {
+
+        //     $ionicLoading.hide();
+        //     if (args === false) {
+        //         var alertPopup = $ionicPopup.alert({
+        //             title: $filter('translate')('TR_1_POPTITLE'),
+        //             template: $filter('translate')('TR_1_POPTEMPLATE')
+        //         });
+        //     } else if (args === "noRoom") {
+        //         var alertPopup = $ionicPopup.alert({
+        //             title: "no room in line",
+        //             template: "no room in line"
+        //         });
+
+        //     } else if (args === "signed") {
+        //         var alertPopup = $ionicPopup.alert({
+        //             title: "already signed to this line",
+        //             template: "already signed to this line"
+        //         });
+        //     } else {
+        //         $state.go("app.page9");
+        //     }
+        // });
+
+    })
+
+.controller('page12Ctrl', function($scope, $lineManager, $state) {
+
+    $scope.lineList = $lineManager.getLineList();
+
+        $scope.chooseLineNew = function(id) {
+        $lineManager.setCurrent(id);
+         $state.go("app.page5");
+    }
+
+
+        $scope.createLine = function() {
+        $state.go("app.page2");
+    }
 
 })
 
 .controller('settingCtrl', function($scope, $translate, $userManagment) {
         $scope.changeLanguage = function() {
+            debugger;
             $translate.use('he');
         }
+
         $scope.logOutFB = function() {
             $userManagment.logOutFaceBook();
         }
