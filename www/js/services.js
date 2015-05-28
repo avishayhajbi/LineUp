@@ -664,25 +664,25 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
                         $cordovaDialogs.alert("Line: " + notification.payload.key1 + "\nwill start in " + alertDate + " minutes", "LineUp informs you that:");
                         $lineManager.setCurrent(notification.key2);
-                        $state.go("app.page5");
+                        $state.go("app.lineStatus");
                         break;
 
                     case "102":
                         $cordovaDialogs.alert("User name: " + notification.payload.key4 + "\nfrom Line: " + notification.payload.key1 + " canceled their meeting", "LineUp informs you that:");
                         $lineManager.setCurrent(notification.key2);
-                        $state.go("app.page5");
+                        $state.go("app.lineStatus");
                         break;
 
                     case "103":
                         $cordovaDialogs.alert("Line: " + notification.payload.key1 + "\nis over.", "LineUp informs you that:");
                         $lineManager.setCurrent(notification.key2);
-                        $state.go("app.page5");
+                        $state.go("app.lineStatus");
                         break;
 
                     case "201":
                         $cordovaDialogs.alert("Your meeting at: " + notification.payload.key1 + "\nis getting close..\n\nPlease confirm your arrival.", "LineUp informs you that:");
                         $lineManager.setCurrent(notification.key2);
-                        $state.go("app.page10");
+                        $state.go("app.meetingStatus");
                         break;
 
 
@@ -693,7 +693,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
                         $cordovaDialogs.alert("You are next in Line:\n" + notification.payload.key1 + "\n\nYour meeting will start at: " + meetingHours + ":" + meetingMinutes, " LineUp informs you that:");
                         $lineManager.setCurrent(notification.key2);
-                        $state.go("app.page10");
+                        $state.go("app.meetingStatus");
                         break;
 
                     case "203":
@@ -706,7 +706,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
                         $cordovaDialogs.alert("Your meeting in line:\n" + notification.payload.key1 + "\n\nwas preceded to:\n" + res + " " + meetingHours + ":" + meetingMinutes, "LineUp informs you that:");
                         $lineManager.setCurrent(notification.key2);
-                        $state.go("app.page10");
+                        $state.go("app.meetingStatus");
                         break;
 
                     case "204":
@@ -717,7 +717,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                         var meetingHours = new Date(notification.payload.key5).getHours();
                         $cordovaDialogs.alert("Your meeting in line:\n" + notification.payload.key1 + "\n\nwas postponed to:\n" + res + " " + meetingHours + ":" + meetingMinutes, "LineUp informs you that:");
                         $lineManager.setCurrent(notification.key2);
-                        $state.go("app.page10");
+                        $state.go("app.meetingStatus");
                         break;
 
                     case "206":
@@ -727,7 +727,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                     case "207":
                         $cordovaDialogs.alert("Your meeting in line:\n" + notification.payload.key1 + "\nis starting!", "LineUp informs you that:");
                         $lineManager.setCurrent(notification.key2);
-                        $state.go("app.page10");
+                        $state.go("app.meetingStatus");
                         break;
                     case "newUserInLine" :
                         $lineManager.updateLineInfo(notification.key1);

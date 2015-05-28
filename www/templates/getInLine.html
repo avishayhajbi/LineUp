@@ -1,0 +1,87 @@
+<ion-view>
+    <ion-content id="getInLine" class="page">
+
+        <!-- Line info -->
+        <div class="col col-80 col-offset-10 Meeting info">
+            <div class="row">
+                <div class="col">
+                    <img width=100px src="./img/temp.jpg">
+                </div>
+                <div class="col">
+                    <div class="row">Title:</div>
+                    <div class="row">
+                        <h4>{{meeting.title}}</h4></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- meeting setting -->
+        <div class="container">
+            <!-- meeting loction -->
+            <div class="row">
+                <div class="col col-40 col-offset-5">
+                    <div class="input-label">{{"TR_9_Location" | translate}}</div>
+                </div>
+                <div class="col col-40">{{meeting.location.address}}</div>
+            </div>
+
+            <!-- meeting time for simple line -->
+            <div class="row" ng-show!="meeting.configEnabeld">
+                <div class="col col-40 col-offset-5">
+                    <div class="input-label">{{"TR_9_Time" | translate}}</div>
+                </div>
+                <div class="col col-40">{{meeting.meeting | date: "dd-MM-yyyy"}} {{meeting.meeting | date: "HH:mm"}}</div>
+            </div>
+
+
+            <!-- meeting type setting for complex line-->
+            <div ng-show="meeting.configEnabeld">
+                <label class="item item-input item-select">
+                    <div class="input-label">{{"TR_9_Type" | translate}}</div>
+                    <select ng-options="option for option in meeting.type" ng-model="selectedType"></select>
+                </label>
+                <!-- meeting time setting for complex line-->
+                <label class="item item-input item-select">
+                    <div class="input-label"> {{"TR_9_Time" | translate}}</div>
+                    <select ng-options="time for time in selectedDate.availableMeetings" ng-model="selectedTime"></select>
+                </label>
+            </div>
+
+            <!-- meeting reminder setting -->
+            <div class="row">
+                <div class="col col-40 col-offset-5" ng-disabled="reminder">
+                    <div class="input-label">{{"TR_Reminder" | translate}}</div>
+                </div>
+                <div class="col col-40">
+                    <label class="toggle reminder">
+                        <input type="checkbox" ng-model="reminder">
+                        <div class="track">
+                            <div class="handle"></div>
+                        </div>
+                    </label>
+                    <div class="row">
+                        <input type="time" name="input" ng-model="timeReminder" placeholder="HH:mm" min="01:00:00" max="36:00:00" ng-show="reminder" />
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- meeting comments setting -->
+            <div class="row">
+                <div class="col col-40 col-offset-5">
+                    <div class="input-label">{{"TR_9_Comments" | translate}}</div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="item item-input row col-90 col-offset-5">
+                    <textarea rows="4" placeholder="write comments here.." type="submit"></textarea>
+                </label>
+            </div>
+        </div>
+
+
+        <!--Get in Line button-->
+        <button class="button icon-left button-positive button-block col-80 col-offset-10 ion-arrow-right-a" ng-click="joinLine()">{{"TR_get_in_line" | translate}}</button>
+
+    </ion-content>
+</ion-view>

@@ -30,49 +30,49 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
     templateUrl: "templates/menu.html",
     controller: 'menuCtrl'
   })
-.state('app.page1', {
-    url: "/page1",
+.state('app.default', {
+    url: "/default",
     views: {
       'menuContent': {
-        templateUrl: "templates/page1.html",
-        controller: 'page1Ctrl'
+        templateUrl: "templates/default.html",
+        controller: 'defaultCtrl'
       }
     }
   })
-  .state('app.page2', {
-      url: "/page2",
+  .state('app.createLine', {
+      url: "/createLine",
       views: {
         'menuContent': {
-          templateUrl: "templates/page2.html",
-          controller: 'page2Ctrl'
+          templateUrl: "templates/createLine.html",
+          controller: 'createLineCtrl'
 
         }
       }
     })
-    .state('app.page3', {
-      url: "/page3",
+    .state('app.signIn', {
+      url: "/signIn",
       views: {
         'menuContent': {
-          templateUrl: "templates/page3.html",
-          controller: 'page3Ctrl'
+          templateUrl: "templates/signIn.html",
+          controller: 'signInCtrl'
         }
       }
     })
-  .state('app.page4', {
-      url: "/page4",
+  .state('app.share', {
+      url: "/share",
       views: {
         'menuContent': {
-          templateUrl: "templates/page4.html",
-          controller: 'page4Ctrl'
+          templateUrl: "templates/share.html",
+          controller: 'shareCtrl'
         }
       }
     })
-    .state('app.page5', {
-      url: "/page5",
+    .state('app.lineStatus', {
+      url: "/lineStatus",
       views: {
         'menuContent': {
-          templateUrl: "templates/page5.html",
-          controller: 'page5Ctrl'
+          templateUrl: "templates/lineStatus.html",
+          controller: 'lineStatusCtrl'
         }
       }
     })
@@ -85,49 +85,49 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
         }
       }
     })
-    .state('app.page7', {
-      url: "/page7",
+    .state('app.lineAnalyze', {
+      url: "/lineAnalyze",
       views: {
         'menuContent': {
-          templateUrl: "templates/page7.html",
-          controller: 'page7Ctrl'
+          templateUrl: "templates/lineAnalyze.html",
+          controller: 'lineAnalyzeCtrl'
         }
       }
     })
 
-    .state('app.page9', {
-      url: "/page9",
+    .state('app.getInLine', {
+      url: "/getInLine",
       views: {
         'menuContent': {
-          templateUrl: "templates/page9.html",
-          controller: 'page9Ctrl'
+          templateUrl: "templates/getInLine.html",
+          controller: 'getInLineCtrl'
         }
       }
     })
-    .state('app.page10', {
-      url: "/page10",
+    .state('app.meetingStatus', {
+      url: "/meetingStatus",
       views: {
         'menuContent': {
-          templateUrl: "templates/page10.html",
-          controller: 'page10Ctrl'
+          templateUrl: "templates/meetingStatus.html",
+          controller: 'meetingStatusCtrl'
         }
       }
     })
-    .state('app.page11', {
-      url: "/page11",
+    .state('app.myMeetings', {
+      url: "/myMeetings",
       views: {
         'menuContent': {
-          templateUrl: "templates/page11.html",
-          controller: 'page11Ctrl'
+          templateUrl: "templates/myMeetings.html",
+          controller: 'myMeetingsCtrl'
         }
       }
     })
-        .state('app.page12', {
-      url: "/page12",
+        .state('app.myLines', {
+      url: "/myLines",
       views: {
         'menuContent': {
-          templateUrl: "templates/page12.html",
-          controller: 'page12Ctrl'
+          templateUrl: "templates/myLines.html",
+          controller: 'myLinesCtrl'
         }
       }
     })
@@ -142,5 +142,5 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
     })
     ;
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/page1');
+  $urlRouterProvider.otherwise('/app/default');
 });

@@ -14,15 +14,15 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_EmailAddress:'Email Address',
       TR_Password: 'Password',
       TR_Log_in: 'Log in',
-      TR_page1: 'My Lines',
-      TR_page2: 'Create New Line',
-      TR_page3: 'Sign in',
-      TR_page4: 'Share Line',
-      TR_page5: 'Line Status',
+      TR_default: 'My Lines',
+      TR_createLine: 'Create New Line',
+      TR_signIn: 'Sign in',
+      TR_share: 'Share Line',
+      TR_lineStatus: 'Line Status',
       TR_page6: 'Line Operations',
-      TR_page7: 'Line Analyze',
-      TR_page9: 'Join Line',
-      TR_page10: 'Meeting Status',
+      TR_lineAnalyze: 'Line Analyze',
+      TR_getInLine: 'Join Line',
+      TR_meetingStatus: 'Meeting Status',
       TR_Date:'Date',
       TR_Time:'Time',
       TR_Type: 'Type',
@@ -73,7 +73,7 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_2_Dates:'Dates:',
       TR_2_Location: 'Location:',
       TR_2_Duration: 'Duration:',
-        //page9
+        //getInLine
       TR_9_POPTITLE: 'line not found',
       TR_9_POPTEMPLATE: 'id not exist please insert different line ID.',
       TR_9_Type: 'Type:',
@@ -81,7 +81,7 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_9_Time: 'Next Meeting:',
       TR_9_Comments: 'Comments:',
 
-      // page3
+      // signIn
       TR_3_SignIn_Facebook:"Sign in with Facebook",
       TR_3_SignIn_Email:"Sign in with Email",
 
@@ -109,7 +109,7 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_Username: 'שם משתמש',
       TR_Password: 'סיסמא',
       TR_Log_in: 'התחבר',
-      TR_page1: 'דף1',
+      TR_default: 'דף1',
       TR_Settings: 'הגדרות',
       TR_Date:'תאריך',
       TR_Reminder:'תזכורת',
@@ -118,7 +118,7 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_get_in_line: 'Get in line',
       //settings Page
       TR_Settings_language: 'שנה שפה',
-      //page1
+      //default
       TR_1_BUTTON: 'צור תור',
       TR_1_JOINLINE: 'הצטרף לתור',
       TR_1_ENTERLINEID: 'הכנס מספר תור',

@@ -1,0 +1,57 @@
+<ion-view>
+    <ion-content id="share">
+
+        <!-- Line info -->
+        <div class="col col-80 col-offset-10 Meeting info">
+            <div class="row">
+                <div class="col">
+                    <img width=100px src="./img/temp.jpg">
+                </div>
+                <div class="col">
+                    <div class="row">Title:</div>
+                    <div class="row">
+                        <h4>{{meeting.title}}</h4></div>
+                </div>
+            </div>
+        </div>
+
+
+<div class="row row-center col-80 col-offset-5">
+            <div class="col-40 col-offset-10">
+                <label class="item item-input">
+                    <input type="text" readonly ng-model="line.link" ng-change="return;">
+                </label>
+            </div>
+            <div class="col-5 col-offset-5">
+                <button class="button icon ion-clipboard button-stable button-block" ng-click="copyLineLink()"></button>
+            </div>
+
+</div>
+
+            <div class="col-80 col-offset-10">
+                <button class="button icon-left ion-social-facebook button-positive button-block" ng-click="shareFackBook()">{{"TR_4_ShareViaFacebook" | translate}}</button>
+            </div>
+
+            <div class="col-80 col-offset-10">
+                <button class="button icon-left ion-iphone button-positive button-block" ng-click="shareMobile()">{{"TR_4_ShareViaMobile" | translate}}</button>
+            </div>
+
+
+    </ion-content>
+<div class="bar bar-footer">
+            <div class="tabs tabs-icon-top">
+                <a class="tab-item"  ng-click="nextMeeting()">
+                    <i class="icon ion-skip-forward"></i> Next Meeting
+                </a>
+                <a class="tab-item" ng-click="postponeMeeting()">
+                    <i class="icon ion-pause"></i> Pause Line
+                </a>
+                <a class="tab-item" ng-click="endLine()">
+                    <i class="icon ion-close"></i> End Line
+                </a>                
+                <a class="tab-item" ng-click="LineStatus()">
+                    <i class="icon ion-home"></i> Line Status
+                </a>
+            </div>
+        </div>
+</ion-view>

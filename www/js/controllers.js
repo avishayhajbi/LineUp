@@ -34,7 +34,7 @@ angular.module('starter.controllers', ['ngCordova'])
         };
 
     })
-.controller('page1Ctrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
+.controller('defaultCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
 
         if (window.jumpToPage) {
 
@@ -52,18 +52,18 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.meetingList = $meetingManager.getMeetingList();
 
         $scope.createLine = function() {
-            $state.go("app.page2");
+            $state.go("app.createLine");
         }
 
         $scope.chooseLineNew = function(id) {
             $lineManager.setCurrent(id);
-            $state.go("app.page5");
+            $state.go("app.lineStatus");
         }
 
         $scope.chooseMeeting = function(id) {
 
             $meetingManager.setCurrent(id);
-            $state.go("app.page10");
+            $state.go("app.meetingStatus");
         }
 
         $scope.lineIdToGet = '';
@@ -162,12 +162,12 @@ angular.module('starter.controllers', ['ngCordova'])
                     template: "already signed to this line"
                 });
             } else {
-                $state.go("app.page9");
+                $state.go("app.getInLine");
             }
         });
 
     })
-.controller('page2Ctrl', function($scope, $filter, $state, $ionicPopup, $ionicLoading, $lineManager) {
+.controller('createLineCtrl', function($scope, $filter, $state, $ionicPopup, $ionicLoading, $lineManager) {
 
         $scope.newLine = {};
         $scope.dates = [];
@@ -277,12 +277,12 @@ angular.module('starter.controllers', ['ngCordova'])
                     template: $filter('translate')('TR_1_POPTEMPLATE')
                 });
             } else {
-                $state.go("app.page3");
+                $state.go("app.signIn");
             }
         });
 
     })
-.controller('page3Ctrl', function($scope, $userManagment, $phoneManager) {
+.controller('signInCtrl', function($scope, $userManagment, $phoneManager) {
 
         $scope.signInEmail = function() {
             $scope.modalMenu.show();
@@ -294,7 +294,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
     })
 
-.controller('page4Ctrl', function($scope, $lineManager, $cordovaSocialSharing, $state) {
+.controller('shareCtrl', function($scope, $lineManager, $cordovaSocialSharing, $state) {
 
         $scope.line = $lineManager.getCurrentLine();
         if (!$scope.line) {
@@ -328,12 +328,12 @@ angular.module('starter.controllers', ['ngCordova'])
 
 
          $scope.LineStatus = function() {
-            $state.go("app.page5");
+            $state.go("app.lineStatus");
         };
 
 
     })
-.controller('page5Ctrl', function($scope, $state, $lineManager) {
+.controller('lineStatusCtrl', function($scope, $state, $lineManager) {
 
         $scope.line = $lineManager.getCurrentLine();
         $scope.$on("getLineInfo", function() {
@@ -341,7 +341,7 @@ angular.module('starter.controllers', ['ngCordova'])
         });
 
         $scope.shareLine = function() {
-            $state.go("app.page4");
+            $state.go("app.share");
         };
 
     })
@@ -380,10 +380,10 @@ angular.module('starter.controllers', ['ngCordova'])
 
 })
 
-.controller('page7Ctrl', function($scope) {
+.controller('lineAnalyzeCtrl', function($scope) {
 })
 
-.controller('page9Ctrl', function($scope, $state, $meetingManager, $outSideLineHandler, $ionicLoading, $filter, $ionicPopup) {
+.controller('getInLineCtrl', function($scope, $state, $meetingManager, $outSideLineHandler, $ionicLoading, $filter, $ionicPopup) {
         $scope.meeting = $outSideLineHandler.getLineInfo();
 
         $scope.joinLine = function() {
@@ -401,12 +401,12 @@ angular.module('starter.controllers', ['ngCordova'])
                     template: $filter('translate')('TR_1_POPTEMPLATE')
                 });
             } else {
-                $state.go("app.page10");
+                $state.go("app.meetingStatus");
             }
         });
 
  })
-.controller('page10Ctrl', function($scope, $meetingManager, $ionicPopup, $ionicLoading, $filter, $state, $timeout) {
+.controller('meetingStatusCtrl', function($scope, $meetingManager, $ionicPopup, $ionicLoading, $filter, $state, $timeout) {
 
         $scope.meeting = $meetingManager.getCurrentMeeting();
         $scope.reminder = true;
@@ -467,137 +467,137 @@ angular.module('starter.controllers', ['ngCordova'])
                     }]
                 });
                 canceledPopup.then(function(data) {
-                    $state.go("app.page1");
+                    $state.go("app.default");
                 });
             }
         });
 
 
 })
-.controller('page11Ctrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
+.controller('myMeetingsCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
 
 
-        // $scope.meetingList = $meetingManager.getMeetingList();
+        $scope.meetingList = $meetingManager.getMeetingList();
 
 
-        // $scope.chooseMeeting = function(id) {
+        $scope.chooseMeeting = function(id) {
 
-        //     $meetingManager.setCurrent(id);
-        //     $state.go("app.page10");
-        // }
+        $meetingManager.setCurrent(id);
+        $state.go("app.meetingStatus");
+        }
 
-        // $scope.lineIdToGet = '';
-        // $scope.placeholder = 'TR_1_ENTERLINEID';
-        // $scope.searchPlaceHolder = 'TR_SEARCH';
-
-
-        // $scope.$on('lineListUpdated', function() {
-        //     $scope.LineList = $outSideLineHandler.getLineList();
-        //     console.log('lineListUpdated:', $scope.LineList);
-        // });
-
-        // //when typing on inputbox
-        // $scope.changeInput = function(manualId) {
-        //     $scope.lineIdToGet = manualId;
-        // }
-
-        // // clear the placeholder when click
-        // $scope.clearPlaceHolder = function() {
-        //     $scope.placeholder = '';
-        //     $scope.lineIdToGet = '';
-        // }
-
-        // $ionicModal.fromTemplateUrl('templates/ionicModal/LineList.html', {
-        //     scope: $scope,
-        //     animation: 'slide-in-up'
-        // }).then(function(modal) {
-        //     $scope.modal = modal;
-        // });
+        $scope.lineIdToGet = '';
+        $scope.placeholder = 'TR_1_ENTERLINEID';
+        $scope.searchPlaceHolder = 'TR_SEARCH';
 
 
-        // //open the list of lines
-        // $scope.openChooseLine = function() {
-        //         $scope.LineList = $outSideLineHandler.getDefaultLineList();
-        //         $scope.modal.show();
+        $scope.$on('lineListUpdated', function() {
+            $scope.LineList = $outSideLineHandler.getLineList();
+            console.log('lineListUpdated:', $scope.LineList);
+        });
 
-        //     }
-        //     //when click back
-        // $scope.closeChooseLine = function() {
-        //         $scope.lineIdToGet = '';
-        //         $scope.modal.hide();
-        //     }
-        //     //click on one Line
-        // $scope.chooseLine = function(line) {
-        //     $scope.placeholder = line.title;
-        //     $scope.lineIdToGet = line._id;
-        //     $scope.modal.hide();
-        // }
+        //when typing on inputbox
+        $scope.changeInput = function(manualId) {
+            $scope.lineIdToGet = manualId;
+        }
 
-        // //iside  chooseLine function : 
-        // $scope.scrollToTop = function() {
+        // clear the placeholder when click
+        $scope.clearPlaceHolder = function() {
+            $scope.placeholder = '';
+            $scope.lineIdToGet = '';
+        }
 
-        // }
+        $ionicModal.fromTemplateUrl('templates/ionicModal/LineList.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+            $scope.modal = modal;
+        });
 
-        // $scope.searchLineByName = function(value) {
-        //     console.log("search Value:" + value);
-        //     if (value !== '') {
-        //         $outSideLineHandler.searchLineByName(value);
-        //     }
 
-        // }
-        // $scope.resetSearchBar = function(value) {
-        //     $ionicScrollDelegate.scrollTop();
-        //     if (value === '') {
-        //         $scope.LineList = $outSideLineHandler.getDefaultLineList();
-        //     }
-        // }
+        //open the list of lines
+        $scope.openChooseLine = function() {
+                $scope.LineList = $outSideLineHandler.getDefaultLineList();
+                $scope.modal.show();
 
-        // $scope.getLine = function() {
-        //     console.log("try to connect to:" + $scope.lineIdToGet);
-        //     $outSideLineHandler.getLine($scope.lineIdToGet);
-        //     $ionicLoading.show({
-        //         template: $filter('translate')('TR_Loading')
-        //     });
-        // }
+            }
+            //when click back
+        $scope.closeChooseLine = function() {
+                $scope.lineIdToGet = '';
+                $scope.modal.hide();
+            }
+            //click on one Line
+        $scope.chooseLine = function(line) {
+            $scope.placeholder = line.title;
+            $scope.lineIdToGet = line._id;
+            $scope.modal.hide();
+        }
 
-        // $scope.$on('lineInfoArrived', function(event, args) {
+        //iside  chooseLine function : 
+        $scope.scrollToTop = function() {
 
-        //     $ionicLoading.hide();
-        //     if (args === false) {
-        //         var alertPopup = $ionicPopup.alert({
-        //             title: $filter('translate')('TR_1_POPTITLE'),
-        //             template: $filter('translate')('TR_1_POPTEMPLATE')
-        //         });
-        //     } else if (args === "noRoom") {
-        //         var alertPopup = $ionicPopup.alert({
-        //             title: "no room in line",
-        //             template: "no room in line"
-        //         });
+        }
 
-        //     } else if (args === "signed") {
-        //         var alertPopup = $ionicPopup.alert({
-        //             title: "already signed to this line",
-        //             template: "already signed to this line"
-        //         });
-        //     } else {
-        //         $state.go("app.page9");
-        //     }
-        // });
+        $scope.searchLineByName = function(value) {
+            console.log("search Value:" + value);
+            if (value !== '') {
+                $outSideLineHandler.searchLineByName(value);
+            }
+
+        }
+        $scope.resetSearchBar = function(value) {
+            $ionicScrollDelegate.scrollTop();
+            if (value === '') {
+                $scope.LineList = $outSideLineHandler.getDefaultLineList();
+            }
+        }
+
+        $scope.getLine = function() {
+            console.log("try to connect to:" + $scope.lineIdToGet);
+            $outSideLineHandler.getLine($scope.lineIdToGet);
+            $ionicLoading.show({
+                template: $filter('translate')('TR_Loading')
+            });
+        }
+
+        $scope.$on('lineInfoArrived', function(event, args) {
+
+            $ionicLoading.hide();
+            if (args === false) {
+                var alertPopup = $ionicPopup.alert({
+                    title: $filter('translate')('TR_1_POPTITLE'),
+                    template: $filter('translate')('TR_1_POPTEMPLATE')
+                });
+            } else if (args === "noRoom") {
+                var alertPopup = $ionicPopup.alert({
+                    title: "no room in line",
+                    template: "no room in line"
+                });
+
+            } else if (args === "signed") {
+                var alertPopup = $ionicPopup.alert({
+                    title: "already signed to this line",
+                    template: "already signed to this line"
+                });
+            } else {
+                $state.go("app.getInLine");
+            }
+        });
 
     })
 
-.controller('page12Ctrl', function($scope, $lineManager, $state) {
+.controller('default2Ctrl', function($scope, $lineManager, $state) {
 
     $scope.lineList = $lineManager.getLineList();
 
         $scope.chooseLineNew = function(id) {
         $lineManager.setCurrent(id);
-         $state.go("app.page5");
+         $state.go("app.lineStatus");
     }
 
 
         $scope.createLine = function() {
-        $state.go("app.page2");
+        $state.go("app.createLine");
     }
 
 })

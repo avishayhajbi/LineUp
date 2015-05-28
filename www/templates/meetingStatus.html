@@ -1,0 +1,91 @@
+<ion-view>
+    <ion-content id="meetingStatus" class="page">
+        <!-- Line info -->
+        <div class="col col-80 col-offset-10 Meeting info">
+
+            <div class="row">
+                <div class="col">
+                    <img width=100px src="./img/temp.jpg">
+                </div>
+                <div class="col">
+                    <div class="row">Title:</div>
+                    <div class="row">
+                        <h4>{{meeting.title}}</h4></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- progress bar -->
+
+        <div class="col col-80 col-offset-10 progressBar">
+
+        <div class="progressBarImage" ng-show="meeting.ProgressCounter" style="width:{{meeting.width}}%;"></div>
+
+        </div>
+
+  
+        <!--meeting status container-->
+        <div class="container">
+                    <!--position row-->
+            <div class="row">
+                <div class="col col-40 col-offset-5">
+                    <div class="input-label" ng-disabled="reminder">{{"TR_yourPositionIs" | translate}}</div>
+                </div>
+                <div class="col col-40">
+                    <h4>{{meeting.position}}</h4>
+                </div>
+            </div>  
+            <!--time of meeting-->
+                <div class="col-80 col-offset-10">
+                    <div class="input-label" ng-disabled="reminder">{{"TR_meetingTimeStart" | translate}}</div>
+                </div>
+                <div class="col-80 col-offset-10">
+                    <h4>{{meeting.time | date : "HH:mm"}} {{meeting.time | date : "dd:MM:yyyy"}}</h4>
+                </div>
+
+            <!--time to wait row-->
+
+                <div class="col-80 col-offset-10">
+                    <div class="input-label" ng-disabled="reminder">{{"TR_timeToWait" | translate}}</div>
+                </div>
+                <div class="col-80 col-offset-10">
+                    <h4>{{meeting.timeLeft.days}} days, {{meeting.timeLeft.hours}} hours and {{meeting.timeLeft.minutes}} minutes</h4>
+                </div>
+
+            <!--timmer row-->
+            <div class="row">
+                <div class="col col-40 col-offset-5">
+                    <div class="input-label" ng-disabled="reminder">{{"TR_Reminder" | translate}}</div>
+                </div>
+                <div class="col col-40">
+                    <label class="toggle">
+                        <input type="checkbox" ng-model="reminder">
+                        <div class="track">
+                            <div class="handle"></div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+         <br><br>
+    </ion-content>
+
+
+    <div class="bar bar-footer">
+            <div class="tabs tabs-icon-top">
+                            <a class="tab-item">
+                    <i class="icon ion-checkmark"></i> Confirm Meeting
+                </a>
+                <a class="tab-item">
+                    <i class="icon ion-close"></i>{{"TR_cancelLine" | translate}}
+                </a>
+                <a class="tab-item" ng-click="shareLine()">
+                    <i class="icon ion-android-share"></i> Share Line
+                </a>
+
+                <a class="tab-item">
+                    <i class="icon ion-email"></i> {{"TR_messageAdmin" | translate}}
+                </a>
+            </div>
+        </div>
+</ion-view>

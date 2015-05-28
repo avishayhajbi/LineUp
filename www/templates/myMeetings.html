@@ -1,0 +1,29 @@
+<ion-view>
+    <ion-content id="myMeetings" class="page">
+                <div class="col col-80 col-offset-10 row">My Meetings:
+        </div>
+        <ion-list class="col col-80 col-offset-10" style="padding:0px !important;">
+            <ion-item ng-repeat="meeting in meetingList" ng-click="chooseMeeting(meeting.id);">
+                {{meeting.title}} ---- {{meeting.time | date : "HH:mm"}}
+            </ion-item>
+        </ion-list>
+
+
+        <div class="row row-center col-80 col-offset-5">
+            <div class="col-40 col-offset-5">
+                <label class="item item-input">
+                    <input type="text" ng-model="lineIdToGetText" placeholder="{{placeholder | translate}}" ng-change="changeInput(lineIdToGetText)" ng-click="clearPlaceHolder()">
+                </label>
+            </div>
+            <div class="col-10 col-offset-5">
+                <button class="button button-stable button-block" ng-click="openChooseLine(); lineIdToGetText = ''">+</button>
+            </div>
+        </div>
+
+
+        <!--Join Line button-->
+        <button class="button icon-left ion-plus button-positive button-block col-80 col-offset-10" menu-close ng-disabled="lineIdToGet===''" ng-click="getLine()">{{"TR_join_line" | translate}}</button>
+
+
+    </ion-content>
+</ion-view>
