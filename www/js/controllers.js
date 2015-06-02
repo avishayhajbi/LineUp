@@ -288,7 +288,7 @@ angular.module('starter.controllers', ['ngCordova'])
                     template: $filter('translate')('TR_1_POPTEMPLATE')
                 });
             } else {
-                $state.go("app.signIn");
+                $state.go("app.lineStatus");
             }
         });
 
@@ -305,7 +305,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
     })
 
-.controller('shareCtrl', function($scope, $lineManager, $cordovaSocialSharing, $state) {
+.controller('shareLineCtrl', function($scope, $lineManager, $cordovaSocialSharing, $state) {
 
         $scope.line = $lineManager.getCurrentLine();
         if (!$scope.line) {
@@ -342,6 +342,43 @@ angular.module('starter.controllers', ['ngCordova'])
         };
 
     })
+.controller('shareMeetingCtrl', function($scope, $lineManager, $cordovaSocialSharing, $state) {
+
+        $scope.line = $lineManager.getCurrentLine();
+        if (!$scope.line) {
+            $scope.line = {};
+            $scope.line.link = "link not avilable";
+        } else {
+            $scope.line.link = "https://fathomless-eyrie-8332.herokuapp.com/lineRedirect?lineId=" + $scope.line.id;
+        }
+
+        $scope.copyLineLink = function() {
+            cordova.plugins.clipboard.copy($scope.line.link);
+        };
+
+        $scope.shareFackBook = function() {
+            console.log("share via FaceBook");
+            facebookConnectPlugin.showDialog({
+                method: 'share',
+                href: $scope.line.link,
+            }, function(data) {
+                console.log(data);
+            }, function(data) {
+                console.log(data);
+            });
+            //$cordovaSocialSharing.shareViaFacebook( "hi check my Line", false, $scope.line.link);
+        };
+
+        $scope.shareMobile = function() {
+            console.log("share via Mobile");
+            $cordovaSocialSharing.share("LineUp", "hi check my Line", false, $scope.line.link);
+        };
+
+        $scope.MeetingStatus = function() {
+            $state.go("app.MeetingStatus");
+        };
+
+    })
     .controller('lineStatusCtrl', function($scope, $state, $lineManager) {
         
         $scope.line = $lineManager.getCurrentLine();
@@ -351,7 +388,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
        
         $scope.shareLine = function() {
-            $state.go("app.share");
+            $state.go("app.shareLine");
         };
 
         $scope.nextMeeting = function() {
@@ -385,7 +422,19 @@ angular.module('starter.controllers', ['ngCordova'])
 
 .controller('lineAnalyzeCtrl', function($scope) {})
 
-.controller('myLinesCtrl', function($scope) {})
+.controller('myLinesCtrl', function($scope, $lineManager, $state) {
+    $scope.lineList = $lineManager.getLineList();
+
+    $scope.chooseLineNew = function(id) {
+        $lineManager.setCurrentLine(id);
+        $state.go("app.lineStatus");
+    }
+
+    $scope.createLine = function() {
+        $state.go("app.createLine");
+    }
+
+})
 
 .controller('getInLineCtrl', function($scope, $state, $meetingManager, $outSideLineHandler, $ionicLoading, $filter, $ionicPopup) {
         $scope.meeting = $outSideLineHandler.getLineInfo();
@@ -474,6 +523,10 @@ angular.module('starter.controllers', ['ngCordova'])
                 });
             }
         });
+
+        $scope.shareLine = function() {
+        $state.go("app.shareMeeting");
+        };
 
     })
     .controller('myMeetingsCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
@@ -584,24 +637,10 @@ angular.module('starter.controllers', ['ngCordova'])
 
     })
 
-.controller('default2Ctrl', function($scope, $lineManager, $state) {
-
-    $scope.lineList = $lineManager.getLineList();
-
-    $scope.chooseLineNew = function(id) {
-        $lineManager.setCurrent(id);
-        $state.go("app.lineStatus");
-    }
-
-    $scope.createLine = function() {
-        $state.go("app.createLine");
-    }
-
-})
 
 .controller('settingCtrl', function($scope, $translate, $userManagment) {
         $scope.changeLanguage = function() {
-            debugger;
+        
             $translate.use('he');
         }
 

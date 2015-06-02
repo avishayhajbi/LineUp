@@ -23,8 +23,10 @@
                 <div class="col col-40 col-offset-5">
                     <div class="input-label">{{"TR_5_startDate" | translate}}</div>
                 </div>
-                <div class="col col-40">
-                    <h4>{{line.startDate}}</h4>
+            </div>
+            <div class="row">
+                <div class="col col-40 col-offset-5">
+                    <h4>{{line.availableDates[0].from | date:'medium'}}</h4>
                 </div>
             </div>
 
@@ -33,8 +35,10 @@
                 <div class="col col-40 col-offset-5">
                     <div class="input-label">{{"TR_5_endDate" | translate}}</div>
                 </div>
-                <div class="col col-40">
-                    <h4>{{line.endDate}}</h4>
+            </div>
+            <div class="row">
+                <div class="col col-40 col-offset-5">
+                    <h4>{{line.availableDates[line.day.maxDays-1].to | date:'medium'}}</h4>
                 </div>
             </div>
 
@@ -45,7 +49,7 @@
                     <div class="input-label">{{"TR_5_UsersInLine" | translate}}</div>
                 </div>
                 <div class="col col-40">
-                    <h4>{{line.numOfusers}}</h4>
+                    <h4>{{line.meetingsCounter}}</h4>
                 </div>
             </div>
 
@@ -54,8 +58,21 @@
                 <div class="col col-40 col-offset-5">
                     <div class="input-label">{{"TR_5_nextMeetings" | translate}}</div>
                 </div>
-                <div class="col col-40">
-                    <h4>{{line.nextMeetings}}</h4>
+            </div>
+            <div class="row">
+                <div class="col col-40 col-offset-5">
+                    <h4>Name</h4>
+                </div>
+                <div class="col col-40 col-offset-5">
+                    <h4>Date</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-40 col-offset-5" ng-repeat="meeting in line.meetings | limitTo:3">
+                    <h4>{{meeting.userName}}</h4>
+                </div>
+                <div class="col col-40 col-offset-5" ng-repeat="meeting in line.meetings | limitTo:3">
+                    <h4>{{meeting.time | date:'medium'}}</h4>
                 </div>
             </div>
 
@@ -64,20 +81,20 @@
 
     </ion-content>
 
-<div class="bar bar-footer">
-            <div class="tabs tabs-icon-top">
-                <a class="tab-item"  ng-click="nextMeeting()">
-                    <i class="icon ion-skip-forward"></i> Next Meeting
-                </a>
-                <a class="tab-item" ng-click="postponeMeeting()">
-                    <i class="icon ion-pause"></i> Pause Line
-                </a>
-                <a class="tab-item" ng-click="endLine()">
-                    <i class="icon ion-close"></i> End Line
-                </a>                
-                <a class="tab-item" ng-click="shareLine()">
-                    <i class="icon ion-android-share"></i> Share Line
-                </a>
-            </div>
+    <div class="bar bar-footer">
+        <div class="tabs tabs-icon-top">
+            <a class="tab-item" ng-click="nextMeeting()">
+                <i class="icon ion-skip-forward"></i> Next Meeting
+            </a>
+            <a class="tab-item" ng-click="postponeMeeting()">
+                <i class="icon ion-pause"></i> Pause Line
+            </a>
+            <a class="tab-item" ng-click="endLine()">
+                <i class="icon ion-close"></i> End Line
+            </a>
+            <a class="tab-item" ng-click="shareLine()">
+                <i class="icon ion-android-share"></i> Share Line
+            </a>
         </div>
+    </div>
 </ion-view>

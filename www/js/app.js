@@ -58,12 +58,21 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
         }
       }
     })
-  .state('app.share', {
-      url: "/share",
+  .state('app.shareLine', {
+      url: "/shareLine",
       views: {
         'menuContent': {
-          templateUrl: "templates/share.html",
-          controller: 'shareCtrl'
+          templateUrl: "templates/shareLine.html",
+          controller: 'shareLineCtrl'
+        }
+      }
+    })
+    .state('app.shareMeeting', {
+      url: "/shareMeeting",
+      views: {
+        'menuContent': {
+          templateUrl: "templates/shareMeeting.html",
+          controller: 'shareMeetingCtrl'
         }
       }
     })

@@ -362,7 +362,6 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
             }).then(function(response) {
 
                 if (response.data) {
-                    debugger;
                     currentMeeting.time = response.data.time;
                     currentMeeting.position = response.data.position;
                     currentMeeting.confirmed = response.data.confirmed;
