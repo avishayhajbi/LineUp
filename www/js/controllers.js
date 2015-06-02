@@ -305,41 +305,149 @@ angular.module('starter.controllers', ['ngCordova'])
 
 .controller('shareLineCtrl', function($scope, $lineManager, $cordovaSocialSharing, $state) {
 
+    $scope.line = $lineManager.getCurrentLine();
+    if (!$scope.line) {
+        $scope.line = {};
+        $scope.line.link = "link not avilable";
+    } else {
+        $scope.line.link = "https://fathomless-eyrie-8332.herokuapp.com/lineRedirect?lineId=" + $scope.line.id;
+    }
+
+    $scope.copyLineLink = function() {
+        cordova.plugins.clipboard.copy($scope.line.link);
+    };
+
+    $scope.shareFackBook = function() {
+        console.log("share via FaceBook");
+        facebookConnectPlugin.showDialog({
+            method: 'share',
+            href: $scope.line.link,
+        }, function(data) {
+            console.log(data);
+        }, function(data) {
+            console.log(data);
+        });
+        //$cordovaSocialSharing.shareViaFacebook( "hi check my Line", false, $scope.line.link);
+    };
+
+    $scope.shareMobile = function() {
+        console.log("share via Mobile");
+        $cordovaSocialSharing.share("LineUp", "hi check my Line", false, $scope.line.link);
+    };
+
+    $scope.LineStatus = function() {
+        $state.go("app.lineStatus");
+    };
+
+})
+
+.controller('lineStatusCtrl', function($scope, $state, $lineManager, $ionicLoading, $ionicPopup, $filter) {
+
+
+    $scope.line = $lineManager.getCurrentLine();
+    $scope.$on("getLineInfo", function() {
         $scope.line = $lineManager.getCurrentLine();
-        if (!$scope.line) {
-            $scope.line = {};
-            $scope.line.link = "link not avilable";
-        } else {
-            $scope.line.link = "https://fathomless-eyrie-8332.herokuapp.com/lineRedirect?lineId=" + $scope.line.id;
-        }
+    });
 
-        $scope.copyLineLink = function() {
-            cordova.plugins.clipboard.copy($scope.line.link);
-        };
 
-        $scope.shareFackBook = function() {
-            console.log("share via FaceBook");
-            facebookConnectPlugin.showDialog({
-                method: 'share',
-                href: $scope.line.link,
-            }, function(data) {
-                console.log(data);
-            }, function(data) {
-                console.log(data);
+    $scope.shareLine = function() {
+        $state.go("app.shareLine");
+    };
+
+    $scope.nextMeeting = function() {
+        $lineManager.nextMeeting();
+        console.log("Move to next Meeting");
+    };
+
+    $scope.$on("nextMeeting", function(event, args) {
+        $ionicLoading.hide();
+        if (args === false) {
+            var alertPopup = $ionicPopup.alert({
+                title: $filter('translate')('TR_2_POPTITLE'),
+                template: $filter('translate')('TR_2_POPTEMPLATE')
             });
-            //$cordovaSocialSharing.shareViaFacebook( "hi check my Line", false, $scope.line.link);
-        };
+        }
+    });
 
-        $scope.shareMobile = function() {
-            console.log("share via Mobile");
-            $cordovaSocialSharing.share("LineUp", "hi check my Line", false, $scope.line.link);
-        };
+    $scope.postponeLine = function() {
+        $lineManager.postponeLine();
+        console.log("Postpone Line");
+    };
 
-        $scope.LineStatus = function() {
-            $state.go("app.lineStatus");
-        };
+        $scope.$on("postponeLine", function(event, args) {
+        $ionicLoading.hide();
+        if (args === false) {
+            var alertPopup = $ionicPopup.alert({
+                title: $filter('translate')('TR_2_POPTITLE'),
+                template: $filter('translate')('TR_2_POPTEMPLATE')
+            });
+        }
+    });
 
-    })
+    // $scope.sendMessage = function() {
+    //     console.log("Send message");
+    //     $scope.modalMessageMenu.show();
+    // };
+
+
+    $scope.endLine = function() {
+        $lineManager.endLine();
+        console.log("End line");
+    };
+
+    $scope.$on("endLine", function(event, args) {
+        $ionicLoading.hide();
+        if (args === false) {
+            var alertPopup = $ionicPopup.alert({
+                title: $filter('translate')('TR_2_POPTITLE'),
+                template: $filter('translate')('TR_2_POPTEMPLATE')
+            });
+        }
+        else
+        $state.go("app.lineAnalyze");
+    });
+
+})
+
+.controller('lineAnalyzeCtrl', function($scope) {})
+
+.controller('myLinesCtrl', function($scope, $lineManager, $state) {
+    $scope.lineList = $lineManager.getLineList();
+
+    $scope.chooseLineNew = function(id) {
+        $lineManager.setCurrentLine(id);
+        $state.go("app.lineStatus");
+    }
+
+    $scope.createLine = function() {
+        $state.go("app.createLine");
+    }
+
+})
+
+.controller('getInLineCtrl', function($scope, $state, $meetingManager, $outSideLineHandler, $ionicLoading, $filter, $ionicPopup) {
+    $scope.meeting = $outSideLineHandler.getLineInfo();
+
+    $scope.joinLine = function() {
+        $meetingManager.joinLine($scope.meeting);
+        $ionicLoading.show({
+            template: $filter('translate')('TR_Loading')
+        });
+    }
+
+    $scope.$on('signedToNewMeet', function(event, args) {
+        $ionicLoading.hide();
+        if (!args) {
+            var alertPopup = $ionicPopup.alert({
+                title: $filter('translate')('TR_1_POPTITLE'),
+                template: $filter('translate')('TR_1_POPTEMPLATE')
+            });
+        } else {
+            $state.go("app.meetingStatus");
+        }
+    });
+
+})
 
 .controller('shareMeetingCtrl', function($scope, $lineManager, $cordovaSocialSharing, $state) {
 
@@ -374,92 +482,11 @@ angular.module('starter.controllers', ['ngCordova'])
         };
 
         $scope.MeetingStatus = function() {
-            $state.go("app.MeetingStatus");
+            $state.go("app.meetingStatus");
         };
 
     })
-.controller('lineStatusCtrl', function($scope, $state, $lineManager) {
-
-        
-        $scope.line = $lineManager.getCurrentLine();
-        $scope.$on("getLineInfo", function() {
-            $scope.line = $lineManager.getCurrentLine();
-        });
-
-       
-        $scope.shareLine = function() {
-            $state.go("app.shareLine");
-        };
-
-        $scope.nextMeeting = function() {
-            $lineManager.nextMeeting();
-            console.log("Move to next Meeting");
-        };
-
-         $scope.$on("nextMeeting", function() {
-            //TODO  alert error in server
-        });
-
-        $scope.postponeLine = function() {
-              $lineManager.postponeLine();
-            //TODO open alert box if yes listen to endLine event  if true go to line anlyze of false alert try again
-            console.log("Postpone Line");
-        };
-
-        // $scope.sendMessage = function() {
-        //     console.log("Send message");
-        //     $scope.modalMessageMenu.show();
-        // };
-
-
-        $scope.endLine = function() {
-             $lineManager.endLine();
-            //TODO open alert box if yes listen to endLine event  if true go to line anlyze of false alert try again
-            console.log("End line");
-        };
-
-    })
-
-.controller('lineAnalyzeCtrl', function($scope) {})
-
-.controller('myLinesCtrl', function($scope, $lineManager, $state) {
-    $scope.lineList = $lineManager.getLineList();
-
-    $scope.chooseLineNew = function(id) {
-        $lineManager.setCurrentLine(id);
-        $state.go("app.lineStatus");
-    }
-
-    $scope.createLine = function() {
-        $state.go("app.createLine");
-    }
-
-})
-
-.controller('getInLineCtrl', function($scope, $state, $meetingManager, $outSideLineHandler, $ionicLoading, $filter, $ionicPopup) {
-        $scope.meeting = $outSideLineHandler.getLineInfo();
-
-        $scope.joinLine = function() {
-            $meetingManager.joinLine($scope.meeting);
-            $ionicLoading.show({
-                template: $filter('translate')('TR_Loading')
-            });
-        }
-
-        $scope.$on('signedToNewMeet', function(event, args) {
-            $ionicLoading.hide();
-            if (!args) {
-                var alertPopup = $ionicPopup.alert({
-                    title: $filter('translate')('TR_1_POPTITLE'),
-                    template: $filter('translate')('TR_1_POPTEMPLATE')
-                });
-            } else {
-                $state.go("app.meetingStatus");
-            }
-        });
-
-    })
-.controller('meetingStatusCtrl', function($scope, $meetingManager, $ionicPopup, $ionicLoading, $filter, $state, $timeout) {
+    .controller('meetingStatusCtrl', function($scope, $meetingManager, $ionicPopup, $ionicLoading, $filter, $state, $timeout) {
 
         $scope.meeting = $meetingManager.getCurrentMeeting();
         $scope.reminder = true;
@@ -525,11 +552,11 @@ angular.module('starter.controllers', ['ngCordova'])
         });
 
         $scope.shareLine = function() {
-        $state.go("app.shareMeeting");
+            $state.go("app.shareMeeting");
         };
 
     })
-.controller('myMeetingsCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
+    .controller('myMeetingsCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
 
         $scope.meetingList = $meetingManager.getMeetingList();
 
@@ -640,7 +667,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
 .controller('settingCtrl', function($scope, $translate, $userManagment) {
         $scope.changeLanguage = function() {
-        
+
             $translate.use('he');
         }
 

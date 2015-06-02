@@ -545,6 +545,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                     timeout: 8000
                 }).then(function(response) {
                     if (response.data) {
+                        $rootScope.$broadcast('postponeLine', true);                       
                         getLineInfo();
                     } else {
                         $rootScope.$broadcast('postponeLine', false);
@@ -563,7 +564,6 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                 }
             },
             nextMeeting: function() {
-                console.log('line is:', line);
                 $http.get(serverUrl + 'nextMeeting', {
                     params: {
                         lineId: currentLine.lineId,
@@ -573,6 +573,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                 }).then(function(response) {
                     if (response.data) {
                         getLineInfo();
+                    $rootScope.$broadcast('nextMeeting', true);
                     } else {
                         $rootScope.$broadcast('nextMeeting', false);
                     }

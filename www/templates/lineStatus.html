@@ -67,11 +67,11 @@
                     <h4>Date</h4>
                 </div>
             </div>
-            <div class="row">
-                <div class="col col-40 col-offset-5" ng-repeat="meeting in line.meetings | limitTo:3">
+            <div class="row" ng-repeat="meeting in line.meetings | limitTo:3">
+                <div class="col col-40 col-offset-5">
                     <h4>{{meeting.userName}}</h4>
                 </div>
-                <div class="col col-40 col-offset-5" ng-repeat="meeting in line.meetings | limitTo:3">
+                <div class="col col-40 col-offset-5">
                     <h4>{{meeting.time | date:'medium'}}</h4>
                 </div>
             </div>
@@ -86,7 +86,7 @@
             <a class="tab-item" ng-click="nextMeeting()">
                 <i class="icon ion-skip-forward"></i> Next Meeting
             </a>
-            <a class="tab-item" ng-click="postponeMeeting()">
+            <a class="tab-item" ng-click="postponeLine()">
                 <i class="icon ion-pause"></i> Pause Line
             </a>
             <a class="tab-item" ng-click="endLine()">
