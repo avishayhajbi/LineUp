@@ -251,7 +251,6 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                 });
             },
             getLineInfo: function() {
-
                 return lineInfo;
             }
         }
@@ -470,28 +469,25 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         }
 
         function getLineInfo () {
-            
             $http.get(serverUrl + 'getLineInfo', {
                 params: {
-                     lineId: currentLine.lineId,
+                    lineId: currentLine.lineId,
                     lineManagerId:$userManagment.getMyId()
                 },
                 timeout: 8000
             }).then(function(response) {
-                
-                if (checkAtt(response.data)) {
+                if (response.data) {
+                    console.log("getLineInfo: ",response.data);
                     currentLine = response.data;   
-                    $rootScope.$broadcast('getLineInfo');
+                    $rootScope.$broadcast('getLineInfo' ,true);
                 } else {
                     $rootScope.$broadcast('getLineInfo', false);
                 }
             }, function(response) {
-
                 $rootScope.$broadcast('getLineInfo', false);
             });
 
         }
-
 
         return {
             createLine: function(line) {
@@ -506,7 +502,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                 }).then(function(response) {
                     if (checkAtt(response.data)) {
                         line.lineId = response.data;
-                        save.lineId = response.data
+                        save.lineId = response.data;
                         lineList.push(save);
                         currentLine = line;
                         saveLineLocal(save);
@@ -543,7 +539,44 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                 }
 
             },
-            setCurrent: function(id) {
+            endLine: function() {
+                 $http.get(serverUrl + 'endLine', {
+                    params: {
+                        lineId: currentLine.lineId,
+                        lineManagerId:$userManagment.getMyId()
+                    },
+                    timeout: 8000
+                }).then(function(response) {
+                    if (response.data) {
+                       $rootScope.$broadcast('endLine', true);
+                    } else {
+                        $rootScope.$broadcast('endLine', false);
+                    }
+                }, function(response) {
+                    $rootScope.$broadcast('endLine', false);
+                });
+
+
+
+            },
+            postponeLine: function(){
+                $http.get(serverUrl + 'postponeLine', {
+                    params: {
+                        lineId: currentLine.lineId,
+                        lineManagerId:$userManagment.getMyId()
+                    },
+                    timeout: 8000
+                }).then(function(response) {
+                    if (response.data) {
+                       getLineInfo();
+                    } else {
+                        $rootScope.$broadcast('postponeLine', false);
+                    }
+                }, function(response) {
+                    $rootScope.$broadcast('postponeLine', false);
+                });
+            },
+            setCurrentLine: function(id) {
                 for (var i = 0; i < lineList.length; i++) {
                     if (lineList[i].id === id) {
                         currentLine = lineList[i];
@@ -561,8 +594,8 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                     },
                     timeout: 8000
                 }).then(function(response) {
-                    if (checkAtt(response.data)) {
-                        
+                    if (response.data) {
+                       getLineInfo();
                     } else {
                         $rootScope.$broadcast('nextMeeting', false);
                     }

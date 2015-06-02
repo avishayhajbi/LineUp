@@ -2,7 +2,6 @@ angular.module('starter.controllers', ['ngCordova'])
 
 .controller('menuCtrl', function($scope, $ionicModal, $timeout, $pushNotificationHere, $userManagment, $ionicLoading, $ionicPopup, $state) {
 
-
         // Create the login modal that we will use later
         $ionicModal.fromTemplateUrl('templates/ionicModal/login.html', {
             scope: $scope
@@ -29,12 +28,12 @@ angular.module('starter.controllers', ['ngCordova'])
             $scope.modalMenu.show();
         };
 
-         $scope.doLogin = function() {
-           login
+        $scope.doLogin = function() {
+            login
         };
 
     })
-.controller('defaultCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
+    .controller('defaultCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
 
         if (window.jumpToPage) {
 
@@ -56,9 +55,24 @@ angular.module('starter.controllers', ['ngCordova'])
         }
 
         $scope.chooseLineNew = function(id) {
-            $lineManager.setCurrent(id);
-            $state.go("app.lineStatus");
+            $lineManager.setCurrentLine(id);
+            $ionicLoading.show({
+                template: $filter('translate')('TR_Loading')
+            });
         }
+
+        $scope.$on("getLineInfo", function(evt, data) {
+            $ionicLoading.hide();
+            if (data) {
+                $state.go("app.lineStatus");
+            }
+            if (!data) {
+                var alertPopup = $ionicPopup.alert({
+                    title: $filter('translate')('TR_1_POPTITLE'),
+                    template: $filter('translate')('TR_1_POPTEMPLATE')
+                });
+            }
+        });
 
         $scope.chooseMeeting = function(id) {
 
@@ -71,7 +85,6 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.searchPlaceHolder = 'TR_SEARCH';
 
         $scope.LineList = $outSideLineHandler.getLineList();
-
 
         $scope.$on('lineListUpdated', function() {
             $scope.LineList = $outSideLineHandler.getLineList();
@@ -95,7 +108,6 @@ angular.module('starter.controllers', ['ngCordova'])
         }).then(function(modal) {
             $scope.modal = modal;
         });
-
 
         //open the list of lines
         $scope.openChooseLine = function() {
@@ -167,7 +179,7 @@ angular.module('starter.controllers', ['ngCordova'])
         });
 
     })
-.controller('createLineCtrl', function($scope, $filter, $state, $ionicPopup, $ionicLoading, $lineManager) {
+    .controller('createLineCtrl', function($scope, $filter, $state, $ionicPopup, $ionicLoading, $lineManager) {
 
         $scope.newLine = {};
         $scope.dates = [];
@@ -212,7 +224,6 @@ angular.module('starter.controllers', ['ngCordova'])
                 sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
             });
         };
-
 
         $scope.insertNewDate = function() {
             $scope.data = {};
@@ -282,7 +293,7 @@ angular.module('starter.controllers', ['ngCordova'])
         });
 
     })
-.controller('signInCtrl', function($scope, $userManagment, $phoneManager) {
+    .controller('signInCtrl', function($scope, $userManagment, $phoneManager) {
 
         $scope.signInEmail = function() {
             $scope.modalMenu.show();
@@ -326,62 +337,55 @@ angular.module('starter.controllers', ['ngCordova'])
             $cordovaSocialSharing.share("LineUp", "hi check my Line", false, $scope.line.link);
         };
 
-
-         $scope.LineStatus = function() {
+        $scope.LineStatus = function() {
             $state.go("app.lineStatus");
         };
 
-
     })
-.controller('lineStatusCtrl', function($scope, $state, $lineManager) {
-
+    .controller('lineStatusCtrl', function($scope, $state, $lineManager) {
+        
         $scope.line = $lineManager.getCurrentLine();
         $scope.$on("getLineInfo", function() {
             $scope.line = $lineManager.getCurrentLine();
         });
 
+       
         $scope.shareLine = function() {
             $state.go("app.share");
         };
 
-    })
-.controller('page6Ctrl', function($scope, $state ,  $lineManager) {
+        $scope.nextMeeting = function() {
+            $lineManager.nextMeeting();
+            console.log("Move to next Meeting");
+        };
 
-    $scope.line = $lineManager.getCurrentLine();
-    $scope.$on("getLineInfo", function() {
-            $scope.line = $lineManager.getCurrentLine();
+         $scope.$on("nextMeeting", function() {
+            //TODO  alert error in server
         });
 
-    $scope.nextMeeting = function() {
-        console.log("Move to next Meeting");
-    };
+        $scope.postponeLine = function() {
+              $lineManager.postponeLine();
+            //TODO open alert box if yes listen to endLine event  if true go to line anlyze of false alert try again
+            console.log("Postpone Line");
+        };
 
-    $scope.postponeMeeting = function() {
-        console.log("Postpone current Meeting");
-    };
-
-    $scope.sendMessage = function() {
-        console.log("Send message");
-        $scope.modalMessageMenu.show();
-    };
-
-    $scope.switchMeetings = function() {
-        console.log("Switch Meetings");
-    };
-
-    $scope.fillEmptyMeeting = function() {
-        console.log("Fill empty Meeting");
-    };
+        // $scope.sendMessage = function() {
+        //     console.log("Send message");
+        //     $scope.modalMessageMenu.show();
+        // };
 
 
-    $scope.endLine = function() {
-        console.log("End line");
-    };
+        $scope.endLine = function() {
+             $lineManager.endLine();
+            //TODO open alert box if yes listen to endLine event  if true go to line anlyze of false alert try again
+            console.log("End line");
+        };
 
-})
+    })
 
-.controller('lineAnalyzeCtrl', function($scope) {
-})
+.controller('lineAnalyzeCtrl', function($scope) {})
+
+.controller('myLinesCtrl', function($scope) {})
 
 .controller('getInLineCtrl', function($scope, $state, $meetingManager, $outSideLineHandler, $ionicLoading, $filter, $ionicPopup) {
         $scope.meeting = $outSideLineHandler.getLineInfo();
@@ -405,8 +409,8 @@ angular.module('starter.controllers', ['ngCordova'])
             }
         });
 
- })
-.controller('meetingStatusCtrl', function($scope, $meetingManager, $ionicPopup, $ionicLoading, $filter, $state, $timeout) {
+    })
+    .controller('meetingStatusCtrl', function($scope, $meetingManager, $ionicPopup, $ionicLoading, $filter, $state, $timeout) {
 
         $scope.meeting = $meetingManager.getCurrentMeeting();
         $scope.reminder = true;
@@ -418,7 +422,6 @@ angular.module('starter.controllers', ['ngCordova'])
 
         $scope.$on("meetingUpdated", function() {
             $scope.meeting = $meetingManager.getCurrentMeeting();
-            debugger;
         });
 
         $scope.cancelLine = function() {
@@ -472,24 +475,20 @@ angular.module('starter.controllers', ['ngCordova'])
             }
         });
 
-
-})
-.controller('myMeetingsCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
-
+    })
+    .controller('myMeetingsCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
 
         $scope.meetingList = $meetingManager.getMeetingList();
 
-
         $scope.chooseMeeting = function(id) {
 
-        $meetingManager.setCurrent(id);
-        $state.go("app.meetingStatus");
+            $meetingManager.setCurrent(id);
+            $state.go("app.meetingStatus");
         }
 
         $scope.lineIdToGet = '';
         $scope.placeholder = 'TR_1_ENTERLINEID';
         $scope.searchPlaceHolder = 'TR_SEARCH';
-
 
         $scope.$on('lineListUpdated', function() {
             $scope.LineList = $outSideLineHandler.getLineList();
@@ -513,7 +512,6 @@ angular.module('starter.controllers', ['ngCordova'])
         }).then(function(modal) {
             $scope.modal = modal;
         });
-
 
         //open the list of lines
         $scope.openChooseLine = function() {
@@ -590,13 +588,12 @@ angular.module('starter.controllers', ['ngCordova'])
 
     $scope.lineList = $lineManager.getLineList();
 
-        $scope.chooseLineNew = function(id) {
+    $scope.chooseLineNew = function(id) {
         $lineManager.setCurrent(id);
-         $state.go("app.lineStatus");
+        $state.go("app.lineStatus");
     }
 
-
-        $scope.createLine = function() {
+    $scope.createLine = function() {
         $state.go("app.createLine");
     }
 
@@ -613,8 +610,7 @@ angular.module('starter.controllers', ['ngCordova'])
         }
 
     })
-.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $cordovaSocialSharing) {
+    .controller('mainCtrl', function($scope, $ionicPopup, $timeout, $cordovaSocialSharing) {
         //open screen delay 
-     
 
     });
