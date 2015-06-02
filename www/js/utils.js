@@ -20,7 +20,11 @@ checkAtt = function(prop) {
   return true;
 }
 
+<<<<<<< HEAD
 // var serverUrl =  "http://localHost:3030/api/";
+=======
+//var serverUrl =  "http://localHost:3030/api/";
+>>>>>>> a971ab50ada0d1deb29ee9b04600c02f57b25d4c
 // var serverUrl =  "http://192.168.1.17:3030/api/";
 var serverUrl =  "https://fathomless-eyrie-8332.herokuapp.com/api/";
 //http://localhost:8080/auth/facebook/callback

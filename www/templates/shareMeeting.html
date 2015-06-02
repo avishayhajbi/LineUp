@@ -1,5 +1,5 @@
 <ion-view>
-    <ion-content id="share">
+    <ion-content id="shareMeeting">
 
         <!-- Line info -->
         <div class="col col-80 col-offset-10 Meeting info">
@@ -38,20 +38,21 @@
 
 
     </ion-content>
-<div class="bar bar-footer">
+    <div class="bar bar-footer">
             <div class="tabs tabs-icon-top">
-                <a class="tab-item"  ng-click="nextMeeting()">
-                    <i class="icon ion-skip-forward"></i> Next Meeting
+                            <a class="tab-item">
+                    <i class="icon ion-checkmark"></i> Confirm Meeting
                 </a>
-                <a class="tab-item" ng-click="postponeMeeting()">
-                    <i class="icon ion-pause"></i> Pause Line
+                <a class="tab-item">
+                    <i class="icon ion-close"></i>{{"TR_cancelLine" | translate}}
                 </a>
-                <a class="tab-item" ng-click="endLine()">
-                    <i class="icon ion-close"></i> End Line
-                </a>                
-                <a class="tab-item" ng-click="LineStatus()">
-                    <i class="icon ion-home"></i> Line Status
+                <a class="tab-item" ng-click="MeetingStatus()">
+                    <i class="icon ion-home"></i> Meeting Status
                 </a>
+
+<!--                 <a class="tab-item">
+                    <i class="icon ion-email"></i> {{"TR_messageAdmin" | translate}}
+                </a> -->
             </div>
         </div>
 </ion-view>
