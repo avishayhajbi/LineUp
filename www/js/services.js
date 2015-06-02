@@ -434,7 +434,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
     $provide.factory('$lineManager', function($rootScope, $http, $userManagment, $localstorage) {
         var lineList = [];
-        var currentLine;
+        var currentLine = {};
 
         // $localstorage.setObject('lineList', []);
         if ($localstorage.getObject('lineList')) {
@@ -445,9 +445,6 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         }
         console.log("my lines list:", lineList);
 
-        function saveLineLocal(line) {
-            $localstorage.setObject('lineList', line);
-        }
 
         function getLineInfo() {
             $http.get(serverUrl + 'getLineInfo', {
@@ -476,20 +473,19 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                     title: line.title
                 };
                 line.lineManagerId = $userManagment.getMyId();
-                console.log('line is:', line);
                 $http.get(serverUrl + 'createLine', {
                     params: {
                         line: line
                     },
                     timeout: 8000
                 }).then(function(response) {
-                    if (checkAtt(response.data)) {
-                        line.lineId = response.data;
+                    if (response.data) {
+                        currentLine.lineId = response.data;
                         save.lineId = response.data;
                         lineList.push(save);
-                        currentLine = line;
-                        saveLineLocal(save);
+                        $localstorage.setObject('lineList', lineList);
                         $rootScope.$broadcast('lineCreated', true);
+                        getLineInfo();
                     } else {
                         $rootScope.$broadcast('lineCreated', false);
                     }
@@ -500,13 +496,12 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
             },
             updateLineInfo: function(lineId) {
                 for (var i = 0; i < lineList.length; i++) {
-                    if (lineList[i].lindId === lindId) {
+                    if (lineList[i].lineId === lineId) {
                         currentLine = lineList[i];
                         getLineInfo();
                         break;
                     }
                 }
-
             },
             getCurrentLine: function() {
                 if (!currentLine) return false;
@@ -559,7 +554,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
             },
             setCurrentLine: function(id) {
                 for (var i = 0; i < lineList.length; i++) {
-                    if (lineList[i].id === id) {
+                    if (lineList[i].lineId === id) {
                         currentLine = lineList[i];
                         getLineInfo();
                         break;

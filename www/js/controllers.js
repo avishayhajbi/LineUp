@@ -61,6 +61,7 @@ angular.module('starter.controllers', ['ngCordova'])
         }
 
         $scope.chooseLineNew = function(id) {
+            
             $lineManager.setCurrentLine(id);
             $ionicLoading.show({
                 template: $filter('translate')('TR_Loading')
