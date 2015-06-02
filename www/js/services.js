@@ -284,13 +284,12 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         function moveToCanceld(id) {
 
             meetings = meetings.filter(function(obj) {
-                if (obj.id === id) {
+                if (obj.lineId === id) {
                     canceldMeetings.push(obj);
                     return false;
                 }
                 return true;
             });
-            debugger;
             saveMeetingsLocal();
             $rootScope.$broadcast('updateMyLists');
         }
@@ -334,7 +333,6 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                 },
                 timeout: 8000
             }).then(function(response) {
-
                 if (response.data) {
                     currentMeeting = response.data;
                     currentMeeting.ProgressCounter = false;
@@ -422,9 +420,9 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                 return meetings;
             },
             setCurrent: function(id) {
+                
                 for (var i = 0; i < meetings.length; i++) {
-                    if (meetings.lineId === id) {
-                        debugger;
+                    if (meetings[i].lineId === id) {
                         currentMeeting = meetings[i];
                         updateMeetingInfo();
                         break;
