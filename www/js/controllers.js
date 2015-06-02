@@ -340,9 +340,7 @@ angular.module('starter.controllers', ['ngCordova'])
         };
 
     })
-<<<<<<< HEAD
-.controller('lineStatusCtrl', function($scope, $state, $lineManager) {
-=======
+
 .controller('shareMeetingCtrl', function($scope, $lineManager, $cordovaSocialSharing, $state) {
 
         $scope.line = $lineManager.getCurrentLine();
@@ -380,8 +378,8 @@ angular.module('starter.controllers', ['ngCordova'])
         };
 
     })
-    .controller('lineStatusCtrl', function($scope, $state, $lineManager) {
->>>>>>> a971ab50ada0d1deb29ee9b04600c02f57b25d4c
+.controller('lineStatusCtrl', function($scope, $state, $lineManager) {
+
         
         $scope.line = $lineManager.getCurrentLine();
         $scope.$on("getLineInfo", function() {

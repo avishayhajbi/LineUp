@@ -335,7 +335,6 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
             }).then(function(response) {
 
                 if (response.data) {
-<<<<<<< HEAD
                     currentMeeting = response.data;
                     currentMeeting.ProgressCounter = false;
                     currentMeeting.progressWidth = 0;
@@ -346,14 +345,6 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                                saveMeetingsLocal();
                         }
                     }
-=======
-                    currentMeeting.time = response.data.time;
-                    currentMeeting.position = response.data.position;
-                    currentMeeting.confirmed = response.data.confirmed;
-                    currentMeeting.confirmTime = response.data.confirmTime;
-                    currentMeeting.druation = response.data.druation;
-                    currentMeeting.active = response.data.active;
->>>>>>> a971ab50ada0d1deb29ee9b04600c02f57b25d4c
                     calculateTimeLeft();
                     $rootScope.$broadcast('updateMeetingInfo', true);
                 }
