@@ -218,7 +218,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                     },
                     timeout: 8000
                 }).then(function(response) {
-                    console.log("line got from server:" + response.data);
+                    console.log("line got from server:" , response.data);
                     if (!response.data) {
                         $rootScope.$broadcast('lineInfoArrived', false);
                         return;
@@ -290,8 +290,9 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                 }
                 return true;
             });
+            debugger;
             saveMeetingsLocal();
-
+            $rootScope.$broadcast('updateMyLists');
         }
 
         function calculateTimeLeft() {
@@ -346,6 +347,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                         }
                     }
                     calculateTimeLeft();
+                    console.log("meeting update:", currentMeeting);
                     $rootScope.$broadcast('updateMeetingInfo', true);
                 }
 
@@ -398,7 +400,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
                 $http.get(serverUrl + 'cancelMeeting', {
                     params: {
-                        lineId: meeting.id,
+                        lineId: meeting.lineId,
                         userId: $userManagment.getMyId(),
                         time: meeting.time,
                         userName: $userManagment.getMyName()
@@ -406,10 +408,12 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                     timeout: 8000
                 }).then(function(response) {
                     if (response.data) {
-                        moveToCanceld(meeting.id);
+                        moveToCanceld(meeting.lineId);
                         $rootScope.$broadcast('meetingCancled', true);
                         return;
                     }
+                    $rootScope.$broadcast('meetingCancled', false);
+                },function(){
                     $rootScope.$broadcast('meetingCancled', false);
                 });
 
@@ -419,7 +423,8 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
             },
             setCurrent: function(id) {
                 for (var i = 0; i < meetings.length; i++) {
-                    if (meetings.id === id) {
+                    if (meetings.lineId === id) {
+                        debugger;
                         currentMeeting = meetings[i];
                         updateMeetingInfo();
                         break;
@@ -563,7 +568,6 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                 }
             },
             nextMeeting: function() {
-                console.log('line is:', line);
                 $http.get(serverUrl + 'nextMeeting', {
                     params: {
                         lineId: currentLine.lineId,

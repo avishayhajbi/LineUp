@@ -50,6 +50,12 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.lineList = $lineManager.getLineList();
         $scope.meetingList = $meetingManager.getMeetingList();
 
+        $scope.$on("updateMyLists", function() { 
+            debugger;
+            $scope.lineList = $lineManager.getLineList();
+            $scope.meetingList = $meetingManager.getMeetingList();
+        });
+
         $scope.createLine = function() {
             $state.go("app.createLine");
         }
@@ -305,41 +311,41 @@ angular.module('starter.controllers', ['ngCordova'])
 
 .controller('shareLineCtrl', function($scope, $lineManager, $cordovaSocialSharing, $state) {
 
-        $scope.line = $lineManager.getCurrentLine();
-        if (!$scope.line) {
-            $scope.line = {};
-            $scope.line.link = "link not avilable";
-        } else {
-            $scope.line.link = "https://fathomless-eyrie-8332.herokuapp.com/lineRedirect?lineId=" + $scope.line.id;
-        }
+    $scope.line = $lineManager.getCurrentLine();
+    if (!$scope.line) {
+        $scope.line = {};
+        $scope.line.link = "link not avilable";
+    } else {
+        $scope.line.link = "https://fathomless-eyrie-8332.herokuapp.com/lineRedirect?lineId=" + $scope.line.id;
+    }
 
-        $scope.copyLineLink = function() {
-            cordova.plugins.clipboard.copy($scope.line.link);
-        };
+    $scope.copyLineLink = function() {
+        cordova.plugins.clipboard.copy($scope.line.link);
+    };
 
-        $scope.shareFackBook = function() {
-            console.log("share via FaceBook");
-            facebookConnectPlugin.showDialog({
-                method: 'share',
-                href: $scope.line.link,
-            }, function(data) {
-                console.log(data);
-            }, function(data) {
-                console.log(data);
-            });
-            //$cordovaSocialSharing.shareViaFacebook( "hi check my Line", false, $scope.line.link);
-        };
+    $scope.shareFackBook = function() {
+        console.log("share via FaceBook");
+        facebookConnectPlugin.showDialog({
+            method: 'share',
+            href: $scope.line.link,
+        }, function(data) {
+            console.log(data);
+        }, function(data) {
+            console.log(data);
+        });
+        //$cordovaSocialSharing.shareViaFacebook( "hi check my Line", false, $scope.line.link);
+    };
 
-        $scope.shareMobile = function() {
-            console.log("share via Mobile");
-            $cordovaSocialSharing.share("LineUp", "hi check my Line", false, $scope.line.link);
-        };
+    $scope.shareMobile = function() {
+        console.log("share via Mobile");
+        $cordovaSocialSharing.share("LineUp", "hi check my Line", false, $scope.line.link);
+    };
 
-        $scope.LineStatus = function() {
-            $state.go("app.lineStatus");
-        };
+    $scope.LineStatus = function() {
+        $state.go("app.lineStatus");
+    };
 
-    })
+})
 
 .controller('shareMeetingCtrl', function($scope, $lineManager, $cordovaSocialSharing, $state) {
 
@@ -378,15 +384,13 @@ angular.module('starter.controllers', ['ngCordova'])
         };
 
     })
-.controller('lineStatusCtrl', function($scope, $state, $lineManager) {
+    .controller('lineStatusCtrl', function($scope, $state, $lineManager) {
 
-        
         $scope.line = $lineManager.getCurrentLine();
         $scope.$on("getLineInfo", function() {
             $scope.line = $lineManager.getCurrentLine();
         });
 
-       
         $scope.shareLine = function() {
             $state.go("app.shareLine");
         };
@@ -396,12 +400,12 @@ angular.module('starter.controllers', ['ngCordova'])
             console.log("Move to next Meeting");
         };
 
-         $scope.$on("nextMeeting", function() {
+        $scope.$on("nextMeeting", function() {
             //TODO  alert error in server
         });
 
         $scope.postponeLine = function() {
-              $lineManager.postponeLine();
+            $lineManager.postponeLine();
             //TODO open alert box if yes listen to endLine event  if true go to line anlyze of false alert try again
             console.log("Postpone Line");
         };
@@ -411,9 +415,8 @@ angular.module('starter.controllers', ['ngCordova'])
         //     $scope.modalMessageMenu.show();
         // };
 
-
         $scope.endLine = function() {
-             $lineManager.endLine();
+            $lineManager.endLine();
             //TODO open alert box if yes listen to endLine event  if true go to line anlyze of false alert try again
             console.log("End line");
         };
@@ -439,6 +442,10 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('getInLineCtrl', function($scope, $state, $meetingManager, $outSideLineHandler, $ionicLoading, $filter, $ionicPopup) {
         $scope.meeting = $outSideLineHandler.getLineInfo();
 
+        $scope.$on('lineInfoArrived', function(event, args) {
+            $scope.meeting = $outSideLineHandler.getLineInfo();
+        });
+
         $scope.joinLine = function() {
             $meetingManager.joinLine($scope.meeting);
             $ionicLoading.show({
@@ -459,7 +466,7 @@ angular.module('starter.controllers', ['ngCordova'])
         });
 
     })
-.controller('meetingStatusCtrl', function($scope, $meetingManager, $ionicPopup, $ionicLoading, $filter, $state, $timeout) {
+    .controller('meetingStatusCtrl', function($scope, $meetingManager, $ionicPopup, $ionicLoading, $filter, $state, $timeout) {
 
         $scope.meeting = $meetingManager.getCurrentMeeting();
         $scope.reminder = true;
@@ -525,7 +532,7 @@ angular.module('starter.controllers', ['ngCordova'])
         });
 
         $scope.shareLine = function() {
-        $state.go("app.shareMeeting");
+            $state.go("app.shareMeeting");
         };
 
     })
@@ -637,10 +644,9 @@ angular.module('starter.controllers', ['ngCordova'])
 
     })
 
-
 .controller('settingCtrl', function($scope, $translate, $userManagment) {
         $scope.changeLanguage = function() {
-        
+
             $translate.use('he');
         }
 
