@@ -88,7 +88,6 @@ angular.module('starter.controllers', ['ngCordova'])
 
         $scope.$on('lineListUpdated', function() {
             $scope.LineList = $outSideLineHandler.getLineList();
-            console.log('lineListUpdated:', $scope.LineList);
         });
 
         //when typing on inputbox
@@ -147,7 +146,6 @@ angular.module('starter.controllers', ['ngCordova'])
         }
 
         $scope.getLine = function() {
-            console.log("try to connect to:" + $scope.lineIdToGet);
             $outSideLineHandler.getLine($scope.lineIdToGet);
             $ionicLoading.show({
                 template: $filter('translate')('TR_Loading')
@@ -288,7 +286,7 @@ angular.module('starter.controllers', ['ngCordova'])
                     template: $filter('translate')('TR_1_POPTEMPLATE')
                 });
             } else {
-                $state.go("app.signIn");
+                $state.go("app.lineStatus");
             }
         });
 
@@ -342,7 +340,7 @@ angular.module('starter.controllers', ['ngCordova'])
         };
 
     })
-    .controller('lineStatusCtrl', function($scope, $state, $lineManager) {
+.controller('lineStatusCtrl', function($scope, $state, $lineManager) {
         
         $scope.line = $lineManager.getCurrentLine();
         $scope.$on("getLineInfo", function() {
@@ -410,7 +408,7 @@ angular.module('starter.controllers', ['ngCordova'])
         });
 
     })
-    .controller('meetingStatusCtrl', function($scope, $meetingManager, $ionicPopup, $ionicLoading, $filter, $state, $timeout) {
+.controller('meetingStatusCtrl', function($scope, $meetingManager, $ionicPopup, $ionicLoading, $filter, $state, $timeout) {
 
         $scope.meeting = $meetingManager.getCurrentMeeting();
         $scope.reminder = true;
@@ -420,7 +418,7 @@ angular.module('starter.controllers', ['ngCordova'])
             $meetingManager.updateMeeting();
         }, 60000);
 
-        $scope.$on("meetingUpdated", function() {
+        $scope.$on("updateMeetingInfo", function() {
             $scope.meeting = $meetingManager.getCurrentMeeting();
         });
 
@@ -476,7 +474,7 @@ angular.module('starter.controllers', ['ngCordova'])
         });
 
     })
-    .controller('myMeetingsCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
+.controller('myMeetingsCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
 
         $scope.meetingList = $meetingManager.getMeetingList();
 

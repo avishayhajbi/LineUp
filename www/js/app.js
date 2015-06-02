@@ -76,15 +76,6 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
         }
       }
     })
-    .state('app.page6', {
-      url: "/page6",
-      views: {
-        'menuContent': {
-          templateUrl: "templates/page6.html",
-          controller: 'page6Ctrl'
-        }
-      }
-    })
     .state('app.lineAnalyze', {
       url: "/lineAnalyze",
       views: {
