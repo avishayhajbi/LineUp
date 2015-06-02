@@ -97,6 +97,9 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_messageBody:'Body:',
       TR_sendMessage:'Send',
 
+      TR_2_POPTITLE: 'oh oh..',
+      TR_2_POPTEMPLATE: 'Something went wrong :(',
+
     });
     $translateProvider.translations('he', {
       //global
