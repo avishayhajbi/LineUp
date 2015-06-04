@@ -258,8 +258,9 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
         var currentMeeting;
 
         (function() {
-            $localstorage.setObject('meetings', []);
-            $localstorage.setObject('canceldMeetings', []);
+
+            //$localstorage.setObject('meetings', []);
+            //$localstorage.setObject('canceldMeetings', []);
 
             if ($localstorage.getObject('meetings')) {
                 var list = $localstorage.getObject('meetings');
