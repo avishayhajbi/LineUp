@@ -32,8 +32,13 @@ angular.module('starter.controllers', ['ngCordova'])
             login
         };
 
+        $scope.goTomyMeetings = function () {
+              
+                $state.transitionTo("app.myMeetings",null,{reload: true, cache:false});
+        }
+
     })
-    .controller('defaultCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
+.controller('defaultCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
 
         if (window.jumpToPage) {
 
@@ -51,7 +56,6 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.meetingList = $meetingManager.getMeetingList();
 
         $scope.$on("updateMyLists", function() { 
-            debugger;
             $scope.lineList = $lineManager.getLineList();
             $scope.meetingList = $meetingManager.getMeetingList();
         });
@@ -179,12 +183,14 @@ angular.module('starter.controllers', ['ngCordova'])
                     template: "already signed to this line"
                 });
             } else {
-                $state.go("app.getInLine");
+                
+                $state.transitionTo("app.getInLine",null,{reload: true, cache:false});
+                // $state.go("app.getInLine", {lineInfo:"true"});
             }
         });
 
     })
-    .controller('createLineCtrl', function($scope, $filter, $state, $ionicPopup, $ionicLoading, $lineManager) {
+.controller('createLineCtrl', function($scope, $filter, $state, $ionicPopup, $ionicLoading, $lineManager) {
 
         $scope.newLine = {};
         $scope.dates = [];
@@ -293,12 +299,14 @@ angular.module('starter.controllers', ['ngCordova'])
                     template: $filter('translate')('TR_1_POPTEMPLATE')
                 });
             } else {
+                $scope.newLine = {};
+                $scope.dates = [];
                 $state.go("app.lineStatus");
             }
         });
 
     })
-    .controller('signInCtrl', function($scope, $userManagment, $phoneManager) {
+.controller('signInCtrl', function($scope, $userManagment, $phoneManager) {
 
         $scope.signInEmail = function() {
             $scope.modalMenu.show();
@@ -353,6 +361,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
     $scope.line = $lineManager.getCurrentLine();
     $scope.$on("getLineInfo", function() {
+
         $scope.line = $lineManager.getCurrentLine();
     });
 
@@ -432,8 +441,14 @@ angular.module('starter.controllers', ['ngCordova'])
 
 })
 
-.controller('getInLineCtrl', function($scope, $state, $meetingManager, $outSideLineHandler, $ionicLoading, $filter, $ionicPopup) {
-    $scope.meeting = $outSideLineHandler.getLineInfo();
+.controller('getInLineCtrl', function($scope, $state, $meetingManager, $outSideLineHandler, $ionicLoading, $filter, $ionicPopup ) {
+
+    
+    $scope.meeting = $outSideLineHandler.getLineInfo();    
+
+    $scope.$on('lineInfoArrived', function() {
+         $scope.meeting = $outSideLineHandler.getLineInfo();
+    });
 
     $scope.joinLine = function() {
         $meetingManager.joinLine($scope.meeting);
@@ -450,7 +465,8 @@ angular.module('starter.controllers', ['ngCordova'])
                 template: $filter('translate')('TR_1_POPTEMPLATE')
             });
         } else {
-            $state.go("app.meetingStatus");
+             $scope.meeting = {};
+            $state.transitionTo("app.meetingStatus");
         }
     });
 
@@ -493,7 +509,7 @@ angular.module('starter.controllers', ['ngCordova'])
         };
 
     })
-    .controller('meetingStatusCtrl', function($scope, $meetingManager, $ionicPopup, $ionicLoading, $filter, $state, $timeout) {
+.controller('meetingStatusCtrl', function($scope, $meetingManager, $ionicPopup, $ionicLoading, $filter, $state, $timeout) {
 
         $scope.meeting = $meetingManager.getCurrentMeeting();
         $scope.reminder = true;
@@ -553,6 +569,7 @@ angular.module('starter.controllers', ['ngCordova'])
                     }]
                 });
                 canceledPopup.then(function(data) {
+                    $scope.meeting ={};
                     $state.go("app.default");
                 });
             }
@@ -563,7 +580,7 @@ angular.module('starter.controllers', ['ngCordova'])
         };
 
     })
-    .controller('myMeetingsCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
+.controller('myMeetingsCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
 
         $scope.meetingList = $meetingManager.getMeetingList();
 
@@ -665,7 +682,8 @@ angular.module('starter.controllers', ['ngCordova'])
                     template: "already signed to this line"
                 });
             } else {
-                $state.go("app.getInLine");
+                $state.transitionTo("app.getInLine",null/*params*/,{ reload: true, inherit: true, notify: true });
+                
             }
         });
 
