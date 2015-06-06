@@ -54,6 +54,7 @@
             </div>
 
             <!--next meetings row-->
+            <div ng-show="line.meetings.length > 0 ">
             <div class="row">
                 <div class="col col-40 col-offset-5">
                     <div class="input-label">{{"TR_5_nextMeetings" | translate}}</div>
@@ -61,10 +62,10 @@
             </div>
             <div class="row">
                 <div class="col col-40 col-offset-5">
-                    <h4>Name</h4>
+                    <h4>{{"TR_5_user" | translate}}</h4>
                 </div>
                 <div class="col col-40 col-offset-5">
-                    <h4>Date</h4>
+                    <h4>{{"TR_5_date" | translate}}</h4>
                 </div>
             </div>
             <div class="row" ng-repeat="meeting in line.meetings | limitTo:3">
@@ -75,6 +76,7 @@
                     <h4>{{meeting.time | date:'medium'}}</h4>
                 </div>
             </div>
+            </div>
 
         </div>
 
@@ -83,8 +85,11 @@
 
     <div class="bar bar-footer">
         <div class="tabs tabs-icon-top">
-            <a class="tab-item" ng-click="nextMeeting()">
+            <a class="tab-item" ng-click="nextMeeting()" ng-show="line.meetings.length > 0 ">
                 <i class="icon ion-skip-forward"></i> Next Meeting
+            </a>
+            <a class="tab-item" ng-hide="line.meetings.length > 0 ">
+                <i class="icon ion-skip-forward not-active"></i> Next Meeting
             </a>
             <a class="tab-item" ng-click="postponeLine()">
                 <i class="icon ion-pause"></i> Pause Line

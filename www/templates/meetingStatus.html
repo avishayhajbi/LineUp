@@ -19,7 +19,7 @@
 
         <div class="col col-80 col-offset-10 progressBar">
 
-        <div class="progressBarImage" ng-show="meeting.ProgressCounter" style="width:{{meeting.width}}%;"></div>
+        <div class="progressBarImage" ng-show="meeting.ProgressCounter" style="width:{{meeting.progressWidth}}%;"></div>
 
         </div>
 
@@ -29,15 +29,15 @@
                     <!--position row-->
             <div class="row">
                 <div class="col col-40 col-offset-5">
-                    <div class="input-label" ng-disabled="reminder">{{"TR_yourPositionIs" | translate}}</div>
+                    <div class="input-label  col-offset-5" ng-disabled="reminder">{{"TR_yourPositionIs" | translate}}</div>
                 </div>
                 <div class="col col-40">
-                    <h4>{{meeting.position}}</h4>
+                    <h3><b>{{meeting.position}}</b></h3>
                 </div>
             </div>  
             <!--time of meeting-->
                 <div class="col-80 col-offset-10">
-                    <div class="input-label" ng-disabled="reminder">{{"TR_meetingTimeStart" | translate}}</div>
+                    <div class="input-label " ng-disabled="reminder">{{"TR_meetingTimeStart" | translate}}</div>
                 </div>
                 <div class="col-80 col-offset-10">
                     <h4>{{meeting.time | date : "HH:mm"}} {{meeting.time | date : "dd:MM:yyyy"}}</h4>
@@ -55,7 +55,7 @@
             <!--timmer row-->
             <div class="row">
                 <div class="col col-40 col-offset-5">
-                    <div class="input-label" ng-disabled="reminder">{{"TR_Reminder" | translate}}</div>
+                    <div class="input-label  col-offset-5" ng-disabled="reminder">{{"TR_Reminder" | translate}}</div>
                 </div>
                 <div class="col col-40">
                     <label class="toggle">
@@ -77,10 +77,10 @@
                     <i class="icon ion-checkmark"></i> Confirm Meeting
                 </a>
                 <a class="tab-item">
-                    <i class="icon ion-close" ng-click="cancelLine()"></i>{{"TR_cancelLine" | translate}}
+                    <i class="icon ion-close" ng-click="cancelLine()"></i>{{"TR_cancelMeeting" | translate}}
                 </a>
-                <a class="tab-item" ng-click="shareLine()">
-                    <i class="icon ion-android-share"></i> Share Line
+                <a class="tab-item" ng-click="shareMeeting()">
+                    <i class="icon ion-android-share"></i> Share Meeting
                 </a>
 
 <!--                 <a class="tab-item">
