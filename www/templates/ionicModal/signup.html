@@ -1,0 +1,35 @@
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">{{"TR_signUp" | translate}}</h1>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeSignUp()">{{"TR_Close" | translate}}</button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+
+        <h4 class="col col-offset-20">{{"TR_emailDetails" | translate}}:</h4>
+        <form ng-submit="dosignUp()">
+            <div class="list">
+                <label class="item item-input">
+                    <span class="input-label">{{"TR_Username" | translate}}</span>
+                    <input type="text" ng-model="signUpData.username">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">{{"TR_EmailAddress" | translate}}</span>
+                    <input type="text" ng-model="signUpData.email">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">{{"TR_Password" | translate}}</span>
+                    <input type="password" ng-model="signUpData.password">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">{{"TR_Passwordrepet" | translate}}</span>
+                    <input type="password" ng-model="signUpData.repetPassword">
+                </label>
+                <label class="item">
+                    <button class="button button-block button-positive" type="submit">{{"TR_Log_up" | translate}}</button>
+                </label>
+            </div>
+        </form>
+    </ion-content>
+</ion-modal-view>
