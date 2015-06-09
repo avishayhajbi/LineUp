@@ -1,14 +1,13 @@
 <ion-view>
-
     <ion-content id="default" class="page">
 
         <!--Create Line button-->
             <button class="button icon-left ion-compose button-positive button-block col-80 col-offset-10" menu-close ng-click="createLine()">{{"TR_Create_Line" | translate}}</button>
            
-            <div class="col col-80 col-offset-10 row" ng-show="lineList.length > 0">My Lines:
+            <div class="col col-80 col-offset-10 row" ng-show="myLineList.length > 0">My Lines:
         </div>
         <ion-list class="col col-80 col-offset-10">
-            <ion-item ng-repeat="Line in lineList" ng-click="chooseLineNew(Line.lineId)">
+            <ion-item ng-repeat="Line in myLineList" ng-click="chooseLineNew(Line.lineId)">
                 {{Line.title}} --- {{Line.id}}
             </ion-item>
         </ion-list>
@@ -30,11 +29,11 @@
         <!--Join Line button-->
         <button class="button icon-left ion-plus button-positive button-block col-80 col-offset-10" menu-close ng-disabled="lineIdToGet===''" ng-click="getLine()">{{"TR_join_line" | translate}}</button>
 
-          <div class="col col-80 col-offset-10 row" ng-show="meetingList.length > 0">My Meetings:
+          <div class="col col-80 col-offset-10 row" ng-show="myMeetingList.length > 0">My Meetings:
         </div>
 
         <ion-list class="col col-80 col-offset-10" style="padding:0px !important;">
-            <ion-item ng-repeat="meeting in meetingList" ng-click="chooseMeeting(meeting.lineId);">
+            <ion-item ng-repeat="meeting in myMeetingList" ng-click="chooseMeeting(meeting.lineId);">
                 {{meeting.title}} ---- {{meeting.time | date : "HH:mm"}}
             </ion-item>
         </ion-list>

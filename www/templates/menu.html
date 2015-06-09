@@ -1,22 +1,24 @@
 <ion-side-menus enable-menu-with-back-views="false">
     <ion-side-menu-content>
         <ion-nav-bar class="bar-positive">
-
-
             <ion-nav-buttons side="left">
+
                 <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
                 </button>
             </ion-nav-buttons>
         </ion-nav-bar>
 
-        <ion-nav-view name="menuContent"></ion-nav-view>
-    </ion-side-menu-content>
+        <ion-nav-view name="menuContent">
 
+    </ion-nav-view>
+    </ion-side-menu-content>
+   
     <ion-side-menu side="left">
         <ion-header-bar class="bar-positive">
-            <img src="http://graph.facebook.com/{{user.id}}/picture?width=30&height=30" style="border-radius: 10px;" /> {{user.name}}
+            <!-- <img src="http://graph.facebook.com/{{user.id}}/picture?width=30&height=30" style="border-radius: 10px;" /> {{user.name}} -->
         </ion-header-bar>
         <ion-content>
+        {{user.name}}
             <ion-list>
                 <ion-item nav-clear menu-close href="#/app/signIn">
                     {{"TR_signIn" | translate}}

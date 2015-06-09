@@ -21,6 +21,7 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
 .config(function($compileProvider, $stateProvider, $urlRouterProvider , $httpProvider) {
   // openFB.init({appId: '800206223408829'});
   //to show images
+
   $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
 
   $stateProvider
@@ -41,6 +42,7 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
   })
   .state('app.createLine', {
       url: "/createLine",
+      cache: false,
       views: {
         'menuContent': {
           templateUrl: "templates/createLine.html",
@@ -60,6 +62,7 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
     })
   .state('app.shareLine', {
       url: "/shareLine",
+      cache: false,
       views: {
         'menuContent': {
           templateUrl: "templates/shareLine.html",
@@ -69,6 +72,7 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
     })
     .state('app.shareMeeting', {
       url: "/shareMeeting",
+        cache: false,
       views: {
         'menuContent': {
           templateUrl: "templates/shareMeeting.html",
@@ -78,6 +82,7 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
     })
     .state('app.lineStatus', {
       url: "/lineStatus",
+      cache: false,
       views: {
         'menuContent': {
           templateUrl: "templates/lineStatus.html",
@@ -87,6 +92,7 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
     })
     .state('app.lineAnalyze', {
       url: "/lineAnalyze",
+      cache: false,
       views: {
         'menuContent': {
           templateUrl: "templates/lineAnalyze.html",
@@ -96,16 +102,19 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
     })
 
     .state('app.getInLine', {
-      url: "/getInLine",
+      url: "/getInLine/",
+      cache: false,
       views: {
         'menuContent': {
           templateUrl: "templates/getInLine.html",
-          controller: 'getInLineCtrl'
+          controller: 'getInLineCtrl',
+
         }
       }
     })
     .state('app.meetingStatus', {
       url: "/meetingStatus",
+        cache: false,
       views: {
         'menuContent': {
           templateUrl: "templates/meetingStatus.html",
@@ -115,6 +124,7 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
     })
     .state('app.myMeetings', {
       url: "/myMeetings",
+        cache: false,
       views: {
         'menuContent': {
           templateUrl: "templates/myMeetings.html",
@@ -124,6 +134,7 @@ angular.module('starter', ['ionic', 'starter.controllers' ,'starter.directives',
     })
         .state('app.myLines', {
       url: "/myLines",
+        cache: false,
       views: {
         'menuContent': {
           templateUrl: "templates/myLines.html",

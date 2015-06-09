@@ -8,7 +8,7 @@
     <ion-content>
 
         <h4 class="col col-offset-20">{{"TR_emailDetails" | translate}}:</h4>
-        <form ng-submit="doLogin()">
+        
             <div class="list">
                 <label class="item item-input">
                     <span class="input-label">{{"TR_Username" | translate}}</span>
@@ -20,9 +20,9 @@
                     <input type="password" ng-model="loginData.password">
                 </label>
                 <label class="item">
-                    <button class="button button-block button-positive" type="submit">{{"TR_Log_in" | translate}}</button>
+                    <button class="button button-block button-positive" ng-click="doLogin()" type="submit">{{"TR_Log_in" | translate}}</button>
                 </label>
             </div>
-        </form>
+       
     </ion-content>
 </ion-modal-view>

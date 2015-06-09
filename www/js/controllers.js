@@ -1,10 +1,9 @@
 angular.module('starter.controllers', ['ngCordova'])
 
-.controller('menuCtrl', function($scope, $ionicModal, $timeout, $pushNotificationHere, $userManagment, $ionicLoading, $ionicPopup, $state) {
-
+.controller('menuCtrl', function($scope, $ionicModal, $timeout, $filter, $userManagment, $ionicLoading, $ionicPopup, $state) {
         $scope.user = {};
-
-        $scope.$on('connectedToFB', function(event, result) {
+       
+        $scope.$on("userConnected", function() {
             $scope.user = {
                 id: $userManagment.getfbId(),
                 name: $userManagment.getMyName(),
@@ -12,11 +11,19 @@ angular.module('starter.controllers', ['ngCordova'])
             };
         });
 
+
+        // $scope.$on('connectedToFB', function(event, result) {
+        //     $scope.user = {
+        //         id: $userManagment.getfbId(),
+        //         name: $userManagment.getMyName(),
+        //         connected: $userManagment.isConnected()
+        //     };
+        // });
+
     })
-    .controller('defaultCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
+    .controller('defaultCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager , $userManagment) {
 
         if (window.jumpToPage) {
-
             var type = window.jumpToPage[0];
             var id = window.jumpToPage[1];
             if (type === "line") {
@@ -24,18 +31,36 @@ angular.module('starter.controllers', ['ngCordova'])
             } else if (type === "meeting") {
 
             }
-
         }
 
-        $scope.lineList = $lineManager.getLineList();
-        $scope.meetingList = $meetingManager.getMeetingList();
-
-        $scope.$on("updateMyLists", function() {
-            $scope.lineList = $lineManager.getLineList();
-            $scope.meetingList = $meetingManager.getMeetingList();
+        $outSideLineHandler.getRandomlineList().then(function(data) {
+            $scope.LineList = data;
         });
 
+
+        $scope.myLineList = [];
+        $scope.myMeetingList = [];
+
+        function getMyMeetings() {
+            // $meetingManager.getMyMeetingList().then(function(data) {
+            //     if (data) $scope.myMeetingList = data;
+            // });
+        }
+
+        function getMyLines() {
+            // $lineManager.getMyLineList().then(function(data) {
+            //     if (data) $scope.myLineList = data;
+            // });
+        }
+
+        $scope.$on("userConnected", function() {
+            getMyMeetings();
+            getMyLines();
+        });
+
+
         $scope.createLine = function() {
+
             $state.go("app.createLine");
         }
 
@@ -47,21 +72,7 @@ angular.module('starter.controllers', ['ngCordova'])
             });
         }
 
-        $scope.$on("getLineInfo", function(evt, data) {
-            $ionicLoading.hide();
-            if (data) {
-                $state.go("app.lineStatus");
-            }
-            if (!data) {
-                var alertPopup = $ionicPopup.alert({
-                    title: $filter('translate')('TR_1_POPTITLE'),
-                    template: $filter('translate')('TR_1_POPTEMPLATE')
-                });
-            }
-        });
-
         $scope.chooseMeeting = function(id) {
-
             $meetingManager.setCurrent(id);
             $state.go("app.meetingStatus");
         }
@@ -70,11 +81,7 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.placeholder = 'TR_1_ENTERLINEID';
         $scope.searchPlaceHolder = 'TR_SEARCH';
 
-        $scope.LineList = $outSideLineHandler.getLineList();
 
-        $scope.$on('lineListUpdated', function() {
-            $scope.LineList = $outSideLineHandler.getLineList();
-        });
 
         //when typing on inputbox
         $scope.changeInput = function(manualId) {
@@ -120,9 +127,10 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.searchLineByName = function(value) {
             console.log("search Value:" + value);
             if (value !== '') {
-                $outSideLineHandler.searchLineByName(value);
+                $outSideLineHandler.searchLineByName(value).then(function(data) {
+                    $scope.LineList = data;
+                });
             }
-
         }
         $scope.resetSearchBar = function(value) {
             $ionicScrollDelegate.scrollTop();
@@ -131,46 +139,53 @@ angular.module('starter.controllers', ['ngCordova'])
             }
         }
 
+
         $scope.getLine = function() {
-            $outSideLineHandler.getLine($scope.lineIdToGet);
             $ionicLoading.show({
                 template: $filter('translate')('TR_Loading')
             });
+            $outSideLineHandler.getLine($scope.lineIdToGet).then(function(data) {
+                $ionicLoading.hide();
+                if (!data) {
+                    var alertPopup = $ionicPopup.alert({
+                        title: "error",
+                        template: "error"
+                    });
+                } else if (data == "noSuchLine") {
+                    var alertPopup = $ionicPopup.alert({
+                        title: "no such line",
+                        template: "no such line"
+                    });
+                } else if (data == "noRoom") {
+                    var alertPopup = $ionicPopup.alert({
+                        title: "no room in line",
+                        template: "no room in line"
+                    });
+                } else if (data == "signedIn") {
+                    var alertPopup = $ionicPopup.alert({
+                        title: "already signed to this line",
+                        template: "already signed to this line"
+                    });
+                    $meetingManager.setCurrent($scope.lineIdToGet);
+                    $state.go("app.getInLine");
+                } else {
+                    $state.transitionTo("app.getInLine");
+                }
+
+            });
         }
 
-        $scope.$on('lineInfoArrived', function(event, args) {
 
-            $ionicLoading.hide();
-            if (args === false) {
-                var alertPopup = $ionicPopup.alert({
-                    title: $filter('translate')('TR_1_POPTITLE'),
-                    template: $filter('translate')('TR_1_POPTEMPLATE')
-                });
-            } else if (args === "noRoom") {
-                var alertPopup = $ionicPopup.alert({
-                    title: "no room in line",
-                    template: "no room in line"
-                });
-
-            } else if (args === "signed") {
-                var alertPopup = $ionicPopup.alert({
-                    title: "already signed to this line",
-                    template: "already signed to this line"
-                });
-            } else {
-                $state.go("app.getInLine");
-            }
-        });
 
     })
     .controller('createLineCtrl', function($scope, $filter, $state, $ionicPopup, $ionicLoading, $lineManager) {
 
         $scope.newLine = {};
-        $scope.dates = [];
         $scope.newLine.location = {
             latitude: '',
             longitude: ''
         };
+
 
         var autocomplete;
         (function() {
@@ -188,99 +203,66 @@ angular.module('starter.controllers', ['ngCordova'])
         })();
 
         //image handeling
-        $scope.PicSourece = document.getElementById('smallimage');
+        // $scope.PicSourece = document.getElementById('smallimage');
 
-        function UploadPicture(imageURI) {
-            if (imageURI.substring(0, 21) == "content://com.android") {
-                var photo_split = imageURI.split("%3A");
-                imageURI = "content://media/external/images/media/" + photo_split[1];
-            }
-            $scope.newLine.ImageURI = imageURI;
-            $scope.PicSourece.src = imageURI;
+        // function UploadPicture(imageURI) {
+        //     if (imageURI.substring(0, 21) == "content://com.android") {
+        //         var photo_split = imageURI.split("%3A");
+        //         imageURI = "content://media/external/images/media/" + photo_split[1];
+        //     }
+        //     $scope.newLine.ImageURI = imageURI;
+        //     $scope.PicSourece.src = imageURI;
 
-        }
-        $scope.ShowPictures = function() {
-            navigator.camera.getPicture(UploadPicture, function(message) {
-                console.log('get picture failed');
-            }, {
-                quality: 100,
-                destinationType: navigator.camera.DestinationType.FILE_URI,
-                sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-            });
-        };
+        // }
+        // $scope.ShowPictures = function() {
+        //     navigator.camera.getPicture(UploadPicture, function(message) {
+        //         console.log('get picture failed');
+        //     }, {
+        //         quality: 100,
+        //         destinationType: navigator.camera.DestinationType.FILE_URI,
+        //         sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+        //     });
+        // };
 
-        $scope.insertNewDate = function() {
-            $scope.data = {};
-            var chooseDatePopUp = $ionicPopup.show({
-                template: '<label class="item item-input"><span class="col col-25">Date:</span><input type="date" ng-model="data.day" placeholder="dd/MM/yyyy"></label><label class="item item-input"><span class="col col-25">From:</span><input type="time" class="col col-75" ng-model="data.from" placeholder="HH:mm"></label><label class="item item-input"><span class="col col-25">To:</span><input type="time" class="col col-75" ng-model="data.to" placeholder="HH:mm"></label>',
-                title: 'choose date:',
-                subTitle: '',
-                scope: $scope,
-                buttons: [{
-                    text: 'Cancel'
-                }, {
-                    text: '<b>Save</b>',
-                    type: 'button-positive',
-                    onTap: function(e) {
-                        if (!checkAtt($scope.data.day) && !checkAtt($scope.data.from) && !checkAtt($scope.data.to)) {
-                            e.preventDefault();
-                        } else {
-                            return $scope.data;
-                        }
-                    }
-                }]
-            });
-            chooseDatePopUp.then(function(data) {
 
-                data.from.setDate(data.day.getDate());
-                data.from.setMonth(data.day.getMonth());
-                data.from.setFullYear(data.day.getFullYear());
-                data.to.setDate(data.day.getDate());
-                data.to.setMonth(data.day.getMonth());
-                data.to.setFullYear(data.day.getFullYear());
-                delete data.day;
-
-                $scope.dates = data;
-
-            });
-
-        };
 
         $scope.createLine = function() {
-            if (!checkAtt($scope.newLine.confirmTime) || !checkAtt($scope.dates) || !checkAtt($scope.newLine.druation)) {
+            if (!checkAtt($scope.newLine.confirmTime) || !checkAtt($scope.newLine.druation) || !$scope.newLine.startDate || !$scope.newLine.endDate || !$scope.newLine.day) {
                 var alertPopup = $ionicPopup.alert({
                     title: 'missing information',
                     template: 'please fill all information'
                 });
             } else {
+                $scope.newLine.startDate.setDate($scope.newLine.day.getDate());
+                $scope.newLine.startDate.setMonth($scope.newLine.day.getMonth());
+                $scope.newLine.startDate.setFullYear($scope.newLine.day.getFullYear());
+                $scope.newLine.endDate.setDate($scope.newLine.day.getDate());
+                $scope.newLine.endDate.setMonth($scope.newLine.day.getMonth());
+                $scope.newLine.endDate.setFullYear($scope.newLine.day.getFullYear());
                 var newLine = $scope.newLine;
-                newLine.ImageURI = $scope.PicSourece.src;
-                newLine.startDate = $scope.dates.from;
-                newLine.endDate = $scope.dates.to;
                 newLine.active = false;
-                $lineManager.createLine(newLine);
+
                 $ionicLoading.show({
                     template: $filter('translate')('TR_Loading')
                 });
+
+
+                $lineManager.createLine(newLine).then(function(data) {
+                    $ionicLoading.hide();
+                    if (!data) {
+                        var alertPopup = $ionicPopup.alert({
+                            title: $filter('translate')('TR_1_POPTITLE'),
+                            template: $filter('translate')('TR_1_POPTEMPLATE')
+                        });
+                    } else $state.go("app.lineStatus");
+                });
+
             }
         }
 
-        $scope.$on('lineCreated', function(event, args) {
-            $ionicLoading.hide();
-            if (args === false) {
-                var alertPopup = $ionicPopup.alert({
-                    title: $filter('translate')('TR_1_POPTITLE'),
-                    template: $filter('translate')('TR_1_POPTEMPLATE')
-                });
-            } else {
-                $scope.newLine = {};
-                $scope.dates = [];
-                $state.go("app.lineStatus");
-            }
-        });
 
     })
-    .controller('signInCtrl', function($scope, $userManagment, $phoneManager , $ionicModal) {
+    .controller('signInCtrl', function($scope, $userManagment, $phoneManager, $ionicModal) {
 
         $scope.loginData = {};
         $scope.signUpData = {};
@@ -303,10 +285,20 @@ angular.module('starter.controllers', ['ngCordova'])
 
         $scope.doLogin = function() {
             //TODO to valid in html valid user
+
             if (!$scope.loginData.password || !$scope.loginData.username) {
-                    //TODO pop up alert missing params
+                //TODO pop up alert missing params
             } else {
-                $userManagment.loginWithEmail($scope.loginData);
+                $userManagment.loginWithEmail($scope.loginData).then(function(data) {
+                    debugger;
+                    if (!data) {
+                        //TODO popup worng
+                    } else {
+                        //TODO pop up welcome back
+                        $scope.loginMenu.hide();
+                    }
+
+                });
             }
         };
 
@@ -317,7 +309,7 @@ angular.module('starter.controllers', ['ngCordova'])
         });
 
 
-         $scope.openSignup = function() {
+        $scope.openSignup = function() {
             $scope.signupMenu.show();
         };
 
@@ -332,16 +324,26 @@ angular.module('starter.controllers', ['ngCordova'])
         };
 
         $scope.dosignUp = function() {
-            
+
             //TODO to valid in html valid user
             if (!$scope.signUpData.email || !$scope.signUpData.password || !$scope.signUpData.username) {
                 //TODO pop up alert missing params
             } else {
-                $userManagment.signUpWithEmail($scope.signUpData);
+                $userManagment.signUpWithEmail($scope.signUpData).then(function(data) {
+                    debugger
+                    if (data == "userExist") {
+                        //TODO popUpUserexsit
+                    } else if (!data) {
+                        //TODO popup to tell what went worng
+                    } else {
+                        //TODO pop up signed in 
+                        $scope.signupMenu.hide();
+                    }
+                });
             }
         };
 
-        
+
         $scope.signInFackBook = function() {
             $userManagment.connectToFaceBook();
         };
@@ -389,7 +391,8 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('lineStatusCtrl', function($scope, $state, $lineManager, $ionicLoading, $ionicPopup, $filter) {
 
     $scope.line = $lineManager.getCurrentLine();
-    $scope.$on("getLineInfo", function() {
+
+    $scope.$on("lineInfoUpdated", function() {
         $scope.line = $lineManager.getCurrentLine();
     });
 
@@ -398,19 +401,21 @@ angular.module('starter.controllers', ['ngCordova'])
     };
 
     $scope.nextMeeting = function() {
-        $lineManager.nextMeeting();
-        console.log("Move to next Meeting");
+        $ionicLoading.show();
+        $lineManager.nextMeeting().then(function(data) {
+            $ionicLoading.hide();
+            if (!data) {
+                var alertPopup = $ionicPopup.alert({
+                    title: $filter('translate')('TR_2_POPTITLE'),
+                    template: $filter('translate')('TR_2_POPTEMPLATE')
+                });
+                console.log("Move to next Meeting");
+            }
+
+        });
+
     };
 
-    $scope.$on("nextMeeting", function(event, args) {
-        $ionicLoading.hide();
-        if (args === false) {
-            var alertPopup = $ionicPopup.alert({
-                title: $filter('translate')('TR_2_POPTITLE'),
-                template: $filter('translate')('TR_2_POPTEMPLATE')
-            });
-        }
-    });
 
     $scope.postponeLine = function() {
 
@@ -426,24 +431,23 @@ angular.module('starter.controllers', ['ngCordova'])
                 text: '<b>OK</b>',
                 type: 'button-positive',
                 onTap: function(e) {
-                    $lineManager.postponeLine($scope.data.delayTime);
                     $ionicLoading.show();
+                    $lineManager.postponeLine($scope.data.delayTime).then(function(data) {
+                        $ionicLoading.hide();
+                        if (!data) {
+                            var alertPopup = $ionicPopup.alert({
+                                title: $filter('translate')('TR_2_POPTITLE'),
+                                template: $filter('translate')('TR_2_POPTEMPLATE')
+                            });
+                        }
+                        console.log("Postpone Line");
+
+                    });
+
                 }
             }]
         });
-
-        console.log("Postpone Line");
     };
-
-    $scope.$on("postponeLine", function(event, args) {
-        $ionicLoading.hide();
-        if (args === false) {
-            var alertPopup = $ionicPopup.alert({
-                title: $filter('translate')('TR_2_POPTITLE'),
-                template: $filter('translate')('TR_2_POPTEMPLATE')
-            });
-        }
-    });
 
     // $scope.sendMessage = function() {
     //     console.log("Send message");
@@ -451,27 +455,26 @@ angular.module('starter.controllers', ['ngCordova'])
     // };
 
     $scope.endLine = function() {
-        $lineManager.endLine();
-        console.log("End line");
-    };
+        $lineManager.endLine().then(function(data) {
+            $ionicLoading.hide();
+            if (!data) {
+                var alertPopup = $ionicPopup.alert({
+                    title: $filter('translate')('TR_2_POPTITLE'),
+                    template: $filter('translate')('TR_2_POPTEMPLATE')
+                });
+            } else {
+                console.log("End line");
+                $state.go("app.lineAnalyze");
+            }
 
-    $scope.$on("endLine", function(event, args) {
-        $ionicLoading.hide();
-        if (args === false) {
-            var alertPopup = $ionicPopup.alert({
-                title: $filter('translate')('TR_2_POPTITLE'),
-                template: $filter('translate')('TR_2_POPTEMPLATE')
-            });
-        } else {
-            $state.go("app.lineAnalyze");
-        }
-    });
+        });
+    };
 })
 
 .controller('lineAnalyzeCtrl', function($scope) {})
 
 .controller('myLinesCtrl', function($scope, $lineManager, $state) {
-    $scope.lineList = $lineManager.getLineList();
+    $scope.lineList = $lineManager.getMyLineList();
 
     $scope.chooseLineNew = function(id) {
         $lineManager.setCurrentLine(id);
@@ -489,28 +492,26 @@ angular.module('starter.controllers', ['ngCordova'])
     $scope.meeting = $outSideLineHandler.getLineInfo();
 
     $scope.joinLine = function() {
-        $meetingManager.joinLine($scope.meeting);
         $ionicLoading.show({
             template: $filter('translate')('TR_Loading')
         });
+        $meetingManager.joinLine($scope.meeting).then(function(data) {
+            $ionicLoading.hide();
+            if (!data) {
+                var alertPopup = $ionicPopup.alert({
+                    title: $filter('translate')('TR_1_POPTITLE'),
+                    template: $filter('translate')('TR_1_POPTEMPLATE')
+                });
+            } else {
+                $scope.meeting = {};
+                $state.go("app.meetingStatus");
+            }
+        });
     }
-
-    $scope.$on('signedToNewMeet', function(event, args) {
-        $ionicLoading.hide();
-        if (!args) {
-            var alertPopup = $ionicPopup.alert({
-                title: $filter('translate')('TR_1_POPTITLE'),
-                template: $filter('translate')('TR_1_POPTEMPLATE')
-            });
-        } else {
-            $scope.meeting = {};
-            $state.go("app.meetingStatus");
-        }
-    });
 
 })
 
-.controller('shareMeetingCtrl', function($scope, $lineManager, $cordovaSocialSharing, $state) {
+.controller('shareMeetingCtrl', function($scope, $meetingManager, $cordovaSocialSharing, $state) {
 
         $scope.meeting = $meetingManager.getCurrentMeeting();
 
@@ -547,8 +548,7 @@ angular.module('starter.controllers', ['ngCordova'])
             $state.go("app.meetingStatus");
         };
 
-        $scope.cancelLine = function() {
-
+        $scope.cancelMeeting = function() {
             var cancelLinePopUp = $ionicPopup.show({
                 template: 'are u sure?',
                 title: 'alert',
@@ -560,61 +560,57 @@ angular.module('starter.controllers', ['ngCordova'])
                     text: '<b>Yes</b>',
                     type: 'button-positive',
                     onTap: function(e) {
-                        $meetingManager.cancelMeeting($scope.meeting);
                         $ionicLoading.show({
                             template: $filter('translate')('TR_Loading')
+                        });
+
+                        $meetingManager.cancelMeeting($scope.meeting).then(function(data) {
+                            $ionicLoading.hide();
+                            if (!data) {
+                                var alertPopup = $ionicPopup.alert({
+                                    title: "please try again",
+                                    template: "please try again"
+                                });
+                            } else {
+                                var canceledPopup = $ionicPopup.show({
+                                    template: 'meeting canceld',
+                                    title: 'meeting canceld',
+                                    subTitle: '',
+                                    scope: $scope,
+                                    buttons: [{
+                                        text: '<b>ok</b>',
+                                        type: 'button-positive',
+                                        onTap: function(e) {
+                                            return;
+                                        }
+
+                                    }]
+                                });
+                                canceledPopup.then(function(data) {
+                                    $scope.meeting = {};
+                                    $state.go("app.default");
+                                });
+                            }
                         });
                     }
                 }]
             });
         }
-        $scope.$on('meetingCancled', function(event, args) {
 
-            $ionicLoading.hide();
-            if (!args) {
-                var alertPopup = $ionicPopup.alert({
-                    title: "please try again",
-                    template: "please try again"
-                });
-            } else {
-                var canceledPopup = $ionicPopup.show({
-                    template: 'meeting canceld',
-                    title: 'meeting canceld',
-                    subTitle: '',
-                    scope: $scope,
-                    buttons: [{
-                        text: '<b>ok</b>',
-                        type: 'button-positive',
-                        onTap: function(e) {
-                            return;
-
-                        }
-
-                    }]
-                });
-                canceledPopup.then(function(data) {
-                    $state.go("app.default");
-                });
-            }
-        });
 
     })
-.controller('meetingStatusCtrl', function($scope, $meetingManager, $ionicPopup, $ionicLoading, $filter, $state, $timeout) {
+    .controller('meetingStatusCtrl', function($scope, $meetingManager, $ionicPopup, $ionicLoading, $filter, $state, $timeout) {
 
         $scope.meeting = $meetingManager.getCurrentMeeting();
-        $scope.reminder = true;
-
-        $meetingManager.updateMeeting();
-        var updateInt = setInterval(function() {
-            $meetingManager.updateMeeting();
-        }, 60000);
-
-        $scope.$on("updateMeetingInfo", function() {
-            $scope.meeting = $meetingManager.getCurrentMeeting();
+        $meetingManager.updateMeeting().then(function(data) {
+            if (data) {
+                $scope.meeting = data;
+            }
         });
 
-        $scope.cancelLine = function() {
+        $scope.reminder = true;
 
+        $scope.cancelMeeting = function() {
             var cancelLinePopUp = $ionicPopup.show({
                 template: 'are u sure?',
                 title: 'alert',
@@ -626,53 +622,61 @@ angular.module('starter.controllers', ['ngCordova'])
                     text: '<b>Yes</b>',
                     type: 'button-positive',
                     onTap: function(e) {
-                        $meetingManager.cancelMeeting($scope.meeting);
                         $ionicLoading.show({
                             template: $filter('translate')('TR_Loading')
+                        });
+
+                        $meetingManager.cancelMeeting($scope.meeting).then(function(data) {
+                            $ionicLoading.hide();
+                            if (!data) {
+                                var alertPopup = $ionicPopup.alert({
+                                    title: "please try again",
+                                    template: "please try again"
+                                });
+                            } else {
+                                var canceledPopup = $ionicPopup.show({
+                                    template: 'meeting canceld',
+                                    title: 'meeting canceld',
+                                    subTitle: '',
+                                    scope: $scope,
+                                    buttons: [{
+                                        text: '<b>ok</b>',
+                                        type: 'button-positive',
+                                        onTap: function(e) {
+                                            return;
+                                        }
+
+                                    }]
+                                });
+                                canceledPopup.then(function(data) {
+                                    $scope.meeting = {};
+                                    $state.go("app.default");
+                                });
+                            }
                         });
                     }
                 }]
             });
         }
-        $scope.$on('meetingCancled', function(event, args) {
-
-            $ionicLoading.hide();
-            if (!args) {
-                var alertPopup = $ionicPopup.alert({
-                    title: "please try again",
-                    template: "please try again"
-                });
-            } else {
-                var canceledPopup = $ionicPopup.show({
-                    template: 'meeting canceld',
-                    title: 'meeting canceld',
-                    subTitle: '',
-                    scope: $scope,
-                    buttons: [{
-                        text: '<b>ok</b>',
-                        type: 'button-positive',
-                        onTap: function(e) {
-                            return;
-
-                        }
-
-                    }]
-                });
-                canceledPopup.then(function(data) {
-                    $scope.meeting = {};
-                    $state.go("app.default");
-                });
-            }
-        });
 
         $scope.shareMeeting = function() {
             $state.go("app.shareMeeting");
         };
 
     })
-.controller('myMeetingsCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
+    .controller('myMeetingsCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
 
-        $scope.meetingList = $meetingManager.getMeetingList();
+        $outSideLineHandler.getRandomlineList().then(function(data) {
+            $scope.LineList = data;
+        });
+
+        $scope.myMeetingList = [];
+
+        $scope.$on("userConnected", function() {
+            $scope.myMeetingList = $meetingManager.getMyMeetingList();
+        });
+
+
 
         $scope.chooseMeeting = function(id) {
 
@@ -684,10 +688,7 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.placeholder = 'TR_1_ENTERLINEID';
         $scope.searchPlaceHolder = 'TR_SEARCH';
 
-        $scope.$on('lineListUpdated', function() {
-            $scope.LineList = $outSideLineHandler.getLineList();
-            console.log('lineListUpdated:', $scope.LineList);
-        });
+
 
         //when typing on inputbox
         $scope.changeInput = function(manualId) {
@@ -733,9 +734,10 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.searchLineByName = function(value) {
             console.log("search Value:" + value);
             if (value !== '') {
-                $outSideLineHandler.searchLineByName(value);
+                $outSideLineHandler.searchLineByName(value).then(function(data) {
+                    $scope.LineList = data;
+                });
             }
-
         }
         $scope.resetSearchBar = function(value) {
             $ionicScrollDelegate.scrollTop();
@@ -743,53 +745,52 @@ angular.module('starter.controllers', ['ngCordova'])
                 $scope.LineList = $outSideLineHandler.getDefaultLineList();
             }
         }
-
         $scope.getLine = function() {
-            console.log("try to connect to:" + $scope.lineIdToGet);
-            $outSideLineHandler.getLine($scope.lineIdToGet);
             $ionicLoading.show({
                 template: $filter('translate')('TR_Loading')
             });
+            $outSideLineHandler.getLine($scope.lineIdToGet).then(function(data) {
+                $ionicLoading.hide();
+                if (!data) {
+                    var alertPopup = $ionicPopup.alert({
+                        title: "error",
+                        template: "error"
+                    });
+                } else if (data == "noSuchLine") {
+                    var alertPopup = $ionicPopup.alert({
+                        title: "no such line",
+                        template: "no such line"
+                    });
+                } else if (data == "noRoom") {
+                    var alertPopup = $ionicPopup.alert({
+                        title: "no room in line",
+                        template: "no room in line"
+                    });
+                } else if (data == "signedIn") {
+                    var alertPopup = $ionicPopup.alert({
+                        title: "already signed to this line",
+                        template: "already signed to this line"
+                    });
+                    $meetingManager.setCurrent($scope.lineIdToGet);
+                    $state.go("app.getInLine");
+                } else {
+                    $state.transitionTo("app.getInLine");
+                }
+
+            });
         }
 
-        $scope.$on('lineInfoArrived', function(event, args) {
-
-            $ionicLoading.hide();
-            if (args === false) {
-                var alertPopup = $ionicPopup.alert({
-                    title: $filter('translate')('TR_1_POPTITLE'),
-                    template: $filter('translate')('TR_1_POPTEMPLATE')
-                });
-            } else if (args === "noRoom") {
-                var alertPopup = $ionicPopup.alert({
-                    title: "no room in line",
-                    template: "no room in line"
-                });
-
-            } else if (args === "signed") {
-                var alertPopup = $ionicPopup.alert({
-                    title: "already signed to this line",
-                    template: "already signed to this line"
-                });
-            } else {
-                $state.go("app.getInLine");
-            }
-        });
 
     })
 
 .controller('settingCtrl', function($scope, $translate, $userManagment) {
-        $scope.changeLanguage = function() {
+    $scope.changeLanguage = function() {
 
-            $translate.use('he');
-        }
+        $translate.use('he');
+    }
 
-        $scope.logOutFB = function() {
-            $userManagment.logOutFaceBook();
-        }
+    $scope.logOutFB = function() {
+        $userManagment.logOutFaceBook();
+    }
 
-    })
-.controller('mainCtrl', function($scope, $ionicPopup, $timeout, $cordovaSocialSharing) {
-        //open screen delay 
-
-    });
+});
