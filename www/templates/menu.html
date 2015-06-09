@@ -18,10 +18,13 @@
             <!-- <img src="http://graph.facebook.com/{{user.id}}/picture?width=30&height=30" style="border-radius: 10px;" /> {{user.name}} -->
         </ion-header-bar>
         <ion-content>
-        {{user.name}}
+        {{user.username}}
             <ion-list>
-                <ion-item nav-clear menu-close href="#/app/signIn">
+                <ion-item nav-clear menu-close href="#/app/signIn" ng-show="!user.username">
                     {{"TR_signIn" | translate}}
+                </ion-item>
+                <ion-item nav-clear menu-close href="#/app/signIn" ng-show="user.username">
+                    {{"TR_signOut" | translate}}
                 </ion-item>
                 <ion-item nav-clear menu-close href="#/app/createLine">
                     {{"TR_createLine" | translate}}

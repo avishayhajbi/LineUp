@@ -1,16 +1,17 @@
 angular.module('starter.controllers', ['ngCordova'])
 
-.controller('menuCtrl', function($scope, $ionicModal, $timeout, $filter, $userManagment, $ionicLoading, $ionicPopup, $state) {
+.controller('menuCtrl', function($scope, $localstorage, $ionicModal, $timeout, $filter, $userManagment, $ionicLoading, $ionicPopup, $state) {
         $scope.user = {};
-       
-        $scope.$on("userConnected", function() {
-            $scope.user = {
-                id: $userManagment.getfbId(),
-                name: $userManagment.getMyName(),
-                connected: $userManagment.isConnected()
-            };
-        });
 
+        var connect = $localstorage.getObject('lineup');
+
+        if (connect.username && connect.password) {
+            $userManagment.loginWithEmail(connect).then(function(data) {
+                if (data) {
+                    $scope.user = data;
+                }
+            });
+        }
 
         // $scope.$on('connectedToFB', function(event, result) {
         //     $scope.user = {
@@ -21,7 +22,7 @@ angular.module('starter.controllers', ['ngCordova'])
         // });
 
     })
-    .controller('defaultCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager , $userManagment) {
+    .controller('defaultCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager, $userManagment) {
 
         if (window.jumpToPage) {
             var type = window.jumpToPage[0];
@@ -33,29 +34,13 @@ angular.module('starter.controllers', ['ngCordova'])
             }
         }
 
-        $outSideLineHandler.getRandomlineList().then(function(data) {
-            $scope.LineList = data;
-        });
-
-
-        $scope.myLineList = [];
-        $scope.myMeetingList = [];
-
-        function getMyMeetings() {
-            // $meetingManager.getMyMeetingList().then(function(data) {
-            //     if (data) $scope.myMeetingList = data;
-            // });
-        }
-
-        function getMyLines() {
-            // $lineManager.getMyLineList().then(function(data) {
-            //     if (data) $scope.myLineList = data;
-            // });
-        }
-
-        $scope.$on("userConnected", function() {
-            getMyMeetings();
-            getMyLines();
+        $userManagment.updateLists().then(function(data) {
+            if (data) {
+                $scope.user.activeMeetings = data.activeMeetings;
+                $scope.user.activeLines = data.activeLines;
+                $scope.user.passedLines = data.passedLines;
+                $scope.user.passedMeetings = data.passedMeetings
+            }
         });
 
 
@@ -65,16 +50,35 @@ angular.module('starter.controllers', ['ngCordova'])
         }
 
         $scope.chooseLineNew = function(id) {
-
-            $lineManager.setCurrentLine(id);
             $ionicLoading.show({
                 template: $filter('translate')('TR_Loading')
             });
+            $lineManager.setCurrent(id).then(function(data) {
+                $ionicLoading.hide();
+                if (data) {
+                    $state.go("app.lineStatus");
+                } else {
+                    //TODO pop up can load line
+                }
+
+            });
+
         }
 
         $scope.chooseMeeting = function(id) {
-            $meetingManager.setCurrent(id);
-            $state.go("app.meetingStatus");
+            $ionicLoading.show({
+                template: $filter('translate')('TR_Loading')
+            });
+            $meetingManager.setCurrent(id).then(function(data) {
+                $ionicLoading.hide();
+                if (data) {
+                    $state.go("app.meetingStatus");
+                } else {
+                    //TODO pop up can load line
+                }
+
+            });
+
         }
 
         $scope.lineIdToGet = '';
@@ -254,7 +258,14 @@ angular.module('starter.controllers', ['ngCordova'])
                             title: $filter('translate')('TR_1_POPTITLE'),
                             template: $filter('translate')('TR_1_POPTEMPLATE')
                         });
-                    } else $state.go("app.lineStatus");
+                    } else {
+
+                        $scope.user.activeLines.push({
+                            lineId: data,
+                            title: $scope.newLine.title
+                        });
+                        $state.go("app.lineStatus");
+                    }
                 });
 
             }
@@ -295,6 +306,7 @@ angular.module('starter.controllers', ['ngCordova'])
                         //TODO popup worng
                     } else {
                         //TODO pop up welcome back
+                        $scope.user = data;
                         $scope.loginMenu.hide();
                     }
 
@@ -330,12 +342,13 @@ angular.module('starter.controllers', ['ngCordova'])
                 //TODO pop up alert missing params
             } else {
                 $userManagment.signUpWithEmail($scope.signUpData).then(function(data) {
-                    debugger
+            
                     if (data == "userExist") {
                         //TODO popUpUserexsit
                     } else if (!data) {
                         //TODO popup to tell what went worng
                     } else {
+                        $scope.user = data;
                         //TODO pop up signed in 
                         $scope.signupMenu.hide();
                     }
@@ -463,6 +476,13 @@ angular.module('starter.controllers', ['ngCordova'])
                     template: $filter('translate')('TR_2_POPTEMPLATE')
                 });
             } else {
+                for (var i = 0; i < $scope.user.activeLines.length; i++) {
+                    if ($scope.user.activeLines[i].lineId ==  $scope.line.lineId) {
+                        $scope.user.passedLines.push($scope.user.activeLines[i]);
+                        $scope.user.activeLines.splice(i, 1);
+                        break;
+                    }
+                }
                 console.log("End line");
                 $state.go("app.lineAnalyze");
             }
@@ -473,12 +493,22 @@ angular.module('starter.controllers', ['ngCordova'])
 
 .controller('lineAnalyzeCtrl', function($scope) {})
 
-.controller('myLinesCtrl', function($scope, $lineManager, $state) {
-    $scope.lineList = $lineManager.getMyLineList();
+.controller('myLinesCtrl', function($scope, $lineManager, $state, $userManagment , $ionicLoading ,$filter) {
 
     $scope.chooseLineNew = function(id) {
-        $lineManager.setCurrentLine(id);
-        $state.go("app.lineStatus");
+        $ionicLoading.show({
+            template: $filter('translate')('TR_Loading')
+        });
+        $lineManager.setCurrent(id).then(function(data) {
+            $ionicLoading.hide();
+            if (data) {
+                $state.go("app.lineStatus");
+            } else {
+                //TODO pop up can load line
+            }
+
+        });
+
     }
 
     $scope.createLine = function() {
@@ -504,6 +534,7 @@ angular.module('starter.controllers', ['ngCordova'])
                 });
             } else {
                 $scope.meeting = {};
+                $scope.user.activeMeetings.push(data);
                 $state.go("app.meetingStatus");
             }
         });
@@ -588,6 +619,13 @@ angular.module('starter.controllers', ['ngCordova'])
                                 });
                                 canceledPopup.then(function(data) {
                                     $scope.meeting = {};
+                                    for (var i = 0; i < $scope.user.activeMeetings.length; i++) {
+                                        if ($scope.user.activeMeetings[i].lineId == meeting.lineId) {
+                                            $scope.user.passedMeetings.push($scope.user.activeMeetings[i]);
+                                            $scope.user.activeMeetings.splice(i, 1);
+                                            break;
+                                        }
+                                    }
                                     $state.go("app.default");
                                 });
                             }
@@ -602,12 +640,6 @@ angular.module('starter.controllers', ['ngCordova'])
     .controller('meetingStatusCtrl', function($scope, $meetingManager, $ionicPopup, $ionicLoading, $filter, $state, $timeout) {
 
         $scope.meeting = $meetingManager.getCurrentMeeting();
-        $meetingManager.updateMeeting().then(function(data) {
-            if (data) {
-                $scope.meeting = data;
-            }
-        });
-
         $scope.reminder = true;
 
         $scope.cancelMeeting = function() {
@@ -664,24 +696,27 @@ angular.module('starter.controllers', ['ngCordova'])
         };
 
     })
-    .controller('myMeetingsCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager) {
+    .controller('myMeetingsCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager, $userManagment) {
 
         $outSideLineHandler.getRandomlineList().then(function(data) {
             $scope.LineList = data;
         });
 
-        $scope.myMeetingList = [];
-
-        $scope.$on("userConnected", function() {
-            $scope.myMeetingList = $meetingManager.getMyMeetingList();
-        });
-
-
 
         $scope.chooseMeeting = function(id) {
+            $ionicLoading.show({
+                template: $filter('translate')('TR_Loading')
+            });
+            $meetingManager.setCurrent(id).then(function(data) {
+                $ionicLoading.hide();
+                if (data) {
+                    $state.go("app.meetingStatus");
+                } else {
+                    //TODO pop up can load line
+                }
 
-            $meetingManager.setCurrent(id);
-            $state.go("app.meetingStatus");
+            });
+
         }
 
         $scope.lineIdToGet = '';

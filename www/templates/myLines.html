@@ -5,8 +5,8 @@
         </div>
 
         <ion-list class="col col-80 col-offset-10">
-            <ion-item ng-repeat="Line in lineList" ng-click="chooseLineNew(Line.lineId)">
-                {{Line.title}} --- {{Line.id}}
+            <ion-item ng-repeat="Line in user.activeLines" ng-click="chooseLineNew(Line.lineId)">
+                {{Line.title}} --- {{Line.lineId}}
             </ion-item>
         </ion-list>
         <!--Create Line button-->
