@@ -3,8 +3,9 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('menuCtrl', function($scope, $localstorage, $ionicModal, $timeout, $filter, $userManagment, $ionicLoading, $ionicPopup, $state) {
         $scope.user = {};
 
-        var connect = $localstorage.getObject('lineup');
 
+        //$localstorage.setObject('lineup', '');
+        var connect = $localstorage.getObject('lineup');
         if (connect.username && connect.password) {
             $userManagment.loginWithEmail(connect).then(function(data) {
                 if (data) {
@@ -301,7 +302,6 @@ angular.module('starter.controllers', ['ngCordova'])
                 //TODO pop up alert missing params
             } else {
                 $userManagment.loginWithEmail($scope.loginData).then(function(data) {
-                    debugger;
                     if (!data) {
                         //TODO popup worng
                     } else {
@@ -342,7 +342,7 @@ angular.module('starter.controllers', ['ngCordova'])
                 //TODO pop up alert missing params
             } else {
                 $userManagment.signUpWithEmail($scope.signUpData).then(function(data) {
-            
+                debugger;
                     if (data == "userExist") {
                         //TODO popUpUserexsit
                     } else if (!data) {
@@ -522,10 +522,12 @@ angular.module('starter.controllers', ['ngCordova'])
     $scope.meeting = $outSideLineHandler.getLineInfo();
 
     $scope.joinLine = function() {
+       
         $ionicLoading.show({
             template: $filter('translate')('TR_Loading')
         });
         $meetingManager.joinLine($scope.meeting).then(function(data) {
+          
             $ionicLoading.hide();
             if (!data) {
                 var alertPopup = $ionicPopup.alert({
@@ -534,6 +536,7 @@ angular.module('starter.controllers', ['ngCordova'])
                 });
             } else {
                 $scope.meeting = {};
+
                 $scope.user.activeMeetings.push(data);
                 $state.go("app.meetingStatus");
             }
@@ -809,7 +812,7 @@ angular.module('starter.controllers', ['ngCordova'])
                     $meetingManager.setCurrent($scope.lineIdToGet);
                     $state.go("app.getInLine");
                 } else {
-                    $state.transitionTo("app.getInLine");
+                    $state.go("app.getInLine");
                 }
 
             });

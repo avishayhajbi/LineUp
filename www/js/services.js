@@ -122,6 +122,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
             loginWithEmail: function(user) {
                 return $http.post(serverUrl + 'logIn', user)
                     .then(function(response) {
+
                         if (response.data.success) {
                             username = response.data.user.username;
                             userId = response.data.user._id;
@@ -306,6 +307,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
         return {
             joinLine: function(lineInfo) {
+
                 currentMeeting = lineInfo;
                 return $http.get(serverUrl + 'joinLine', {
                     params: {
@@ -316,30 +318,31 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                     timeout: 8000
                 }).then(function(response) {
                     if (response.data) {
-                        currentMeeting.time = response.data;
+                        currentMeeting = response.data;
+                        currentMeeting.ProgressCounter = false;
+                        currentMeeting.progressWidth = 0;
+                        calculateTimeLeft();
                         var save = {
                             lineId: currentMeeting.lineId,
                             title: currentMeeting.title,
                             time: currentMeeting.time
                         };
-                        
                         return save;
-                        getMeetingInfo();
                     }
                     return false;
 
                 }, function() {
-                    return false
+                    return false;
                 });
             },
             getCurrentMeeting: function() {
                 if (!currentMeeting) return;
                 return currentMeeting;
             },
-            setCurrent: function() {
+            setCurrent: function(id) {
                 return $http.get(serverUrl + 'getMeetingInfo', {
                     params: {
-                        lineId: currentMeeting.lineId,
+                        lineId: id,
                         userId: $userManagment.getMyId()
                     },
                     timeout: 8000
@@ -350,13 +353,14 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                         currentMeeting.progressWidth = 0;
                         calculateTimeLeft();
                         console.log("meeting update:", currentMeeting);
-                        return currentMeeting;
+                        return true;
                     } else return false;
                 }, function() {
-                    return false
+                    return false;
                 });
             },
             cancelMeeting: function(meeting) {
+                debugger;
                 if (!meeting) return;
                 return $http.get(serverUrl + 'cancelMeeting', {
                     params: {
@@ -367,6 +371,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
                     },
                     timeout: 8000
                 }).then(function(response) {
+                    debugger;
                     if (response.data) {
                         return true;
                     }

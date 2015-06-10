@@ -20,7 +20,7 @@
                     <input type="password" ng-model="loginData.password">
                 </label>
                 <label class="item">
-                    <button class="button button-block button-positive" ng-click="doLogin()" type="submit">{{"TR_Log_in" | translate}}</button>
+                    <button class="button button-block button-positive" ng-click="doLogin(loginData.password , loginData.username)" type="submit">{{"TR_Log_in" | translate}}</button>
                 </label>
             </div>
        
