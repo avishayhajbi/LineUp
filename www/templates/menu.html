@@ -23,8 +23,8 @@
                 <ion-item nav-clear menu-close href="#/app/signIn" ng-show="!user.username">
                     {{"TR_signIn" | translate}}
                 </ion-item>
-                <ion-item nav-clear menu-close href="#/app/signIn" ng-show="user.username">
-                    {{"TR_signOut" | translate}}
+                <ion-item nav-clear menu-close href="#/app/" ng-click="logOut()" ng-show="user.username">
+                    {{"TR_logOut" | translate}}
                 </ion-item>
                 <ion-item nav-clear menu-close href="#/app/createLine">
                     {{"TR_createLine" | translate}}

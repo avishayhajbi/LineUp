@@ -17,6 +17,8 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_default: 'My Lines',
       TR_createLine: 'Create New Line',
       TR_signIn: 'Sign in',
+      TR_Passwordrepet: 'Repeat password',
+      TR_Log_up: 'Sign up',
       TR_share: 'Share Line',
       TR_lineStatus: 'Line Status',
       TR_page6: 'Line Operations',

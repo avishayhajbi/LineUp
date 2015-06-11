@@ -26,7 +26,7 @@
             </div>
             <div class="row">
                 <div class="col col-40 col-offset-5">
-                    <h4>{{line.availableDates[0].from | date:'medium'}}</h4>
+                    <h4>{{line.startDate | date:'medium'}}</h4>
                 </div>
             </div>
 
@@ -38,7 +38,7 @@
             </div>
             <div class="row">
                 <div class="col col-40 col-offset-5">
-                    <h4>{{line.availableDates[line.day.maxDays-1].to | date:'medium'}}</h4>
+                    <h4>{{line.endDate | date:'medium'}}</h4>
                 </div>
             </div>
 
