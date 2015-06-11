@@ -32,6 +32,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 		var fbId = "";
 		var username = "";
 		var userEmail = "";
+		var pushToken = false;
 		var connected = false;
 
 
@@ -59,6 +60,27 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 		// });
 
 		//connect to facebook
+
+
+		window.sendTokenToServer = function(token) {
+
+			pushToken = token;
+			if (userId) {
+				$http.get(serverUrl + 'pushToken', {
+					params: {
+						userId: userId,
+						pushToken: token
+					}
+				}).then(function(response) {
+					console.log("push Token Recived:", response);
+
+				}, function(err) {
+					console.log("push Token Recived err:", err);
+				});
+
+			}
+		}
+
 		var fbLoginSuccess = function(userData) {
 
 			fbId = userData.authResponse.userID;
@@ -131,6 +153,9 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 								username: user.username,
 								password: user.password
 							});
+							if (pushToken) {
+								sendTokenToServer(pushToken);
+							}
 							console.log("user login :", username);
 							return response.data.user;
 						} else {
@@ -156,6 +181,9 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 								username: user.username,
 								password: user.password
 							});
+							if (pushToken) {
+								sendTokenToServer(pushToken);
+							}
 							console.log("user login :", username);
 							return response.data.user;
 						} else {
@@ -372,7 +400,6 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 			},
 			cancelMeeting: function(meeting) {
 
-				if (!meeting) return;
 				return $http.get(serverUrl + 'cancelMeeting', {
 					params: {
 						lineId: meeting.lineId,
@@ -391,19 +418,19 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 					return false;
 				});
 			},
-			confirmMeeting: function(argument) {
-				if (!meeting) return;
+			confirmMeeting: function() {
+				if (!currentMeeting) return;
 
 				return $http.get(serverUrl + 'confirmMeeting', {
 					params: {
-						lineId: meeting.lineId,
+						lineId: currentMeeting.lineId,
 						userId: $userManagment.getMyId(),
 						userName: $userManagment.getMyName()
 					},
 					timeout: 8000
 				}).then(function(response) {
 					if (response.data) {
-						meeting.confirmed = response.data;
+						currentMeeting.confirmed = response.data;
 						return true;
 					}
 					return false;
@@ -507,7 +534,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
 			},
 			postponeLine: function(delayTime) {
-
+				
 				return $http.get(serverUrl + 'postponeLine', {
 					params: {
 						lineId: currentLine.lineId,
@@ -516,6 +543,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 					},
 					timeout: 8000
 				}).then(function(response) {
+
 					if (response.data) {
 						getLineInfo();
 						return true;
@@ -552,6 +580,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
 		ionic.Platform.ready(function() {
 			var device = ionic.Platform.device();
+
 
 			if (!window.cordova) return;
 
@@ -629,82 +658,61 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 			} else if (notification.event == "message") {
 
 				switch (notification.payload.type) {
-					case "101":
-						var currentTime = new Date(new Date().getTime()).getMinutes();
-						var meetingTime = new Date(notification.payload.key5).getMinutes();
-						var alertDate = meetingTime - currentTime;
-
-						$cordovaDialogs.alert("Line: " + notification.payload.key1 + "\nwill start in " + alertDate + " minutes", "LineUp informs you that:");
-						$lineManager.setCurrent(notification.key2);
-						$state.go("app.lineStatus");
+					case "endLine":
+						$cordovaDialogs.alert("Line: " + notification.payload.title + " canceld");
+						$rootScope.$broadcast("endLine", notification.payload.lineId);
+						break;
+					case "endMeeting":
+						$cordovaDialogs.alert("thanks u form: " + notification.payload.title);
+						$rootScope.$broadcast("endMeeting", notification.payload.lineId);
+						break;
+					case "postponeLine":
+						$cordovaDialogs.alert("Line: " + notification.payload.title + " postpone new time:" + notification.payload.usersNewTime);
+						break;
+					case "lineShorted":
+						$cordovaDialogs.alert("Line: " + notification.payload.title + " shorted new time:" + notification.payload.usersNewTime);
+						break;
+					case "newTime":
+						$cordovaDialogs.alert("Line: " + notification.payload.title + " updated time:" + notification.payload.usersNewTime);
+						break;
+					case "nextInLine":
+						$cordovaDialogs.alert("your are nexy in line: " + notification.payload.title);
+						break;
+					case "enterLine":
+						$cordovaDialogs.alert("please enter to line: " + notification.payload.title);
+						break;
+					case "lineWillBegin":
+						$cordovaDialogs.alert("line: " + notification.payload.title + " will begin in"+notification.payload.time);
+						break;
+					case "lineWillBeginIn5":
+						$cordovaDialogs.alert("line: " + notification.payload.title + " will begin in 5 minutes");
+						break;
+					case "lineStart":
+						$cordovaDialogs.alert("line: " + notification.payload.title + " started next user:"+ notification.payload.username);
+						break;
+					case "lineStartNoUsers":
+						$cordovaDialogs.alert("line: " + notification.payload.title + " started but no one signed in :(");
+						break;
+					case "userCanceldMeeting":
+						$cordovaDialogs.alert(notification.payload.userName + " canceled meeting in line" + notification.payload.title);
+						break;
+					case "userCanceldMeeting":
+						$cordovaDialogs.alert(notification.payload.userName + " canceled meeting in line" + notification.payload.title);
+						break;
+					case "meetingConfirmed":
+						$cordovaDialogs.alert(notification.payload.userName + " confirmed line:" + notification.payload.title);
+						break;
+					case "newUser":
+						$cordovaDialogs.alert(notification.payload.userName + " joined Line: " + notification.payload.title);
+						break;
+					case "askConfirmed":
+						$cordovaDialogs.alert("please confirmed: " + notification.payload.title + "that will start at: "+notification.payload.usersNewTime);
+						break;
+					case "noConfirmation":
+						$cordovaDialogs.alert("u didnt confirm meeting: " + notification.payload.title + " meetings canceld");
+						$rootScope.$broadcast("endMeeting", notification.payload.lineId);
 						break;
 
-					case "102":
-						$cordovaDialogs.alert("User name: " + notification.payload.key4 + "\nfrom Line: " + notification.payload.key1 + " canceled their meeting", "LineUp informs you that:");
-						$lineManager.setCurrent(notification.key2);
-						$state.go("app.lineStatus");
-						break;
-
-					case "103":
-						$cordovaDialogs.alert("Line: " + notification.payload.key1 + "\nis over.", "LineUp informs you that:");
-						$lineManager.setCurrent(notification.key2);
-						$state.go("app.lineStatus");
-						break;
-
-					case "201":
-						$cordovaDialogs.alert("Your meeting at: " + notification.payload.key1 + "\nis getting close..\n\nPlease confirm your arrival.", "LineUp informs you that:");
-						$lineManager.setCurrent(notification.key2);
-						$state.go("app.meetingStatus");
-						break;
-
-					case "202":
-						var meetingMinutes = new Date(notification.payload.key5).getMinutes();
-						var meetingHours = new Date(notification.payload.key5).getHours();
-
-						$cordovaDialogs.alert("You are next in Line:\n" + notification.payload.key1 + "\n\nYour meeting will start at: " + meetingHours + ":" + meetingMinutes, " LineUp informs you that:");
-						$lineManager.setCurrent(notification.key2);
-						$state.go("app.meetingStatus");
-						break;
-
-					case "203":
-						var str = notification.payload.key5;
-						var res = str.substr(0, 10);
-						var meetingMinutes = new Date(notification.payload.key5).getMinutes();
-						var meetingHours = new Date(notification.payload.key5).getHours();
-
-						$cordovaDialogs.alert("Your meeting in line:\n" + notification.payload.key1 + "\n\nwas preceded to:\n" + res + " " + meetingHours + ":" + meetingMinutes, "LineUp informs you that:");
-						$lineManager.setCurrent(notification.key2);
-						$state.go("app.meetingStatus");
-						break;
-
-					case "204":
-						var str = notification.payload.key5;
-						var res = str.substr(0, 10);
-						var meetingMinutes = new Date(notification.payload.key5).getMinutes();
-						var meetingHours = new Date(notification.payload.key5).getHours();
-						$cordovaDialogs.alert("Your meeting in line:\n" + notification.payload.key1 + "\n\nwas postponed to:\n" + res + " " + meetingHours + ":" + meetingMinutes, "LineUp informs you that:");
-						$lineManager.setCurrent(notification.key2);
-						$state.go("app.meetingStatus");
-						break;
-
-					case "206":
-						$cordovaDialogs.alert("Your meeting in line:\n" + notification.payload.title + "\n\nwas canceled", "LineUp informs you that:");
-						$lineManager.moveToCancel(notification.payload.lineId);
-						break;
-
-					case "207":
-						$cordovaDialogs.alert("Your meeting in line:\n" + notification.payload.key1 + "\nis starting!", "LineUp informs you that:");
-						$lineManager.setCurrent(notification.key2);
-						$state.go("app.meetingStatus");
-						break;
-					case "newUserInLine":
-						$lineManager.updateLineInfo(notification.key1);
-						$cordovaDialogs.alert("new user in line");
-						break;
-					case "userCancelDmeeting":
-						$lineManager.updateLineInfo(notification.key1);
-						$cordovaDialogs.alert("user canceld meeting");
-						break;
 					default:
 						$cordovaDialogs.alert("you got a defualt message!", "LineUp informs you that:");
 				}
@@ -714,20 +722,6 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 			else $cordovaDialogs.alert(notification.event, "Push notification handler - Unprocessed Event");
 		}
 
-		window.sendTokenToServer = function(token) {
-
-			$http.get(serverUrl + 'pushToken', {
-				params: {
-					userId: $userManagment.getMyId(),
-					pushToken: token
-				}
-			}).then(function(response) {
-				console.log("push Token Recived:", response);
-
-			}, function(err) {
-				console.log("push Token Recived err:", err);
-			});
-		}
 
 		//       // IOS Notification Received Handler
 		// function handleIOS(notification) {

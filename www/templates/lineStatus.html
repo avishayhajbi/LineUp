@@ -85,11 +85,8 @@
 
     <div class="bar bar-footer">
         <div class="tabs tabs-icon-top">
-            <a class="tab-item" ng-click="nextMeeting()" ng-show="line.meetings.length > 0 ">
+            <a class="tab-item" ng-click="nextMeeting()" ng-show="line.currentMeeting">
                 <i class="icon ion-skip-forward"></i> Next Meeting
-            </a>
-            <a class="tab-item" ng-hide="line.meetings.length > 0 ">
-                <i class="icon ion-skip-forward not-active"></i> Next Meeting
             </a>
             <a class="tab-item" ng-click="postponeLine()">
                 <i class="icon ion-pause"></i> Pause Line

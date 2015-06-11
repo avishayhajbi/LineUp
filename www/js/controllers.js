@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['ngCordova'])
 
-.controller('menuCtrl', function($scope, $ionicModal, $localstorage, $ionicModal, $timeout, $filter, $userManagment, $ionicLoading, $ionicPopup, $state) {
+.controller('menuCtrl', function($scope, $ionicModal, $localstorage, $ionicModal, $timeout, $filter, $userManagment, $ionicLoading, $ionicPopup, $state, $pushNotificationHere) {
 
 		$scope.user = {};
 		//SIGN on start up 
@@ -10,6 +10,7 @@ angular.module('starter.controllers', ['ngCordova'])
 			$userManagment.loginWithEmail(connect).then(function(data) {
 				if (data) {
 					$scope.user = data;
+					console.log("user data:", $scope.user);
 				}
 			});
 		}
@@ -29,12 +30,13 @@ angular.module('starter.controllers', ['ngCordova'])
 				//TODO pop up alert missing params
 			} else {
 				$userManagment.loginWithEmail($scope.loginData).then(function(data) {
-					debugger;
+
 					if (!data) {
 						//TODO popup worng
 					} else {
 						//TODO pop up welcome back
 						$scope.user = data;
+						console.log("user data:", $scope.user);
 						$scope.loginMenu.hide();
 					}
 
@@ -81,6 +83,7 @@ angular.module('starter.controllers', ['ngCordova'])
 						} else if (!data) {
 							//TODO popup to tell what went worng
 						} else {
+							console.log("user data:", $scope.user);
 							$scope.user = data;
 							//TODO pop up signed in 
 							$scope.signupMenu.hide();
@@ -132,6 +135,34 @@ angular.module('starter.controllers', ['ngCordova'])
 		//         connected: $userManagment.isConnected()
 		//     };
 		// });
+
+		$scope.$on("endLine", function(evt, lineId) {
+			removeFromActiveLines(lineId);
+		});
+		$scope.$on("endMeeting", function(evt, lineId) {
+			removeFromActiveMeetings(lineId);
+		});
+
+		function removeFromActiveLines(lineId) {
+			for (var i = 0; i < $scope.user.activeLines.length; i++) {
+				if ($scope.user.activeLines[i].lineId == $scope.line.lineId) {
+					$scope.user.passedLines.push($scope.user.activeLines[i]);
+					$scope.user.activeLines.splice(i, 1);
+					break;
+				}
+
+			}
+		}
+
+		function removeFromActiveMeetings(lineId) {
+			for (var i = 0; i < $scope.user.activeMeetings.length; i++) {
+				if ($scope.user.activeMeetings[i].lineId == $scope.meeting.lineId) {
+					$scope.user.passedMeetings.push($scope.user.activeMeetings[i]);
+					$scope.user.activeMeetings.splice(i, 1);
+					break;
+				}
+			}
+		}
 
 	})
 	.controller('defaultCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager, $userManagment) {
@@ -397,11 +428,6 @@ angular.module('starter.controllers', ['ngCordova'])
 	.controller('signInCtrl', function($scope, $userManagment, $phoneManager, $ionicModal) {
 
 
-
-		// Create the login modal that we will use later
-
-
-
 	})
 
 .controller('shareLineCtrl', function($scope, $lineManager, $cordovaSocialSharing, $state) {
@@ -486,7 +512,9 @@ angular.module('starter.controllers', ['ngCordova'])
 				type: 'button-positive',
 				onTap: function(e) {
 					$ionicLoading.show();
+				
 					$lineManager.postponeLine($scope.data.delayTime).then(function(data) {
+					
 						$ionicLoading.hide();
 						if (!data) {
 							var alertPopup = $ionicPopup.alert({
@@ -494,7 +522,14 @@ angular.module('starter.controllers', ['ngCordova'])
 								template: $filter('translate')('TR_2_POPTEMPLATE')
 							});
 						}
-						console.log("Postpone Line");
+						else {
+							var alertPopup = $ionicPopup.alert({
+								title: "line prosponed in:"+$scope.data.delayTime+" minutes",
+								template: "line prosponed in:" + $scope.data.delayTime + " minutes"
+							});
+
+						}
+						
 
 					});
 
@@ -658,6 +693,8 @@ angular.module('starter.controllers', ['ngCordova'])
 									template: "please try again"
 								});
 							} else {
+
+
 								var canceledPopup = $ionicPopup.show({
 									template: 'meeting canceld',
 									title: 'meeting canceld',
@@ -673,14 +710,15 @@ angular.module('starter.controllers', ['ngCordova'])
 									}]
 								});
 								canceledPopup.then(function(data) {
-									$scope.meeting = {};
+
 									for (var i = 0; i < $scope.user.activeMeetings.length; i++) {
-										if ($scope.user.activeMeetings[i].lineId == meeting.lineId) {
+										if ($scope.user.activeMeetings[i].lineId == $scope.meeting.lineId) {
 											$scope.user.passedMeetings.push($scope.user.activeMeetings[i]);
 											$scope.user.activeMeetings.splice(i, 1);
 											break;
 										}
 									}
+									$scope.meeting = {};
 									$state.go("app.default");
 								});
 							}
@@ -712,35 +750,43 @@ angular.module('starter.controllers', ['ngCordova'])
 						$ionicLoading.show({
 							template: $filter('translate')('TR_Loading')
 						});
+						if ($scope.meeting) {
+							$meetingManager.cancelMeeting($scope.meeting).then(function(data) {
+								$ionicLoading.hide();
+								if (!data) {
+									var alertPopup = $ionicPopup.alert({
+										title: "please try again",
+										template: "please try again"
+									});
+								} else {
+									var canceledPopup = $ionicPopup.show({
+										template: 'meeting canceld',
+										title: 'meeting canceld',
+										subTitle: '',
+										scope: $scope,
+										buttons: [{
+											text: '<b>ok</b>',
+											type: 'button-positive',
+											onTap: function(e) {
+												return;
+											}
 
-						$meetingManager.cancelMeeting($scope.meeting).then(function(data) {
-							$ionicLoading.hide();
-							if (!data) {
-								var alertPopup = $ionicPopup.alert({
-									title: "please try again",
-									template: "please try again"
-								});
-							} else {
-								var canceledPopup = $ionicPopup.show({
-									template: 'meeting canceld',
-									title: 'meeting canceld',
-									subTitle: '',
-									scope: $scope,
-									buttons: [{
-										text: '<b>ok</b>',
-										type: 'button-positive',
-										onTap: function(e) {
-											return;
+										}]
+									});
+									canceledPopup.then(function(data) {
+										for (var i = 0; i < $scope.user.activeMeetings.length; i++) {
+											if ($scope.user.activeMeetings[i].lineId == $scope.meeting.lineId) {
+												$scope.user.passedMeetings.push($scope.user.activeMeetings[i]);
+												$scope.user.activeMeetings.splice(i, 1);
+												break;
+											}
 										}
-
-									}]
-								});
-								canceledPopup.then(function(data) {
-									$scope.meeting = {};
-									$state.go("app.default");
-								});
-							}
-						});
+										$scope.meeting = {};
+										$state.go("app.default");
+									});
+								}
+							});
+						}
 					}
 				}]
 			});
@@ -748,6 +794,23 @@ angular.module('starter.controllers', ['ngCordova'])
 
 		$scope.shareMeeting = function() {
 			$state.go("app.shareMeeting");
+		};
+		$scope.confirmMeeting = function() {
+			
+			$meetingManager.confirmMeeting().then(function(data) {
+				if (data) {
+					var alertPopup = $ionicPopup.alert({
+						title: "meeting confirmed",
+						template: "meeting confirmed"
+					});
+
+				} else {
+					var alertPopup = $ionicPopup.alert({
+						title: "problem please try again",
+						template: "problem please try again"
+					});
+				}
+			});
 		};
 
 	})
