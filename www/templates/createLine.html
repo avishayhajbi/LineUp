@@ -4,30 +4,29 @@
 
         <!-- Line info -->
         <div class="col col-80 col-offset-10">
-            <div class="row">
+            <div class="row">Line Setting
 <!--                 <div class="col">
                     <img width=100px; src="./img/choose.jpg" onerror="this.src = './img/choose.jpg';" ng-src="newLine.ImageURI" id="smallimage" ng-click="ShowPictures()" />
                 </div> -->
-                <div class="col col-center">
+                <!-- <div class="col col-center">
                     <label class="item item-input">
                         <input type="text" ng-model="newLine.title" placeholder="Title">
                     </label>
 
-                </div>
+                </div> -->
             </div>
         </div>
 
 
-        <div class="container">
+        <div class="container col col-80 col-offset-10">
            
-
              <div class="row">
                 <label class="item item-input lineLable ">
                     <div class="col col-25">
-                        <div class="input-label col-offset-5">{{"Date:" | translate}}</div>
+                        <div class="col-offset-5">Title:</div>
                     </div>
                     <div class="col col-75 col-offset-20">
-                        <input type="date" ng-model="newLine.day" placeholder="DD-MM-YYYY"></label>
+                        <input type="text" ng-model="newLine.title" placeholder="Enter Title">
                     </div>
                 </label>
             </div>
@@ -35,10 +34,21 @@
              <div class="row">
                 <label class="item item-input lineLable ">
                     <div class="col col-25">
-                        <div class="input-label col-offset-5">{{"From:" | translate}}</div>
+                        <div class="col-offset-5">{{"Date:" | translate}}</div>
                     </div>
                     <div class="col col-75 col-offset-20">
-                        <input type="time" class="col col-75" ng-model="newLine.startDate" placeholder="HH:mm">
+                        <input type="date" ng-model="newLine.day" placeholder="DD-MM-YYYY" min="2015-12-06" max="2025-12-06">
+                    </div>
+                </label>
+            </div>
+
+             <div class="row">
+                <label class="item item-input lineLable ">
+                    <div class="col col-25">
+                        <div class="col-offset-5">{{"From:" | translate}}</div>
+                    </div>
+                    <div class="col col-75 col-offset-20">
+                        <input type="time" class="col" ng-model="newLine.startDate" placeholder="HH:mm">
                     </div>
                 </label>
             </div>
@@ -47,18 +57,18 @@
              <div class="row">
                 <label class="item item-input lineLable">
                     <div class="col col-25">
-                        <div class="input-label col-offset-5">{{"To:" | translate}}</div>
+                        <div class="col-offset-5">{{"To:" | translate}}</div>
                     </div>
                     <div class="col col-75 col-offset-20">
-                        <input type="time" class="col col-75" ng-model="newLine.endDate" placeholder="HH:mm">
+                        <input type="time" class="col" ng-model="newLine.endDate" placeholder="HH:mm">
                     </div>
                 </label>
             </div>
 
-            <div class="col-80 col-offset-10">
-                <div class="input-label">{{"TR_2_Location" | translate}}</div>
+            <div class="col-90 col-offset-10">
+                <div >{{"TR_2_Location" | translate}}</div>
             </div>
-            <div class="col-80 col-offset-10">
+            <div class="col-90 col-offset-10">
                 <input id="autocomplete" class="col col-75" placeholder="Enter your address" type="text">
             </div>
 
@@ -66,7 +76,7 @@
            <div class="row">
                 <label class="item item-input lineLable ">
                     <div class="col col-40">
-                        <div class="input-label col-offset-5">{{"TR_2_Duration" | translate}}</div>
+                        <div class="col-offset-5">{{"TR_2_Duration" | translate}}</div>
                     </div>
                     <div class="col col-40 col-offset-20">
                         <input type="number" class="col col-75" ng-model="newLine.druation" ng-change="newLine.confirmTime = newLine.druation *3">
@@ -75,10 +85,10 @@
             </div>
 
             <div class="row ">
-                <div class="col col-40 col-offset-5">
-                    <div class="input-label col-offset-5" ng-disabled="newLine.manuall">Manuall line:</div>
+                <div class="col col-60 col-offset-5">
+                    <div class="col-offset-5" ng-disabled="newLine.manuall">Manuall line:</div>
                 </div>
-                <div class="col col-40 col-offset-20">
+                <div class="col col-25">
                     <label class="toggle">
                         <input type="checkbox" ng-model="newLine.manuall">
                         <div class="track">
@@ -91,7 +101,7 @@
            <div class="row">
                 <label class="item item-input lineLable">
                     <div class="col col-40">
-                        <div class="input-label col-offset-5">Confirm time:</div>
+                        <div class="col-offset-5">Confirm time:</div>
                     </div>
                     <div class="col col-40 col-offset-20">
                         <input type="number" class="col col-75" ng-model="newLine.confirmTime">

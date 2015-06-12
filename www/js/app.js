@@ -96,7 +96,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
         views: {
           'menuContent': {
             templateUrl: "templates/lineAnalyze.html",
-            controller: 'lineAnalyzeCtrl'
+            controller: 'lineStatusCtrl'
           }
         }
       })

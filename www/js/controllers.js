@@ -431,7 +431,7 @@ angular.module('starter.controllers', ['ngCordova'])
 		$scope.line = {};
 		$scope.line.link = "link not avilable";
 	} else {
-		$scope.line.link = "https://fathomless-eyrie-8332.herokuapp.com/lineRedirect?lineId=" + $scope.line._id;
+		$scope.line.link = "https://fathomless-eyrie-8332.herokuapp.com/lineRedirect?lineId=" + $scope.line.lineId;
 	}
 
 	$scope.copyLineLink = function() {
@@ -474,6 +474,13 @@ angular.module('starter.controllers', ['ngCordova'])
 		$state.go("app.shareLine");
 	};
 
+	$scope.analyzeLine = function() {
+		$state.go("app.lineAnalyze");
+	};
+
+	$scope.LineStatus = function() {
+		$state.go("app.lineStatus");
+	};
 	$scope.nextMeeting = function() {
 		$ionicLoading.show();
 		$lineManager.nextMeeting().then(function(data) {
@@ -628,8 +635,6 @@ angular.module('starter.controllers', ['ngCordova'])
 		});
 	};
 })
-
-.controller('lineAnalyzeCtrl', function($scope) {})
 
 .controller('myLinesCtrl', function($scope, $lineManager, $state, $userManagment, $ionicLoading, $filter) {
 

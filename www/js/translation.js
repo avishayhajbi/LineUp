@@ -46,6 +46,7 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_4_ShareViaEmail:'Share via Email',
       TR_4_ShareViaMobile:'Share via Mobile',
 
+
       //page 5
       TR_5_manualControl: 'Manual Control',
       TR_5_lineAnalyze: 'Line Analyze',
@@ -53,7 +54,8 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_5_nextMeetings: 'Next meetings:',
       TR_5_startDate: 'Start Date:',
       TR_5_endDate: 'End Date:',
-
+      TR_5_user: 'user name',
+      TR_5_date: 'meeting time',
       //page 6
       TR_6_nextMeeting: 'Move to next Meeting',
       TR_6_postponeCurrentMeeting:'Postpone current Meeting',
@@ -62,6 +64,9 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_6_fillEmptyMeeting:'Fill empty Meeting',
       TR_6_Share: 'Share Line',
       TR_6_endLine:'End line',
+      TR_cancelMeeting: 'Cancel meeting',
+      TR_meetingTimeStart: 'Meeting time',
+
 
       //page 1
       TR_1_ENTERLINEID: 'Enter Line ID..',
@@ -85,11 +90,10 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
 
       // signIn
       TR_3_SignIn_Facebook:"Sign in with Facebook",
-      TR_3_SignIn_Email:"Sign in with Email",
-
-      //page 10 
-      TR_meetingTimeStart: 'Meeting time:',
-
+      TR_3_SignIn_Email:"Login with Email",
+      TR_3_SignUp_Email: 'Sign up with Email',
+      TR_signUp: 'Sign up',
+      TR_logOut: 'Log out',      
       // login
 
       // message
