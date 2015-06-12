@@ -658,65 +658,74 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 				//send device token to server
 				sendTokenToServer(notification.regid);
 			} else if (notification.event == "message") {
-
+				debugger;
 				switch (notification.payload.type) {
 					case "endLine":
-						$cordovaDialogs.alert("Line: " + notification.payload.title + " canceld");
+						alertMessage("Line: " + notification.payload.title + " canceld");
 						$rootScope.$broadcast("endLine", notification.payload.lineId);
 						break;
 					case "endMeeting":
-						$cordovaDialogs.alert("thanks u form: " + notification.payload.title);
+						alertMessage("thanks u form: " + notification.payload.title);
 						$rootScope.$broadcast("endMeeting", notification.payload.lineId);
 						break;
 					case "postponeLine":
-						$cordovaDialogs.alert("Line: " + notification.payload.title + " postpone new time:" + notification.payload.usersNewTime);
+						alertMessage("Line: " + notification.payload.title + " postpone new time:" + notification.payload.usersNewTime);
 						break;
 					case "lineShorted":
-						$cordovaDialogs.alert("Line: " + notification.payload.title + " shorted new time:" + notification.payload.usersNewTime);
+						alertMessage("Line: " + notification.payload.title + " shorted new time:" + notification.payload.usersNewTime);
 						break;
 					case "newTime":
-						$cordovaDialogs.alert("Line: " + notification.payload.title + " updated time:" + notification.payload.usersNewTime);
+						alertMessage("Line: " + notification.payload.title + " updated time:" + notification.payload.usersNewTime);
 						break;
 					case "nextInLine":
-						$cordovaDialogs.alert("your are nexy in line: " + notification.payload.title);
+						alertMessage("your are nexy in line: " + notification.payload.title);
 						break;
 					case "enterLine":
-						$cordovaDialogs.alert("please enter to line: " + notification.payload.title);
+						alertMessage("please enter to line: " + notification.payload.title);
 						break;
 					case "lineWillBegin":
-						$cordovaDialogs.alert("line: " + notification.payload.title + " will begin in"+notification.payload.time);
+						alertMessage("line: " + notification.payload.title + " will begin in"+notification.payload.time);
 						break;
 					case "lineWillBeginIn5":
-						$cordovaDialogs.alert("line: " + notification.payload.title + " will begin in 5 minutes");
+						alertMessage("line: " + notification.payload.title + " will begin in 5 minutes");
 						break;
 					case "lineStart":
-						$cordovaDialogs.alert("line: " + notification.payload.title + " started next user:"+ notification.payload.username);
+						alertMessage("line: " + notification.payload.title + " started next user:"+ notification.payload.username);
 						break;
 					case "lineStartNoUsers":
-						$cordovaDialogs.alert("line: " + notification.payload.title + " started but no one signed in :(");
+						alertMessage("line: " + notification.payload.title + " started but no one signed in :(");
 						break;
 					case "userCanceldMeeting":
-						$cordovaDialogs.alert(notification.payload.userName + " canceled meeting in line" + notification.payload.title);
+						alertMessage(notification.payload.userName + " canceled meeting in line" + notification.payload.title);
 						break;
 					case "userCanceldMeeting":
-						$cordovaDialogs.alert(notification.payload.userName + " canceled meeting in line" + notification.payload.title);
+						alertMessage(notification.payload.userName + " canceled meeting in line" + notification.payload.title);
 						break;
 					case "meetingConfirmed":
-						$cordovaDialogs.alert(notification.payload.userName + " confirmed line:" + notification.payload.title);
+						alertMessage(notification.payload.userName + " confirmed line:" + notification.payload.title);
 						break;
 					case "newUser":
-						$cordovaDialogs.alert(notification.payload.userName + " joined Line: " + notification.payload.title);
+						alertMessage(notification.payload.userName + " joined Line: " + notification.payload.title);
 						break;
 					case "askConfirmed":
-						$cordovaDialogs.alert("please confirmed: " + notification.payload.title + "that will start at: "+notification.payload.usersNewTime);
+						alertMessage("please confirmed: " + notification.payload.title + "that will start at: "+notification.payload.usersNewTime);
 						break;
 					case "noConfirmation":
-						$cordovaDialogs.alert("u didnt confirm meeting: " + notification.payload.title + " meetings canceld");
+						alertMessage("u didnt confirm meeting: " + notification.payload.title + " meetings canceld");
 						$rootScope.$broadcast("endMeeting", notification.payload.lineId);
 						break;
 
 					default:
-						$cordovaDialogs.alert("you got a defualt message!", "LineUp informs you that:");
+						alertMessage("you got a defualt message!", "LineUp informs you that:");
+				}
+				function alertMessage(message) {
+					if (notification.foreground == "1"){
+						$cordovaDialogs.alert(message);
+					}
+					else {
+						$cordovaDialogs.alert("message = "+message+' msgcnt = '+notification.msgcnt);
+					}
+			
 				}
 
 			} else if (notification.event == "error")
