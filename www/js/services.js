@@ -709,6 +709,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 						$cordovaDialogs.alert("please confirmed: " + notification.payload.title + "that will start at: "+notification.payload.usersNewTime);
 						break;
 					case "noConfirmation":
+					debugger;
 						$cordovaDialogs.alert("u didnt confirm meeting: " + notification.payload.title + " meetings canceld");
 						$rootScope.$broadcast("endMeeting", notification.payload.lineId);
 						break;

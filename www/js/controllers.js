@@ -3,6 +3,8 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('menuCtrl', function($scope, $ionicModal, $localstorage, $ionicModal, $timeout, $filter, $userManagment, $ionicLoading, $ionicPopup, $state, $pushNotificationHere) {
 
 		$scope.user = {};
+
+
 		//SIGN on start up 
 		//$localstorage.setObject('lineup', '');
 		var connect = $localstorage.getObject('lineup');
@@ -140,12 +142,13 @@ angular.module('starter.controllers', ['ngCordova'])
 			removeFromActiveLines(lineId);
 		});
 		$scope.$on("endMeeting", function(evt, lineId) {
+			
 			removeFromActiveMeetings(lineId);
 		});
 
 		function removeFromActiveLines(lineId) {
 			for (var i = 0; i < $scope.user.activeLines.length; i++) {
-				if ($scope.user.activeLines[i].lineId == $scope.line.lineId) {
+				if ($scope.user.activeLines[i].lineId == lineId) {
 					$scope.user.passedLines.push($scope.user.activeLines[i]);
 					$scope.user.activeLines.splice(i, 1);
 					break;
@@ -156,7 +159,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
 		function removeFromActiveMeetings(lineId) {
 			for (var i = 0; i < $scope.user.activeMeetings.length; i++) {
-				if ($scope.user.activeMeetings[i].lineId == $scope.meeting.lineId) {
+				if ($scope.user.activeMeetings[i].lineId == lineId) {
 					$scope.user.passedMeetings.push($scope.user.activeMeetings[i]);
 					$scope.user.activeMeetings.splice(i, 1);
 					break;
@@ -176,15 +179,6 @@ angular.module('starter.controllers', ['ngCordova'])
 
 			}
 		}
-
-		$userManagment.updateLists().then(function(data) {
-			if (data) {
-				$scope.user.activeMeetings = data.activeMeetings;
-				$scope.user.activeLines = data.activeLines;
-				$scope.user.passedLines = data.passedLines;
-				$scope.user.passedMeetings = data.passedMeetings
-			}
-		});
 
 
 		$scope.createLine = function() {
