@@ -142,7 +142,7 @@ angular.module('starter.controllers', ['ngCordova'])
 			removeFromActiveLines(lineId);
 		});
 		$scope.$on("endMeeting", function(evt, lineId) {
-			
+
 			removeFromActiveMeetings(lineId);
 		});
 
@@ -478,7 +478,71 @@ angular.module('starter.controllers', ['ngCordova'])
 		$ionicLoading.show();
 		$lineManager.nextMeeting().then(function(data) {
 			$ionicLoading.hide();
-			if (!data) {
+
+			if (data == "noMoreMeetingsLineClosed") {
+				var alertPopup = $ionicPopup.alert({
+					title: "mo more meetings and room for meetings closeing line",
+					template: "mo more meetings and room for meetings closeing line"
+				});
+				for (var i = 0; i < $scope.user.activeLines.length; i++) {
+					if ($scope.user.activeLines[i].lineId == $scope.line.lineId) {
+						$scope.user.passedLines.push($scope.user.activeLines[i]);
+						$scope.user.activeLines.splice(i, 1);
+						break;
+					}
+				}
+				console.log("End line");
+				$state.go("app.lineAnalyze");
+			} else if (data = "lineDidntStart") {
+				var alertPopup = $ionicPopup.alert({
+					title: "line didnt start yet",
+					template: "line didnt start yet"
+				});
+				console.log("Move to next Meeting");
+
+			} else if (data == "noMoreMeetingsAskWhatToDo") {
+
+				var chooseDatePopUp = $ionicPopup.show({
+					template: 'not more meetings in line what do do?',
+					title: 'not more meetings in line what do do?',
+					subTitle: '',
+					scope: $scope,
+					buttons: [{
+						text: 'leave open',
+					}, {
+						text: 'end line',
+						type: 'button-positive',
+						onTap: function(e) {
+							$ionicLoading.show();
+
+							$lineManager.endLine().then(function(data) {
+								$ionicLoading.hide();
+								if (!data) {
+									var alertPopup = $ionicPopup.alert({
+										title: $filter('translate')('TR_2_POPTITLE'),
+										template: $filter('translate')('TR_2_POPTEMPLATE')
+									});
+								} else {
+									for (var i = 0; i < $scope.user.activeLines.length; i++) {
+										if ($scope.user.activeLines[i].lineId == $scope.line.lineId) {
+											$scope.user.passedLines.push($scope.user.activeLines[i]);
+											$scope.user.activeLines.splice(i, 1);
+											break;
+										}
+									}
+									console.log("End line");
+									$state.go("app.lineAnalyze");
+								}
+
+							});
+
+						}
+					}]
+				});
+
+
+
+			} else if (!data) {
 				var alertPopup = $ionicPopup.alert({
 					title: $filter('translate')('TR_2_POPTITLE'),
 					template: $filter('translate')('TR_2_POPTEMPLATE')
@@ -505,27 +569,31 @@ angular.module('starter.controllers', ['ngCordova'])
 				text: '<b>OK</b>',
 				type: 'button-positive',
 				onTap: function(e) {
+
+					$scope.data.delayTime = parseInt($scope.data.delayTime);
+
 					$ionicLoading.show();
-				
+
 					$lineManager.postponeLine($scope.data.delayTime).then(function(data) {
-					
+
 						$ionicLoading.hide();
 						if (!data) {
 							var alertPopup = $ionicPopup.alert({
 								title: $filter('translate')('TR_2_POPTITLE'),
 								template: $filter('translate')('TR_2_POPTEMPLATE')
 							});
-						}
-						else {
+
+						} else {
 							var alertPopup = $ionicPopup.alert({
-								title: "line prosponed in:"+$scope.data.delayTime+" minutes",
+								title: "line prosponed in:" + $scope.data.delayTime + " minutes",
 								template: "line prosponed in:" + $scope.data.delayTime + " minutes"
 							});
 
 						}
-						
 
 					});
+
+
 
 				}
 			}]
@@ -790,7 +858,7 @@ angular.module('starter.controllers', ['ngCordova'])
 			$state.go("app.shareMeeting");
 		};
 		$scope.confirmMeeting = function() {
-			
+
 			$meetingManager.confirmMeeting().then(function(data) {
 				if (data) {
 					var alertPopup = $ionicPopup.alert({

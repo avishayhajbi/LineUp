@@ -562,6 +562,8 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 					},
 					timeout: 8000
 				}).then(function(response) {
+					if(response.data == "noMoreMeetingsLineClosed" || response.data =="noMoreMeetingsAskWhatToDo" || response.data =="lineDidntStart");
+						return response.data;
 					if (response.data) {
 						getLineInfo();
 						return true;
@@ -709,7 +711,6 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 						$cordovaDialogs.alert("please confirmed: " + notification.payload.title + "that will start at: "+notification.payload.usersNewTime);
 						break;
 					case "noConfirmation":
-					debugger;
 						$cordovaDialogs.alert("u didnt confirm meeting: " + notification.payload.title + " meetings canceld");
 						$rootScope.$broadcast("endMeeting", notification.payload.lineId);
 						break;
