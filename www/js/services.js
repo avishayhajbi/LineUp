@@ -1,6 +1,6 @@
 angular.module('starter.services', ['ngCordova']).config(['$provide', function($provide) {
 
-	$provide.factory('$phoneManager', function($ionicPopup, $rootScope) {
+	$provide.factory('$phoneManager', function($rootScope, $state) {
 
 		var myLocation = {
 			longitufde: '',
@@ -18,6 +18,8 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 			myLocation.longitude = false;
 			myLocation.latitude = false;
 		});
+
+		
 
 		return {
 			getLocation: function() {
@@ -319,7 +321,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 			var now = new Date();
 			var difference = new Date(time - now);
 
-			tz_correction_minutes = now.getTimezoneOffset() - difference.getTimezoneOffset();
+			var tz_correction_minutes = now.getTimezoneOffset() - difference.getTimezoneOffset();
 			difference.setMinutes(time.getMinutes() + tz_correction_minutes);
 			currentMeeting.timeLeft = {
 				days: difference.getDate() - 1,
@@ -534,7 +536,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
 			},
 			postponeLine: function(delayTime) {
-				
+
 				return $http.get(serverUrl + 'postponeLine', {
 					params: {
 						lineId: currentLine.lineId,
@@ -562,8 +564,8 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 					},
 					timeout: 8000
 				}).then(function(response) {
-					if(response.data == "noMoreMeetingsLineClosed" || response.data =="noMoreMeetingsAskWhatToDo" || response.data =="lineDidntStart");
-						return response.data;
+					if (response.data == "noMoreMeetingsLineClosed" || response.data == "noMoreMeetingsAskWhatToDo" || response.data == "lineDidntStart");
+					return response.data;
 					if (response.data) {
 						getLineInfo();
 						return true;
@@ -578,7 +580,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 		}
 	});
 
-	$provide.factory('$pushNotificationHere', function($rootScope, $http, $cordovaDialogs, $userManagment, $lineManager, $state) {
+	$provide.factory('$pushNotificationHere', function($rootScope, $http, $cordovaDialogs, $userManagment, $meetingManager, $lineManager, $state, $ionicPopup, $ionicLoading , $outSideLineHandler) {
 
 		ionic.Platform.ready(function() {
 			var device = ionic.Platform.device();
@@ -648,89 +650,81 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 			//push from android
 
 		window.handleAndroid = function(notification) {
-
-			// ** NOTE: ** You could add code for when app is in foreground or not, or coming from coldstart here too
-			//             via the console fields as shown.
-			console.log("In foreground " + notification.foreground + " Coldstart " + notification.coldstart);
+			debugger;
 			if (notification.event == "registered") {
 
-				console.log(notification.regid);
-				//send device token to server
+				console.log("registered to notification:", notification.regid);
 				sendTokenToServer(notification.regid);
+
 			} else if (notification.event == "message") {
-				debugger;
+
+
 				switch (notification.payload.type) {
-					case "endLine":
-						alertMessage("Line: " + notification.payload.title + " canceld");
-						$rootScope.$broadcast("endLine", notification.payload.lineId);
-						break;
-					case "endMeeting":
-						alertMessage("thanks u form: " + notification.payload.title);
-						$rootScope.$broadcast("endMeeting", notification.payload.lineId);
-						break;
-					case "postponeLine":
-						alertMessage("Line: " + notification.payload.title + " postpone new time:" + notification.payload.usersNewTime);
-						break;
-					case "lineShorted":
-						alertMessage("Line: " + notification.payload.title + " shorted new time:" + notification.payload.usersNewTime);
-						break;
-					case "newTime":
-						alertMessage("Line: " + notification.payload.title + " updated time:" + notification.payload.usersNewTime);
-						break;
-					case "nextInLine":
-						alertMessage("your are nexy in line: " + notification.payload.title);
-						break;
-					case "enterLine":
-						alertMessage("please enter to line: " + notification.payload.title);
-						break;
-					case "lineWillBegin":
-						alertMessage("line: " + notification.payload.title + " will begin in"+notification.payload.time);
-						break;
-					case "lineWillBeginIn5":
-						alertMessage("line: " + notification.payload.title + " will begin in 5 minutes");
-						break;
-					case "lineStart":
-						alertMessage("line: " + notification.payload.title + " started next user:"+ notification.payload.username);
-						break;
-					case "lineStartNoUsers":
-						alertMessage("line: " + notification.payload.title + " started but no one signed in :(");
-						break;
-					case "userCanceldMeeting":
-						alertMessage(notification.payload.userName + " canceled meeting in line" + notification.payload.title);
-						break;
-					case "userCanceldMeeting":
-						alertMessage(notification.payload.userName + " canceled meeting in line" + notification.payload.title);
-						break;
-					case "meetingConfirmed":
-						alertMessage(notification.payload.userName + " confirmed line:" + notification.payload.title);
-						break;
-					case "newUser":
-						alertMessage(notification.payload.userName + " joined Line: " + notification.payload.title);
-						break;
-					case "askConfirmed":
-						alertMessage("please confirmed: " + notification.payload.title + "that will start at: "+notification.payload.usersNewTime);
-						break;
-					case "noConfirmation":
-						alertMessage("u didnt confirm meeting: " + notification.payload.title + " meetings canceld");
-						$rootScope.$broadcast("endMeeting", notification.payload.lineId);
-						break;
+					case "line":
+						var popup = $ionicPopup.show({
+							template: notification.message,
+							title: 'LineUp',
+							buttons: [{
+								text: 'thanks'
+							}, {
+								text: '<b>go to Line</b>',
+								type: 'button-positive',
+								onTap: function(e) {
+									return;
+								}
 
+							}]
+						});
+						popup.then(function(data) {
+							$ionicLoading.show();
+							$lineManager.setCurrent(notification.payload.lineId).then(function(data) {
+								$ionicLoading.hide();
+								if (data) {
+									$state.go("app.lineStatus");
+								} else {}
+
+							});
+						});
+						break;
+					case "meeting":
+						var popup = $ionicPopup.show({
+							template: notification.message,
+							title: 'LineUp',
+							buttons: [{
+								text: 'thanks'
+							}, {
+								text: '<b>go to Meeting</b>',
+								type: 'button-positive',
+								onTap: function(e) {
+									return;
+								}
+
+							}]
+						});
+						popup.then(function(data) {
+							$ionicLoading.show();
+							$meetingManager.setCurrent(notification.payload.lineId).then(function(data) {
+								$ionicLoading.hide();
+								if (data) {
+									$state.go("app.meetingStatus");
+								} else {}
+
+							});
+						});
+
+						break;
+					case "remove":
+						var alertPopup = $ionicPopup.alert({
+							title: "LineUp",
+							template: notification.message
+						});
+						$rootScope.$broadcast("endMeeting" ,notification.payload.lineId);
+						break;
 					default:
-						alertMessage("you got a defualt message!", "LineUp informs you that:");
-				}
-				function alertMessage(message) {
-					if (notification.foreground == "1"){
-						$cordovaDialogs.alert(message);
-					}
-					else {
-						$cordovaDialogs.alert("message = "+message+' msgcnt = '+notification.msgcnt);
-					}
-			
+
 				}
 
-			} else if (notification.event == "error")
-				$cordovaDialogs.alert(notification.msg, "Push notification error event");
-			else $cordovaDialogs.alert(notification.event, "Push notification handler - Unprocessed Event");
+			} else console.log("err in notification:", notification.event + ", message:", notification.msg)
 		}
 
 
@@ -767,6 +761,63 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 		//     } else $cordovaDialogs.alert(notification.alert, "(RECEIVED WHEN APP IN BACKGROUND) Push Notification Received");
 		//   }
 		// }
+
+		window.handleOpenURL = function(url) {
+
+			console.log("received url: " + url);
+			if (url) {
+				var param = url.split("//");
+
+				if (param[1]) {
+					var jumpToPage = param[1].split("=");
+					var type = jumpToPage[0];
+					var id = jumpToPage[1];
+					if (type === "lineId") {
+						$outSideLineHandler.getLine(id).then(function(data) {
+							$ionicLoading.hide();
+							if (!data) {
+								var alertPopup = $ionicPopup.alert({
+									title: "error",
+									template: "error"
+								});
+							} else if (data == "noSuchLine") {
+								var alertPopup = $ionicPopup.alert({
+									title: "no such line",
+									template: "no such line"
+								});
+							} else if (data == "noRoom") {
+								var alertPopup = $ionicPopup.alert({
+									title: "no room in line",
+									template: "no room in line"
+								});
+							} else if (data == "userSignedIn") {
+								var alertPopup = $ionicPopup.alert({
+									title: "already signed to this line",
+									template: "already signed to this line"
+								});
+								$meetingManager.setCurrent(id).then(function(data) {
+									if (!data) {
+										var alertPopup = $ionicPopup.alert({
+											title: "errr",
+											template: "err"
+										});
+									} else {
+										$state.go("app.meetingStatus");
+									}
+								});
+
+							} else {
+								$state.transitionTo("app.getInLine");
+							}
+
+						});
+					} else if (type === "meeting") {
+
+					}
+				}
+
+			} }
+
 		return {}
 	});
 

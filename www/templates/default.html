@@ -8,7 +8,7 @@
         </div>
         <ion-list class="col col-80 col-offset-10">
             <ion-item ng-repeat="Line in user.activeLines" ng-click="chooseLineNew(Line.lineId)">
-                {{Line.title}} --- {{Line.lineId}}
+            <div style="float:left">{{Line.title}}</div>
             </ion-item>
         </ion-list>
 
@@ -34,7 +34,7 @@
 
         <ion-list class="col col-80 col-offset-10" style="padding:0px !important;">
             <ion-item ng-repeat="meeting in user.activeMeetings" ng-click="chooseMeeting(meeting.lineId);">
-                {{meeting.title}} ---- {{meeting.time | date : "HH:mm"}}
+                <div style="float:left">{{meeting.title}}</div><div style="float:right">{{meeting.time | date : " HH:mm dd/MM/yy"}}</div>
             </ion-item>
         </ion-list>
 

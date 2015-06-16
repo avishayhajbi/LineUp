@@ -142,7 +142,6 @@ angular.module('starter.controllers', ['ngCordova'])
 			removeFromActiveLines(lineId);
 		});
 		$scope.$on("endMeeting", function(evt, lineId) {
-
 			removeFromActiveMeetings(lineId);
 		});
 
@@ -169,16 +168,6 @@ angular.module('starter.controllers', ['ngCordova'])
 
 	})
 	.controller('defaultCtrl', function($scope, $ionicModal, $ionicPopup, $state, $ionicScrollDelegate, $filter, $outSideLineHandler, $ionicLoading, $lineManager, $meetingManager, $userManagment) {
-
-		if (window.jumpToPage) {
-			var type = window.jumpToPage[0];
-			var id = window.jumpToPage[1];
-			if (type === "line") {
-				$outSideLineHandler.getLine(id);
-			} else if (type === "meeting") {
-
-			}
-		}
 
 
 		$scope.createLine = function() {

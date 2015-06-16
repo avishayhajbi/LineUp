@@ -1,14 +1,8 @@
 <ion-view>
     <ion-content id="myMeetings" class="page">
-                <div class="col col-80 col-offset-10 row">My Meetings:
-        </div>
-        <ion-list class="col col-80 col-offset-10" style="padding:0px !important;">
-            <ion-item ng-repeat="meeting in user.activeMeetings" ng-click="chooseMeeting(meeting.lineId);">
-                {{meeting.title}} ---- {{meeting.time | date : "HH:mm"}}
-            </ion-item>
-        </ion-list>
 
 
+                <div class="col col-80 col-offset-10 row large pageTitle">{{user.username}}'s Meetings</div>
         <div class="row row-center col-80 col-offset-5">
             <div class="col-40 col-offset-5">
                 <label class="item item-input">
@@ -24,6 +18,19 @@
         <!--Join Line button-->
         <button class="button icon-left ion-plus button-positive button-block col-80 col-offset-10" menu-close ng-disabled="lineIdToGet===''" ng-click="getLine()">{{"TR_join_line" | translate}}</button>
 
+                <div class="col col-80 col-offset-10 row-bottom" ng-show="user.activeMeetings.length > 0">Future Meetings:
+        <ion-list style="padding:0px !important;">
+            <ion-item ng-repeat="meeting in user.activeMeetings" ng-click="chooseMeeting(meeting.lineId);">
+                <div style="float:left">{{meeting.title}}</div><div style="float:right">{{meeting.time | date : " HH:mm dd/MM/yy"}}</div>
+            </ion-item>
+        </ion-list></div>
+
+              <div class="col col-80 col-offset-10 row-bottom" ng-show="user.passedMeetings.length > 0">Passed Meetings:
+        <ion-list style="padding:0px !important;">
+            <ion-item ng-repeat="meeting in user.passedMeetings" ng-click="chooseMeeting(meeting.lineId);">
+                <div style="float:left">{{meeting.title}}</div><div style="float:right">{{meeting.time | date : "HH:mm"}}</div>
+            </ion-item>
+        </ion-list></div>
 
     </ion-content>
 </ion-view>

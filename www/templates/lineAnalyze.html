@@ -1,8 +1,8 @@
 <ion-view>
-    <ion-content id="lineStatus" class="page">
+    <ion-content id="lineAnalyze" class="page">
 
         <!-- Line info -->
-<!--         <div class="col col-80 col-offset-10">
+        <!--         <div class="col col-80 col-offset-10">
             <div class="row">
                 <div class="col">
                     <img width=100px src="./img/temp.jpg">
@@ -16,17 +16,17 @@
         </div>
  -->
 
-       <!-- Line info -->
-        <div class="col col-80 col-offset-10 row">
-                    <div class="col">Title: <span class="lineTitle">{{line.title}}</span></div>
-        </div>
+        <!-- Line info -->
+        <div class="col col-80 col-offset-10 row large pageTitle">Title: {{line.title}}</div>
+
         <!--Line status container-->
-        <div class="container col col-80 col-offset-10">
+        <div class="col col-80 col-offset-10 subTitle">Line information:</div>
+        <div class="container">
 
             <!--users in line row-->
             <div class="row">
                 <div class="col col-40 col-offset-5">
-                    <div><u>{{"TR_5_startDate" | translate}}</u></div>
+                    <div>{{"TR_5_startDate" | translate}}</div>
                 </div>
             </div>
             <div class="row">
@@ -38,7 +38,7 @@
             <!--uswers in line row-->
             <div class="row">
                 <div class="col col-40 col-offset-5">
-                    <div><u>{{"TR_5_endDate" | translate}}</u></div>
+                    <div>{{"TR_5_endDate" | translate}}</div>
                 </div>
             </div>
             <div class="row">
@@ -48,10 +48,10 @@
             </div>
 
 
-            <!--uswers in line row-->
+            <!--users in line row-->
             <div class="row">
                 <div class="col col-40 col-offset-5">
-                    <div><u>Location</u></div>
+                    <div>Location:</div>
                 </div>
             </div>
             <div class="row">
@@ -59,114 +59,122 @@
                     <h4>{{line.location[0].address}}</h4>
                 </div>
             </div>
+
+        </div>
+        <div class="col col-80 col-offset-10 subTitle">Meeting Duration:</div>
+        <div class="container">
             <!--users in line row-->
-            <div class="row">
-                <div class="col col-40 col-offset-5">
-                    <div><u>Defualt meeting duration:</u></div>
+            <div class="row row-center">
+                <div class="col col-60 col-offset-5">
+                    <div>Defualt Duration:</div>
                 </div>
-                <div class="col col-40">
+                <div class="col col-20">
                     <h4>{{line.druation}}</h4>
                 </div>
             </div>
 
             <!--users in line row-->
-            <div class="row">
-                <div class="col col-40 col-offset-5">
-                    <div><u>Current meeting duration:</u></div>
+            <div class="row row-center">
+                <div class="col col-60 col-offset-5">
+                    <div>Avg. Duration:</div>
                 </div>
-                <div class="col col-40">
+                <div class="col col-20">
                     <h4>{{line.druationAvarage}}</h4>
                 </div>
             </div>
+        </div>
 
+        <div class="col col-80 col-offset-10 subTitle">Users in Line:</div>
+
+        <div class="container">
             <!--users in line row-->
-            <div class="row">
-                <div class="col col-40 col-offset-5">
-                    <div><u>Total meetings in line:</u></div>
+            <div class="row row-center">
+                <div class="col col-60 col-offset-5">
+                    <div>Total Meetings:</div>
                 </div>
-                <div class="col col-40">
+                <div class="col col-20">
                     <h4>{{line.meetingsCounter}}</h4>
                 </div>
             </div>
 
             <!--users in line row-->
-            <div class="row">
-                <div class="col col-40 col-offset-5">
-                    <div><u>Future meetings:</u></div>
+            <div class="row row-center">
+                <div class="col col-60 col-offset-5">
+                    <div>Future Meetings:</div>
                 </div>
-                <div class="col col-40">
+                <div class="col col-20">
                     <h4>{{line.meetingsCounter}}</h4>
                 </div>
             </div>
 
             <!--users in line row-->
-            <div class="row">
-                <div class="col col-40 col-offset-5">
-                    <div><u>Passed meetings meetings:</u></div>
+            <div class="row row-center">
+                <div class="col col-60 col-offset-5">
+                    <div>Passed Meetings:</div>
                 </div>
-                <div class="col col-40">
+                <div class="col col-20">
                     <h4>{{line.passedMeetings.length}}</h4>
                 </div>
             </div>
 
             <!--users in line row-->
-            <div class="row">
-                <div class="col col-40 col-offset-5">
-                    <div><u>Canceled meetings:</u></div>
+            <div class="row row-center">
+                <div class="col col-60 col-offset-5">
+                    <div>Canceled meetings:</div>
                 </div>
-                <div class="col col-40">
+                <div class="col col-20">
                     <h4>{{line.canceldMeetings.length}}</h4>
                 </div>
             </div>
-            
+
             <!--next meetings row-->
             <div ng-show="line.meetings.length > 0 ">
-            <div class="row">
-                <div class="col col-40 col-offset-5">
-                    <div><u>{{"TR_5_nextMeetings" | translate}}</u></div>
+                <div class="row">
+                    <div class="col col-40 col-offset-5">
+                        <div>{{"TR_5_nextMeetings" | translate}}</div>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col col-40 col-offset-5">
-                    {{"TR_5_user" | translate}}
+                <div class="row">
+                    <div class="col col-40 col-offset-5">
+                        {{"TR_5_user" | translate}}
+                    </div>
+                    <div class="col col-40 col-offset-5">
+                        {{"TR_5_date" | translate}}
+                    </div>
                 </div>
-                <div class="col col-40 col-offset-5">
-                    {{"TR_5_date" | translate}}
+                <div class="row" ng-repeat="meeting in line.meetings">
+                    <div class="col col-40 col-offset-5">
+                        <h4>{{meeting.userName}}</h4>
+                    </div>
+                    <div class="col col-40 col-offset-5">
+                        <h4>{{meeting.time | date:'medium'}}</h4>
+                    </div>
                 </div>
-            </div>
-            <div class="row" ng-repeat="meeting in line.meetings">
-                <div class="col col-40 col-offset-5">
-                    <h4>{{meeting.userName}}</h4>
-                </div>
-                <div class="col col-40 col-offset-5">
-                    <h4>{{meeting.time | date:'medium'}}</h4>
-                </div>
-            </div>
             </div>
 
             <!--Past meetings row-->
             <div ng-show="line.passedMeetings.length > 0 ">
-            <div class="row">
-                <div class="col col-40 col-offset-5">
-                    <div><u>{{"TR_5_pastMeetings" | translate}}</u></div>
+                <div class="row">
+                    <div class="col col-40 col-offset-5">
+                        <div>{{"TR_5_pastMeetings" | translate}}</div>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col col-40 col-offset-5">
-                   {{"TR_5_user" | translate}}
+                <div class="row">
+                    <div class="col col-40 col-offset-5">
+                        {{"TR_5_user" | translate}}
+                    </div>
+                    <div class="col col-40 col-offset-5">
+                        {{"TR_5_date" | translate}}
+                    </div>
                 </div>
-                <div class="col col-40 col-offset-5">
-                    {{"TR_5_date" | translate}}
+                <div class="row" ng-repeat="meeting in line.passedMeetings">
+                    <div class="col col-40 col-offset-5">
+                        <h4>{{meeting.userName}}</h4>
+                    </div>
+                    <div class="col col-40 col-offset-5">
+                        <h4>{{meeting.time | date:'medium'}}</h4>
+                    </div>
                 </div>
-            </div>
-            <div class="row" ng-repeat="meeting in line.passedMeetings">
-                <div class="col col-40 col-offset-5">
-                    <h4><u>{{meeting.userName}}</u></h4>
-                </div>
-                <div class="col col-40 col-offset-5">
-                    <h4><u>{{meeting.time | date:'medium'}}</u></h4>
-                </div>
-            </div>
             </div>
 
         </div>
@@ -185,9 +193,9 @@
             <a class="tab-item" ng-click="endLine()">
                 <i class="icon ion-close"></i> End Line
             </a>
-                <a class="tab-item" ng-click="LineStatus()">
-                    <i class="icon ion-home"></i> Line Status
-                </a>
+            <a class="tab-item" ng-click="LineStatus()">
+                <i class="icon ion-home"></i> Line Status
+            </a>
             <a class="tab-item" ng-click="shareLine()">
                 <i class="icon ion-android-share"></i> Share Line
             </a>

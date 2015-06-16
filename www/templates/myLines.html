@@ -1,12 +1,11 @@
 <ion-view>
 
     <ion-content id="myLines"class="page">
-            <div class="col col-80 col-offset-10 row">My Lines:
-        </div>
+            <div class="col col-80 col-offset-10 row large pageTitle">{{user.username}}'s Lines</div>
 
         <ion-list class="col col-80 col-offset-10">
             <ion-item ng-repeat="Line in user.activeLines" ng-click="chooseLineNew(Line.lineId)">
-                {{Line.title}} --- {{Line.lineId}}
+            <div style="float:left">{{Line.title}}</div>
             </ion-item>
         </ion-list>
         <!--Create Line button-->
