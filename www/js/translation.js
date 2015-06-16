@@ -26,7 +26,10 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_getInLine: 'Join Line',
       TR_meetingStatus: 'Meeting Status',
       TR_Date:'Date',
+      TR_From: 'From:',
+      TR_to: 'To:',
       TR_Time:'Time',
+      TR_ConfirmTime: 'Confirm Time:',
       TR_Type: 'Type',
       TR_Reminder:'Set Reminder:',
       TR_Settings: 'Settings',
@@ -40,7 +43,7 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_Settings_logOutFaceBook: 'Log out via Facebook',
       //settings Page
       TR_Settings_language: 'Change language',
-    
+      TR_Title: 'Title:',
       //page 4
       TR_4_ShareViaFacebook:'Share via FaceBook',
       TR_4_ShareViaEmail:'Share via Email',
@@ -105,7 +108,7 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
 
       TR_2_POPTITLE: 'oh oh..',
       TR_2_POPTEMPLATE: 'Something went wrong :(',
-
+      TR_2_ManualLine: 'Manual line:',
     });
     $translateProvider.translations('he', {
       //global
