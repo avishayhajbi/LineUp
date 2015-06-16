@@ -38,20 +38,6 @@ body {
 }
 */
 
-.dateList {
-	min-height: 20px;
-}
-
-.left {
-	position: absolute;
-	line-height: 5px;
-	left: 10px;
-}
-.right {
-	position: absolute;
-	right: 10px;
-	line-height: 5px;
-}
 
 
 .hidden {
@@ -73,6 +59,15 @@ body {
 	background:  url(./../img/background.png)no-repeat;
 	background-position: left;  
 	font-family: OpenSans-Light;
+	font-size:16px;
+}
+
+.small {
+  font-size: 12px; /* 75% of the baseline */
+}
+
+.large {
+  font-size: 20px; /* 125% of the baseline */
 }
 
 [class*=item]  {
@@ -93,7 +88,7 @@ body {
 }
 
 .container {
-	margin:10%;
+	margin:5% 10% 10% 10%;
 	background: #fff;
 	border-radius: 5px;
 }
@@ -151,13 +146,14 @@ body {
 }
 
 .progressBarImage {
-	background: url(./../img/progressBarFull.png);
+	background: url(./../img/blue_background.png);
 	height:65px;
 
 }
 
 .lineLable {
 	border-width: 0px;
+	width:100%;
 }
 
 .button.button-icon.button-clear.ion-navicon.hide {
@@ -169,4 +165,18 @@ display: block;
   font-size: 20px;
   padding-top: 10px;
   padding-left:5%;
+}
+
+
+
+.pageTitle {
+	padding-top:5%;
+}
+
+#lineAnalyze .container {
+	margin-top:0px;
+}
+
+.subTitle {
+	margin-top:5%;
 }
