@@ -51,15 +51,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
           }
         }
       })
-      .state('app.signIn', {
-        url: "/signIn",
-        views: {
-          'menuContent': {
-            templateUrl: "templates/signIn.html",
-            controller: 'signInCtrl'
-          }
-        }
-      })
       .state('app.shareLine', {
         url: "/shareLine",
         cache: false,

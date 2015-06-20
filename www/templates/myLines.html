@@ -1,7 +1,7 @@
 <ion-view>
 
     <ion-content id="myLines"class="page">
-            <div class="col col-80 col-offset-10 row large pageTitle">{{user.username}}'s Lines</div>
+            <div class="col col-80 col-offset-10 row large pageTitle"  ng-show="user.username">{{user.username}}'s Lines</div><br>
 
         <ion-list class="col col-80 col-offset-10">
             <ion-item ng-repeat="Line in user.activeLines" ng-click="chooseLineNew(Line.lineId)">

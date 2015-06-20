@@ -19,9 +19,12 @@
         <div class="col col-80 col-offset-10 row large pageTitle">Title: {{meeting.title}}</div>
 
         <!-- progress bar -->
-        <div class="col col-80 col-offset-10 progressBar" ng-show="meeting.ProgressCounter && meeting.progressWidth < 51">Your meeting is getting close..</div>
-        <div class="col col-80 col-offset-10 progressBar" ng-show="meeting.ProgressCounter && meeting.progressWidth > 50 && meeting.progressWidth < 76">It's almost time, don't forget to confirm your meeting</div>
-        <div class="col col-80 col-offset-10 progressBar" ng-show="meeting.ProgressCounter && meeting.progressWidth > 75 && meeting.progressWidth < 100">Hurry! it's time to Get in Line!</div>
+        <div class="col col-80 col-offset-10 subTitle" ng-show="meeting.ProgressCounter && meeting.progressWidth < 51">Your meeting is getting close..</div>
+
+        <div class="col col-80 col-offset-10 subTitle" ng-show="meeting.ProgressCounter && meeting.progressWidth > 50 && meeting.progressWidth < 76">It's almost time, don't forget to confirm your meeting</div>
+
+        <div class="col col-80 col-offset-10 subTitle" ng-show="meeting.ProgressCounter && meeting.progressWidth > 75 && meeting.progressWidth < 100">Hurry! it's time to Get in Line!</div>
+
         <div class="col col-80 col-offset-10 progressBar" ng-show="meeting.ProgressCounter && meeting.progressWidth < 100">
             <div class="progressBarImage" style="width:{{meeting.progressWidth}}%;"></div>
         </div>
@@ -40,23 +43,23 @@
             </div>
             <!--time of meeting-->
 
-            <div class="col-80 col-offset-10">
+            <div class="row row-center col-80 col-offset-5">
                 <div class="input-label " ng-disabled="reminder">{{"TR_meetingTimeStart" | translate}}:</div>
             </div>
-            <div class="col-80 col-offset-10">
+            <div class="row row-center col-80 col-offset-5">
                 <h4>{{meeting.time | date : "HH:mm"}} {{meeting.time | date : "dd:MM:yyyy"}}</h4>
             </div>
 
             <!--time to wait row-->
-            <div class="col-80 col-offset-10">
+            <div class="row row-centercol-80 col-offset-5">
                 <div class="input-label" ng-disabled="reminder">{{"TR_timeToWait" | translate}}</div>
             </div>
-            <div class="col-80 col-offset-10">
+            <div class="row row-centercol-80 col-offset-5">
                 <h4>{{meeting.timeLeft.days}} days, {{meeting.timeLeft.hours}} hours and {{meeting.timeLeft.minutes}} minutes</h4>
             </div>
 
             <!--timmer row-->
-            <div class="row">
+            <div class="row row-center">
                 <div class="col col-60 col-offset-5">
                     <div class="input-label" ng-disabled="reminder">{{"TR_Reminder" | translate}}</div>
                 </div>

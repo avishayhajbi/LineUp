@@ -1,35 +1,39 @@
 <ion-view>
-    <ion-content id="default" class="page">
+    <ion-content id="default" class="page" ng-show="user.username">
+ <div class="col col-80 col-offset-10 row large pageTitle">Hi, {{user.username}}</div><br>
 
+
+           <div class="col col-80 col-offset-10 row subTitle">{{"TR_1_myLines" | translate}}
+        </div>
         <!--Create Line button-->
             <button class="button icon-left ion-compose button-positive button-block col-80 col-offset-10" menu-close ng-click="createLine()">{{"TR_Create_Line" | translate}}</button>
            
-            <div class="col col-80 col-offset-10 row" ng-show="user.activeLines.length > 0">My Lines:
-        </div>
+           <div class="col col-80 col-offset-10 row subTitle" ng-show="user.activeLines.length > 0">Existing Lines:
+        </div>  
         <ion-list class="col col-80 col-offset-10">
             <ion-item ng-repeat="Line in user.activeLines" ng-click="chooseLineNew(Line.lineId)">
             <div style="float:left">{{Line.title}}</div>
             </ion-item>
         </ion-list>
+<br><br>
+        <div class="col col-80 col-offset-10 row subTitle">{{"TR_1_myMeetings" | translate}}
+        </div>
 
-
-
-        <div class="row row-center col-80 col-offset-5">
-            <div class="col-40 col-offset-5">
+        <div class="row row-center col-80 col-offset-10">
+            <div class="col-75">
                 <label class="item item-input">
                     <input type="text" ng-model="lineIdToGetText" placeholder="{{placeholder | translate}}" ng-change="changeInput(lineIdToGetText)" ng-click="clearPlaceHolder()">
                 </label>
             </div>
-            <div class="col-10 col-offset-5">
+            <div class="col-20 col-offset-5">
                 <button class="button button-stable button-block" ng-click="openChooseLine(); lineIdToGetText = ''">+</button>
             </div>
         </div>
 
-
         <!--Join Line button-->
         <button class="button icon-left ion-plus button-positive button-block col-80 col-offset-10" menu-close ng-disabled="lineIdToGet===''" ng-click="getLine()">{{"TR_join_line" | translate}}</button>
 
-          <div class="col col-80 col-offset-10 row" ng-show="user.activeMeetings.length > 0">My Meetings:
+          <div class="col col-80 col-offset-10 row subTitle" ng-show="user.activeMeetings.length > 0">Existing Meetings:
         </div>
 
         <ion-list class="col col-80 col-offset-10" style="padding:0px !important;">
@@ -39,4 +43,34 @@
         </ion-list>
 
     </ion-content>
+
+    <ion-content id="signIn" class="page" ng-show="!user.username">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="col-80 col-offset-10">
+            <button class="button icon-left ion-social-facebook button-positive button-block" menu-close ng-click="signInFackBook()">{{"TR_3_SignIn_Facebook" | translate}}</button>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="col-80 col-offset-10">
+            <button class="button icon-left ion-email button-positive button-block" ng-click="openLogin()">{{"TR_3_SignIn_Email" | translate}}</button>
+
+        </div>
+         <br>
+        <br>
+        <br>
+        <br>
+        <div class="col-80 col-offset-10">
+            <button class="button icon-left ion-email button-positive button-block" ng-click="openSignup()">{{"TR_3_SignUp_Email" | translate}}</button>
+
+        </div>
+    </ion-content>    
 </ion-view>

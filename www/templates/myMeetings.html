@@ -2,14 +2,14 @@
     <ion-content id="myMeetings" class="page">
 
 
-                <div class="col col-80 col-offset-10 row large pageTitle">{{user.username}}'s Meetings</div>
-        <div class="row row-center col-80 col-offset-5">
-            <div class="col-40 col-offset-5">
+                <div class="col col-80 col-offset-10 row large pageTitle"  ng-show="user.username">{{user.username}}'s Meetings</div><br>
+        <div class="row row-center col-80 col-offset-10">
+            <div class="col-75">
                 <label class="item item-input">
                     <input type="text" ng-model="lineIdToGetText" placeholder="{{placeholder | translate}}" ng-change="changeInput(lineIdToGetText)" ng-click="clearPlaceHolder()">
                 </label>
             </div>
-            <div class="col-10 col-offset-5">
+            <div class="col-20 col-offset-5">
                 <button class="button button-stable button-block" ng-click="openChooseLine(); lineIdToGetText = ''">+</button>
             </div>
         </div>
@@ -18,17 +18,17 @@
         <!--Join Line button-->
         <button class="button icon-left ion-plus button-positive button-block col-80 col-offset-10" menu-close ng-disabled="lineIdToGet===''" ng-click="getLine()">{{"TR_join_line" | translate}}</button>
 
-                <div class="col col-80 col-offset-10 row-bottom" ng-show="user.activeMeetings.length > 0">Future Meetings:
+                <div class="col col-80 col-offset-10 row-bottom subTitle" ng-show="user.activeMeetings.length > 0">{{"TR_FutureMeetings" | translate}}
         <ion-list style="padding:0px !important;">
             <ion-item ng-repeat="meeting in user.activeMeetings" ng-click="chooseMeeting(meeting.lineId);">
                 <div style="float:left">{{meeting.title}}</div><div style="float:right">{{meeting.time | date : " HH:mm dd/MM/yy"}}</div>
             </ion-item>
         </ion-list></div>
 
-              <div class="col col-80 col-offset-10 row-bottom" ng-show="user.passedMeetings.length > 0">Passed Meetings:
+              <div class="col col-80 col-offset-10 row-bottom subTitle" ng-show="user.passedMeetings.length > 0">{{"TR_PassedMeetings" | translate}}
         <ion-list style="padding:0px !important;">
             <ion-item ng-repeat="meeting in user.passedMeetings" ng-click="chooseMeeting(meeting.lineId);">
-                <div style="float:left">{{meeting.title}}</div><div style="float:right">{{meeting.time | date : "HH:mm"}}</div>
+                <div style="float:left">{{meeting.title}}</div><div style="float:right">{{meeting.time | date : " HH:mm dd/MM/yy"}}</div>
             </ion-item>
         </ion-list></div>
 

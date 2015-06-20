@@ -17,10 +17,10 @@
  -->
 
         <!-- Line info -->
-        <div class="col col-80 col-offset-10 row large pageTitle">Title: {{line.title}}</div>
+        <div class="col col-80 col-offset-10 row large pageTitle">{{"Title:" | translate}} {{line.title}}</div>
 
         <!--Line status container-->
-        <div class="col col-80 col-offset-10 subTitle">Line information:</div>
+        <div class="col col-80 col-offset-10 subTitle">{{"TR_LineInformation" | translate}}</div>
         <div class="container">
 
             <!--users in line row-->
@@ -51,7 +51,7 @@
             <!--users in line row-->
             <div class="row">
                 <div class="col col-40 col-offset-5">
-                    <div>Location:</div>
+                    <div>{{"TR_2_Location" | translate}}</div>
                 </div>
             </div>
             <div class="row">
@@ -61,12 +61,12 @@
             </div>
 
         </div>
-        <div class="col col-80 col-offset-10 subTitle">Meeting Duration:</div>
+        <div class="col col-80 col-offset-10 subTitle">{{"TR_MeetingDuration" | translate}}</div>
         <div class="container">
             <!--users in line row-->
             <div class="row row-center">
                 <div class="col col-60 col-offset-5">
-                    <div>Defualt Duration:</div>
+                    <div>{{"TR_DefualtDuration" | translate}}</div>
                 </div>
                 <div class="col col-20">
                     <h4>{{line.druation}}</h4>
@@ -76,7 +76,7 @@
             <!--users in line row-->
             <div class="row row-center">
                 <div class="col col-60 col-offset-5">
-                    <div>Avg. Duration:</div>
+                    <div>{{"TR_AvgDuration" | translate}}</div>
                 </div>
                 <div class="col col-20">
                     <h4>{{line.druationAvarage}}</h4>
@@ -84,13 +84,13 @@
             </div>
         </div>
 
-        <div class="col col-80 col-offset-10 subTitle">Users in Line:</div>
+        <div class="col col-80 col-offset-10 subTitle">{{"TR_UsersInLine" | translate}}</div>
 
         <div class="container">
             <!--users in line row-->
             <div class="row row-center">
                 <div class="col col-60 col-offset-5">
-                    <div>Total Meetings:</div>
+                    <div>{{"TR_TotalMeetings" | translate}}</div>
                 </div>
                 <div class="col col-20">
                     <h4>{{line.meetingsCounter}}</h4>
@@ -100,7 +100,7 @@
             <!--users in line row-->
             <div class="row row-center">
                 <div class="col col-60 col-offset-5">
-                    <div>Future Meetings:</div>
+                    <div>{{"TR_FutureMeetings" | translate}}</div>
                 </div>
                 <div class="col col-20">
                     <h4>{{line.meetingsCounter}}</h4>
@@ -110,7 +110,7 @@
             <!--users in line row-->
             <div class="row row-center">
                 <div class="col col-60 col-offset-5">
-                    <div>Passed Meetings:</div>
+                    <div>{{"TR_PassedMeetings" | translate}}</div>
                 </div>
                 <div class="col col-20">
                     <h4>{{line.passedMeetings.length}}</h4>
@@ -120,7 +120,7 @@
             <!--users in line row-->
             <div class="row row-center">
                 <div class="col col-60 col-offset-5">
-                    <div>Canceled meetings:</div>
+                    <div>{{"TR_CanceledMeetings" | translate}}</div>
                 </div>
                 <div class="col col-20">
                     <h4>{{line.canceldMeetings.length}}</h4>
@@ -185,19 +185,19 @@
     <div class="bar bar-footer">
         <div class="tabs tabs-icon-top">
             <a class="tab-item" ng-click="nextMeeting()" ng-show="line.currentMeeting">
-                <i class="icon ion-skip-forward"></i> Next Meeting
+                <i class="icon ion-skip-forward"></i>{{"TR_NextMeeting" | translate}}
             </a>
             <a class="tab-item" ng-click="postponeLine()">
-                <i class="icon ion-pause"></i> Pause Line
+                <i class="icon ion-pause"></i> {{"TR_PauseLine" | translate}}
             </a>
             <a class="tab-item" ng-click="endLine()">
-                <i class="icon ion-close"></i> End Line
+                <i class="icon ion-close"></i>{{"TR_EndLine" | translate}}
             </a>
             <a class="tab-item" ng-click="LineStatus()">
-                <i class="icon ion-home"></i> Line Status
+                <i class="icon ion-home"></i>{{"TR_lineStatus" | translate}}
             </a>
             <a class="tab-item" ng-click="shareLine()">
-                <i class="icon ion-android-share"></i> Share Line
+                <i class="icon ion-android-share"></i>{{"TR_ShareLine" | translate}}
             </a>
         </div>
     </div>

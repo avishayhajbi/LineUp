@@ -24,7 +24,7 @@ checkAtt = function(prop) {
 // var serverUrl =  "http://10.0.3.209:3030/api/";
 // var serverUrl =  "http://10.0.0.2:3030/api/";
 // var serverUrl =  "http://localHost:3030/api/";
-var serverUrl =  "https://fathomless-eyrie-8332.herokuapp.com/api/";
+var serverUrl =  "https://lineupserver.herokuapp.com/api/";
 
 //http://localhost:8080/auth/facebook/callback
 

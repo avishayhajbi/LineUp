@@ -650,7 +650,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 			//push from android
 
 		window.handleAndroid = function(notification) {
-			debugger;
+		
 			if (notification.event == "registered") {
 
 				console.log("registered to notification:", notification.regid);

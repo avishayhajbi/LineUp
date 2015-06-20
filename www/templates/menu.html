@@ -15,7 +15,7 @@
    
     <ion-side-menu side="left">
         <ion-header-bar class="bar-positive">
-        <div ng-show="user.username">Hi, {{user.username}}</div>
+        <div class="small" ng-show="user.username">Hi, {{user.username}}</div>
             <!-- <img src="http://graph.facebook.com/{{user.id}}/picture?width=30&height=30" style="border-radius: 10px;" /> {{user.name}} -->
         </ion-header-bar>
         <ion-content>
@@ -27,14 +27,14 @@
                 <ion-item nav-clear menu-close href="#/app/" ng-click="logOut()" ng-show="user.username">
                     {{"TR_logOut" | translate}}
                 </ion-item>
-                <ion-item nav-clear menu-close href="#/app/createLine">
+                <ion-item nav-clear menu-close href="#/app/createLine" ng-show="user.username">
                     {{"TR_createLine" | translate}}
                 </ion-item>
-                <ion-item nav-clear menu-close href="#/app/myLines">
+                <ion-item nav-clear menu-close href="#/app/myLines" ng-show="user.username">
                     {{"TR_default" | translate}}
                 </ion-item>
-                <ion-item nav-clear menu-close href="#/app/myMeetings">
-                    My Meetings
+                <ion-item nav-clear menu-close href="#/app/myMeetings" ng-show="user.username">
+                   {{"TR_MyMeetings" | translate}}
                 </ion-item>                
                 <ion-item nav-clear menu-close ng-click="changeLanguage()">
                     {{"TR_Settings_language" | translate}}

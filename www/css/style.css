@@ -17,27 +17,6 @@
 	background-position: center;  
 }
 
-/*
-body {
-	font-family: OpenSans-Light;
-}
-
-.button {
-	font-family: OpenSans-Light;
-}
-
-.modal {
-	font-family: OpenSans-Light;
-}
-.col  {
-	font-family: OpenSans-Light;
-}
-
-.title  {
-	font-family: OpenSans-Light;
-}
-*/
-
 
 
 .hidden {
@@ -55,20 +34,10 @@ body {
 }
 
 
-.page {
-	background:  url(./../img/background.png)no-repeat;
-	background-position: left;  
+.page {	
 	font-family: OpenSans-Light;
-	font-size:16px;
 }
 
-.small {
-  font-size: 12px; /* 75% of the baseline */
-}
-
-.large {
-  font-size: 20px; /* 125% of the baseline */
-}
 
 [class*=item]  {
 	font-family: OpenSans-Light;
@@ -76,37 +45,25 @@ body {
 
 .pane {
 	font-family: OpenSans-Light;
-}
-
-.ng-binding {
-	font-family: OpenSans-Light;
-}
-
-
-.button {
-	border-radius: 5px;
+	background: url(./../img/grayBackground.jpg);
 }
 
 .container {
 	margin:5% 10% 10% 10%;
 	background: #fff;
 	border-radius: 5px;
+
 }
 
 .input-label {
 	width: 0%;
+
 }
 
 .progressBar {
 	background-color: #fff;
 	border-radius: 5px;
 	height: 75px;
-}
-
-
-.button.copyBtn {
-	margin-top: 0px;
-	font-size: 12px;
 }
 
 .reminder {
@@ -136,11 +93,6 @@ body {
 	padding:0px;
 }
 
-.tab-item {
-	color:#1b445c;
-	opacity: 1;
-}
-
 .scroll-bar-v {
 	display: none;
 }
@@ -161,14 +113,6 @@ display: block;
 
 }
 
-.menu .bar-header {
-  font-size: 20px;
-  padding-top: 10px;
-  padding-left:5%;
-}
-
-
-
 .pageTitle {
 	padding-top:5%;
 }
@@ -177,6 +121,114 @@ display: block;
 	margin-top:0px;
 }
 
+.modal .item-input {
+	border-radius: 0px;
+}
+
+
+@media (min-width: 500px) {
+
+
+.large {
+  font-size: 2.75em;
+}
+
+.menu .bar-header {
+  font-size: 2.75em;
+  padding-top: 10px;
+  padding-left:5%;
+}
+
+
 .subTitle {
 	margin-top:5%;
+	font-size:1.9em;
+	line-height: 2;
+}
+
+.container .ng-binding {
+	font-family: OpenSans-Light;
+	font-size:1.8em;
+	line-height: 2;
+}
+
+.button.copyBtn {
+	margin-top: 0px;
+	font-size:1.8em;
+}
+
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
+	font-family: OpenSans-Light;
+	font-size:1.2em;
+	line-height: none;
+}
+
+.button {
+	border-radius: 5px;
+	font-size:1.6em;
+}
+
+.tabs-icon-top > .tabs .tab-item, .tabs-icon-top.tabs .tab-item, .tabs-icon-bottom > .tabs .tab-item, .tabs-icon-bottom.tabs .tab-item {
+	color:#1b445c;
+	opacity: 1;
+	font-size:1.1em;
+}
+
+.small {
+  font-size: 0.5em;
+}
+
+}
+
+@media (max-width: 499px) {
+
+.large {
+  font-size: 22px;
+}
+
+.menu .bar-header {
+  font-size: 22px;
+  padding-top: 10px;
+  padding-left:5%;
+}
+
+
+.subTitle {
+	margin-top:5%;
+	font-size:18px;
+	line-height: 2;
+}
+
+.container .ng-binding {
+	font-family: OpenSans-Light;
+	font-size:18px;
+	line-height: 2;
+}
+
+.button.copyBtn {
+	margin-top: 0px;
+	font-size:18px;
+}
+
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
+	font-family: OpenSans-Light;
+	font-size:14px;
+	line-height: none;
+}
+
+.button {
+	border-radius: 5px;
+	font-size:14px;
+}
+
+.tabs-icon-top > .tabs .tab-item, .tabs-icon-top.tabs .tab-item, .tabs-icon-bottom > .tabs .tab-item, .tabs-icon-bottom.tabs .tab-item {
+	color:#1b445c;
+	opacity: 1;
+	font-size:12px;
+}
+
+.small {
+  font-size: 12px;
+}
+
 }

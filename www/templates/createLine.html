@@ -16,7 +16,7 @@
 
         <div class="container">
 
-            <div class="row">
+            <div class="row row-center">
                 <label class="item item-input lineLable">
                     <div class="col col-25">
                         {{"TR_Title" | translate}}
@@ -27,7 +27,7 @@
                 </label>
             </div>
 
-            <div class="row">
+            <div class="row row-center">
                 <label class="item item-input lineLable ">
                     <div class="col col-25">{{"TR_Date" | translate}}
                     </div>
@@ -37,7 +37,7 @@
                 </label>
             </div>
 
-            <div class="row">
+            <div class="row row-center">
                 <label class="item item-input lineLable ">
                     <div class="col col-25">{{"TR_From" | translate}}
                     </div>
@@ -47,7 +47,7 @@
                 </label>
             </div>
 
-            <div class="row">
+            <div class="row row-center">
                 <label class="item item-input lineLable">
                     <div class="col col-25">{{"TR_to" | translate}}
                     </div>
@@ -57,17 +57,17 @@
                 </label>
             </div>
 
-            <div class="row">
+            <div class="row row-center">
                 <label class="item item-input lineLable">
                     <div class="col col-25">{{"TR_2_Location" | translate}}
                     </div>
                     <div class="col col-75 col-offset-20">
-                        <input type="text" id="autocomplete" placeholder="Enter your address">
+                        <input type="text" id="autocomplete" placeholder="Enter Your Address">
                     </div>
                 </label>
             </div>
 
-            <div class="row">
+            <div class="row row-center">
                 <label class="item item-input lineLable ">
                     <div class="col col-25">{{"TR_2_Duration" | translate}}
                     </div>
@@ -77,15 +77,16 @@
                 </label>
             </div>
 
-             <div class="row">
+             <div class="row row-center">
                 <label class="item item-input lineLable">
                     <div class="col col-25">{{"TR_ConfirmTime" | translate }}
                     </div>
                     <div class="col col-75 col-offset-20">
-                        <input type="number" ng-model="newLine.confirmTime">
+                        <input type="number" ng-model="newLine.confirmTime" value="10">
                     </div>
                 </label>
-            </div>           
+            </div>  
+
             <div class="row row-center">
                 <div class="col col-35 col-offset-5" ng-disabled="newLine.manuall">{{"TR_2_ManualLine" | translate}}
                 </div>
@@ -101,7 +102,7 @@
 
         </div>
 
-        <button class="button icon-left ion-play button-positive button-block col-80 col-offset-10" menu-close ng-click="createLine()">Start Line</button>
+        <button class="button icon-left ion-play button-positive button-block col-80 col-offset-10" menu-close ng-click="createLine()">{{"TR_StartLine" | translate}}</button>
 
 
     </ion-content>

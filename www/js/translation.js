@@ -10,14 +10,14 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_Close: 'Close',
       TR_Loading: 'Loading...',
       TR_emailDetails: 'Enter Details',
-      TR_Username: 'User Name',
-      TR_EmailAddress:'Email Address',
-      TR_Password: 'Password',
+      TR_Username: 'User Name:',
+      TR_EmailAddress:'Email Address:',
+      TR_Password: 'Password:',
       TR_Log_in: 'Log in',
       TR_default: 'My Lines',
       TR_createLine: 'Create New Line',
       TR_signIn: 'Sign in',
-      TR_Passwordrepet: 'Repeat password',
+      TR_Passwordrepet: 'Repeat password:',
       TR_Log_up: 'Sign up',
       TR_share: 'Share Line',
       TR_lineStatus: 'Line Status',
@@ -25,9 +25,9 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_lineAnalyze: 'Line Analyze',
       TR_getInLine: 'Join Line',
       TR_meetingStatus: 'Meeting Status',
-      TR_Date:'Date',
-      TR_From: 'From:',
-      TR_to: 'To:',
+      TR_Date:'Date:',
+      TR_From: 'Start:',
+      TR_to: 'End:',
       TR_Time:'Time',
       TR_ConfirmTime: 'Confirm Time:',
       TR_Type: 'Type',
@@ -41,6 +41,9 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_cancelLine: 'Cancel Line', 
       TR_messageAdmin: 'Message Admin',
       TR_Settings_logOutFaceBook: 'Log out via Facebook',
+      TR_StartLine: 'Start Line',
+      TR_EnterYourAddress: 'Enter your address',
+      TR_MyMeetings: 'My Meetings',
       //settings Page
       TR_Settings_language: 'Change language',
       TR_Title: 'Title:',
@@ -109,6 +112,26 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_2_POPTITLE: 'oh oh..',
       TR_2_POPTEMPLATE: 'Something went wrong :(',
       TR_2_ManualLine: 'Manual line:',
+
+      //footer
+      TR_NextMeeting: 'Next Meeting',
+      TR_PauseLine: 'Pause Line',
+      TR_EndLine: 'End Line',
+      TR_LineAnalyze: 'Line Analyze',
+      TR_ShareLine: 'Share Line',
+
+      TR_FutureMeetings: 'Future Meetings:',
+      TR_PassedMeetings: 'Passed Meetings:',
+
+      //line analze
+      TR_LineInformation: 'Line information:',
+      TR_UsersInLine: 'Users in Line:',
+      TR_MeetingDuration: 'Meeting Duration:',
+      TR_DefualtDuration: 'Defualt Duration:',
+      TR_AvgDuration: 'Avg. Duration:',
+      TR_TotalMeetings: 'Total Meetings:',
+      TR_CanceledMeetings: 'Canceled meetings:',
+
     });
     $translateProvider.translations('he', {
       //global

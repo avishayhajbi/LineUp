@@ -39,8 +39,9 @@ angular.module('starter.controllers', ['ngCordova'])
 						//TODO pop up welcome back
 						$scope.user = data;
 						console.log("user data:", $scope.user);
-						$scope.loginMenu.hide();
-					}
+                        $scope.loginMenu.hide();
+                        $state.go("app.default");
+                    }
 
 				});
 			}
@@ -365,7 +366,10 @@ angular.module('starter.controllers', ['ngCordova'])
 
 
 
-		$scope.createLine = function() {
+        $scope.createLine = function() {
+            var validStartDate = 0;
+            var validEndDate = 0;
+            var currentDate = new Date();
 			if (!checkAtt($scope.newLine.confirmTime) || !checkAtt($scope.newLine.druation) || !$scope.newLine.startDate || !$scope.newLine.endDate || !$scope.newLine.day) {
 				var alertPopup = $ionicPopup.alert({
 					title: 'missing information',
@@ -374,11 +378,32 @@ angular.module('starter.controllers', ['ngCordova'])
 			} else {
 				$scope.newLine.startDate.setDate($scope.newLine.day.getDate());
 				$scope.newLine.startDate.setMonth($scope.newLine.day.getMonth());
-				$scope.newLine.startDate.setFullYear($scope.newLine.day.getFullYear());
-				$scope.newLine.endDate.setDate($scope.newLine.day.getDate());
-				$scope.newLine.endDate.setMonth($scope.newLine.day.getMonth());
-				$scope.newLine.endDate.setFullYear($scope.newLine.day.getFullYear());
-				var newLine = $scope.newLine;
+                $scope.newLine.startDate.setFullYear($scope.newLine.day.getFullYear());
+                $scope.newLine.endDate.setDate($scope.newLine.day.getDate());
+                $scope.newLine.endDate.setMonth($scope.newLine.day.getMonth());
+                $scope.newLine.endDate.setFullYear($scope.newLine.day.getFullYear());
+            }
+
+            if (currentDate > $scope.newLine.startDate) {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Date problem',
+                    template: 'Line Start time past..'
+                });
+            } else {
+                validStartDate = 1;
+            } 
+
+            if ($scope.newLine.startDate >= $scope.newLine.endDate) {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Date problem',
+                    template: 'Line end time must be greater than Line start time'
+                });
+            } else {
+                validEndDate = 1;
+            }
+
+            if (validStartDate == 1 && validEndDate == 1) {
+                var newLine = $scope.newLine;
 				newLine.active = false;
 
 				$ionicLoading.show({
@@ -407,11 +432,8 @@ angular.module('starter.controllers', ['ngCordova'])
 		}
 
 
-	})
-	.controller('signInCtrl', function($scope, $userManagment, $phoneManager, $ionicModal) {
-
-
-	})
+    })
+ 
 
 .controller('shareLineCtrl', function($scope, $lineManager, $cordovaSocialSharing, $state) {
 
