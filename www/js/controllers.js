@@ -717,19 +717,21 @@ angular.module('starter.controllers', ['ngCordova'])
 		if (!$scope.meeting) {
 			$scope.meeting = {};
 			$scope.meeting.link = "link not avilable";
+			$scope.meeting.link2 = "link not avilable";
 		} else {
 			$scope.meeting.link = "https://fathomless-eyrie-8332.herokuapp.com/meetingRedirect?meetingId=" + $scope.meeting.lineId;
+			$scope.meeting.link2 = "https://fathomless-eyrie-8332.herokuapp.com/lineRedirect?lineId=" + $scope.meeting.lineId;
 		}
 
-		$scope.copyLineLink = function() {
-			cordova.plugins.clipboard.copy($scope.meeting.link);
+		$scope.copyLink = function(link) {
+			cordova.plugins.clipboard.copy(link);
 		};
 
-		$scope.shareFackBook = function() {
+		$scope.shareFackBook = function(link) {
 			console.log("share via FaceBook");
 			facebookConnectPlugin.showDialog({
 				method: 'share',
-				href: $scope.meeting.link,
+				href: link,
 			}, function(data) {
 				console.log(data);
 			}, function(data) {
@@ -738,9 +740,9 @@ angular.module('starter.controllers', ['ngCordova'])
 			//$cordovaSocialSharing.shareViaFacebook( "hi check my Line", false, $scope.line.link);
 		};
 
-		$scope.shareMobile = function() {
+		$scope.shareMobile = function(link) {
 			console.log("share via Mobile");
-			$cordovaSocialSharing.share("LineUp", "hi check my Line", false, $scope.meeting.link);
+			$cordovaSocialSharing.share("LineUp", "hi check my Line", false, link);
 		};
 
 		$scope.MeetingStatus = function() {

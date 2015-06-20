@@ -16,6 +16,7 @@
         </div> -->
        <!-- Line info -->
         <div class="col col-80 col-offset-10 row large pageTitle">Title: {{meeting.title}}</div>
+        <div class="col col-80 col-offset-10 row large subTitle"> share your meeting</div>
 
 <div class="row row-center col-80 col-offset-10">
             <div class="col-75">
@@ -24,18 +25,40 @@
                 </label>
             </div>
             <div class="col-5 col-offset-5">
-                <button class="button icon ion-clipboard button-stable button-block" ng-click="copyLineLink()"></button>
+                <button class="button icon ion-clipboard button-stable button-block" ng-click="copyLink(meeting.link)"></button>
             </div>
 
 </div>
 
             <div class="col-80 col-offset-10">
-                <button class="button icon-left ion-social-facebook button-positive button-block" ng-click="shareFackBook()">{{"TR_4_ShareViaFacebook" | translate}}</button>
+                <button class="button icon-left ion-social-facebook button-positive button-block" ng-click="shareFackBook(meeting.link)">{{"TR_4_ShareViaFacebook" | translate}}</button>
             </div>
 
             <div class="col-80 col-offset-10">
-                <button class="button icon-left ion-iphone button-positive button-block" ng-click="shareMobile()">{{"TR_4_ShareViaMobile" | translate}}</button>
+                <button class="button icon-left ion-iphone button-positive button-block" ng-click="shareMobile(meeting.link)">{{"TR_4_ShareViaMobile" | translate}}</button>
             </div>
+<br>
+<div class="col col-80 col-offset-10 row large subTitle"> share the  line:</div>
+<div class="row row-center col-80 col-offset-10">
+            <div class="col-75">
+                <label class="item item-input">
+                    <input type="text" readonly ng-model="meeting.link2" ng-change="return;">
+                </label>
+            </div>
+            <div class="col-5 col-offset-5">
+                <button class="button icon ion-clipboard button-stable button-block" ng-click="copyLink(meeting.link2)"></button>
+            </div>
+
+</div>
+
+            <div class="col-80 col-offset-10">
+                <button class="button icon-left ion-social-facebook button-positive button-block" ng-click="shareFackBook(meeting.link2)">{{"TR_4_ShareViaFacebook" | translate}}</button>
+            </div>
+
+            <div class="col-80 col-offset-10">
+                <button class="button icon-left ion-iphone button-positive button-block" ng-click="shareMobile(meeting.link2)">{{"TR_4_ShareViaMobile" | translate}}</button>
+            </div>
+
 
 
     </ion-content>
