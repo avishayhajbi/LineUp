@@ -54,15 +54,22 @@
                 <div class="col col-40 col-offset-5">
                     <u>{{"TR_5_date" | translate}}</u>
                 </div>
+                <div class="col col-40 col-offset-5">
+                    <u>{{"TR_5_confirm" | translate}}</u>
+                </div>
             </div>
             <div class="row" ng-repeat="meeting in line.meetings | limitTo:3">
                 <div class="col col-40 col-offset-5">
                     <h4>{{meeting.userName}}</h4>
                 </div>
                 <div class="col col-40 col-offset-5">
-                    <h4>{{meeting.time | date:'medium'}}</h4>
+                    <h4>{{meeting.time | date: "HH:mm"}}</h4>
                 </div>
-            </div>
+                <div class="col col-40 col-offset-5">
+                    <h4 ng-show="meeting.confirmed" class="icon ion-checkmark"></h4>
+                    <h4 ng-show="!meeting.confirmed" class="icon ion-close"></h4>
+                </div>
+                </div>
             </div>
 
         </div>

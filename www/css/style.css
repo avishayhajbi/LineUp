@@ -178,6 +178,12 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   font-size: 0.5em;
 }
 
+h4.icon {
+text-align: center;
+  font-size: 1.8em;
+  line-height: 2;
+}
+
 }
 
 @media (max-width: 499px) {
@@ -229,6 +235,12 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 
 .small {
   font-size: 12px;
+}
+
+h4.icon {
+text-align: center;
+font-size: 18px;
+line-height: 2;
 }
 
 }

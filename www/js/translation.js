@@ -60,8 +60,9 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_5_nextMeetings: 'Next meetings:',
       TR_5_startDate: 'Start Date:',
       TR_5_endDate: 'End Date:',
-      TR_5_user: 'user name',
-      TR_5_date: 'meeting time',
+      TR_5_user: 'Name',
+      TR_5_date: 'Time',
+      TR_5_confirm: 'Confirm',
       //page 6
       TR_6_nextMeeting: 'Move to next Meeting',
       TR_6_postponeCurrentMeeting:'Postpone current Meeting',

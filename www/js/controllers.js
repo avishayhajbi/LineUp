@@ -442,7 +442,7 @@ angular.module('starter.controllers', ['ngCordova'])
 		$scope.line = {};
 		$scope.line.link = "link not avilable";
 	} else {
-		$scope.line.link = "https://fathomless-eyrie-8332.herokuapp.com/lineRedirect?lineId=" + $scope.line.lineId;
+		$scope.line.link = "https://lineupserver.herokuapp.com/lineRedirect?lineId=" + $scope.line.lineId;
 	}
 
 	$scope.copyLineLink = function() {
@@ -710,7 +710,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
 })
 
-.controller('shareMeetingCtrl', function($scope, $meetingManager, $cordovaSocialSharing, $state) {
+.controller('shareMeetingCtrl', function($scope, $meetingManager, $cordovaSocialSharing, $state , $userManagment) {
 
 		$scope.meeting = $meetingManager.getCurrentMeeting();
 
@@ -719,8 +719,8 @@ angular.module('starter.controllers', ['ngCordova'])
 			$scope.meeting.link = "link not avilable";
 			$scope.meeting.link2 = "link not avilable";
 		} else {
-			$scope.meeting.link = "https://fathomless-eyrie-8332.herokuapp.com/meetingRedirect?meetingId=" + $scope.meeting.lineId;
-			$scope.meeting.link2 = "https://fathomless-eyrie-8332.herokuapp.com/lineRedirect?lineId=" + $scope.meeting.lineId;
+			$scope.meeting.link = "https://lineupserver.herokuapp.com/meetingRedirect?meetingId=" + $scope.meeting.lineId;
+			$scope.meeting.link2 = "https://lineupserver.herokuapp.com/lineRedirect?lineId=" + $scope.meeting.lineId+ "&userId="+$userManagment.getMyId();
 		}
 
 		$scope.copyLink = function(link) {

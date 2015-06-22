@@ -19,7 +19,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 			myLocation.latitude = false;
 		});
 
-		
+
 
 		return {
 			getLocation: function() {
@@ -440,6 +440,27 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 					return false;
 				});
 
+			},
+			followMeeting :function (lineId , userIdToFollow) {
+					return $http.get(serverUrl + 'followMeeting', {
+					params: {
+						lineId: currentMeeting.lineId,
+						myId: $userManagment.getMyId(),
+						userId: userIdToFollow,
+						myName: $userManagment.getMyName()
+
+					},
+					timeout: 8000
+				}).then(function(response) {
+					if (response.data) {
+						
+						return true;
+					}
+					return false;
+				}, function() {
+					return false;
+				});
+
 			}
 		}
 	});
@@ -580,7 +601,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 		}
 	});
 
-	$provide.factory('$pushNotificationHere', function($rootScope, $http, $cordovaDialogs, $userManagment, $meetingManager, $lineManager, $state, $ionicPopup, $ionicLoading , $outSideLineHandler) {
+	$provide.factory('$pushNotificationHere', function($rootScope, $http, $cordovaDialogs, $userManagment, $meetingManager, $lineManager, $state, $ionicPopup, $ionicLoading, $outSideLineHandler) {
 
 		ionic.Platform.ready(function() {
 			var device = ionic.Platform.device();
@@ -650,7 +671,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 			//push from android
 
 		window.handleAndroid = function(notification) {
-		
+
 			if (notification.event == "registered") {
 
 				console.log("registered to notification:", notification.regid);
@@ -665,25 +686,30 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 							template: notification.message,
 							title: 'LineUp',
 							buttons: [{
-								text: 'thanks'
+								text: 'thanks',
+								onTap: function(e) {
+									return false;
+								}
 							}, {
 								text: '<b>go to Line</b>',
 								type: 'button-positive',
 								onTap: function(e) {
-									return;
+									return true;
 								}
 
 							}]
 						});
 						popup.then(function(data) {
-							$ionicLoading.show();
-							$lineManager.setCurrent(notification.payload.lineId).then(function(data) {
-								$ionicLoading.hide();
-								if (data) {
-									$state.go("app.lineStatus");
-								} else {}
+							if (data) {
+								$ionicLoading.show();
+								$lineManager.setCurrent(notification.payload.lineId).then(function(data) {
+									$ionicLoading.hide();
+									if (data) {
+										$state.go("app.lineStatus");
+									} else {}
 
-							});
+								});
+							}
 						});
 						break;
 					case "meeting":
@@ -691,25 +717,30 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 							template: notification.message,
 							title: 'LineUp',
 							buttons: [{
-								text: 'thanks'
+								text: 'thanks',
+								onTap: function(e) {
+									return false;
+								}
 							}, {
 								text: '<b>go to Meeting</b>',
 								type: 'button-positive',
 								onTap: function(e) {
-									return;
+									return true;
 								}
 
 							}]
 						});
 						popup.then(function(data) {
-							$ionicLoading.show();
-							$meetingManager.setCurrent(notification.payload.lineId).then(function(data) {
-								$ionicLoading.hide();
-								if (data) {
-									$state.go("app.meetingStatus");
-								} else {}
+							if (data) {
+								$ionicLoading.show();
+								$meetingManager.setCurrent(notification.payload.lineId).then(function(data) {
+									$ionicLoading.hide();
+									if (data) {
+										$state.go("app.meetingStatus");
+									} else {}
 
-							});
+								});
+							}
 						});
 
 						break;
@@ -718,7 +749,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 							title: "LineUp",
 							template: notification.message
 						});
-						$rootScope.$broadcast("endMeeting" ,notification.payload.lineId);
+						$rootScope.$broadcast("endMeeting", notification.payload.lineId);
 						break;
 					default:
 
@@ -769,54 +800,64 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 				var param = url.split("//");
 
 				if (param[1]) {
-					var jumpToPage = param[1].split("=");
-					var type = jumpToPage[0];
-					var id = jumpToPage[1];
-					if (type === "lineId") {
+					//meeting shared
+					if (param[1].indexOf("&&") > -1) {
+						var params = param[1].split("&&");
+						var id = params[0];
+						var userId = params[1];
+						$meetingManager.followMeeting(id , userId);
+
+						
+					}
+					else {
+						var id = param[1]; 
+						$ionicLoading.show();
 						$outSideLineHandler.getLine(id).then(function(data) {
-							$ionicLoading.hide();
-							if (!data) {
-								var alertPopup = $ionicPopup.alert({
-									title: "error",
-									template: "error"
-								});
-							} else if (data == "noSuchLine") {
-								var alertPopup = $ionicPopup.alert({
-									title: "no such line",
-									template: "no such line"
-								});
-							} else if (data == "noRoom") {
-								var alertPopup = $ionicPopup.alert({
-									title: "no room in line",
-									template: "no room in line"
-								});
-							} else if (data == "userSignedIn") {
-								var alertPopup = $ionicPopup.alert({
-									title: "already signed to this line",
-									template: "already signed to this line"
-								});
-								$meetingManager.setCurrent(id).then(function(data) {
-									if (!data) {
-										var alertPopup = $ionicPopup.alert({
-											title: "errr",
-											template: "err"
-										});
-									} else {
-										$state.go("app.meetingStatus");
-									}
-								});
+								$ionicLoading.hide();
+								if (!data) {
+									var alertPopup = $ionicPopup.alert({
+										title: "error",
+										template: "error"
+									});
+								} else if (data == "noSuchLine") {
+									var alertPopup = $ionicPopup.alert({
+										title: "no such line",
+										template: "no such line"
+									});
+								} else if (data == "noRoom") {
+									var alertPopup = $ionicPopup.alert({
+										title: "no room in line",
+										template: "no room in line"
+									});
+								} else if (data == "userSignedIn") {
+									var alertPopup = $ionicPopup.alert({
+										title: "already signed to this line",
+										template: "already signed to this line"
+									});
+									$meetingManager.setCurrent(id).then(function(data) {
+										if (!data) {
+											var alertPopup = $ionicPopup.alert({
+												title: "errr",
+												template: "err"
+											});
+										} else {
+											$state.go("app.meetingStatus");
+										}
+									});
 
-							} else {
-								$state.transitionTo("app.getInLine");
-							}
+								} else {
+									$state.transitionTo("app.getInLine");
+								}
 
-						});
-					} else if (type === "meeting") {
+							});
+
 
 					}
+					
 				}
 
-			} }
+			}
+		}
 
 		return {}
 	});
