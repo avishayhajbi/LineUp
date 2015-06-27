@@ -1,36 +1,101 @@
 <ion-view>
-    <ion-content id="myMeetings" class="page">
+    <ion-content id="meetingStatus" class="page">
+        <!-- Line info -->
+        <!--         <div class="col col-80 col-offset-10 Meeting info">
 
+            <div class="row">
+                <div class="col">
+                    <img width=100px src="./img/temp.jpg">
+                </div>
+                <div class="col">
+                    <div class="row">Title:</div>
+                    <div class="row">
+                        <h4>{{meeting.title}}</h4></div>
+                </div>
+            </div>
+        </div> -->
 
-                <div class="col col-80 col-offset-10 row large pageTitle"  ng-show="user.username">{{user.username}}'s Meetings</div><br>
-        <div class="row row-center col-80 col-offset-10">
-            <div class="col-75">
-                <label class="item item-input">
-                    <input type="text" ng-model="lineIdToGetText" placeholder="{{placeholder | translate}}" ng-change="changeInput(lineIdToGetText)" ng-click="clearPlaceHolder()">
-                </label>
-            </div>
-            <div class="col-20 col-offset-5">
-                <button class="button button-stable button-block" ng-click="openChooseLine(); lineIdToGetText = ''">+</button>
-            </div>
+        <!-- Line info -->
+        <div class="col col-80 col-offset-10 row large pageTitle">{{"TR_Title" | translate}} {{meeting.title}}</div>
+
+        <!-- progress bar -->
+        <div class="col col-80 col-offset-10 subTitle" ng-show="meeting.ProgressCounter && meeting.progressWidth < 51">{{"TR_Status_1" | translate}}</div>
+
+        <div class="col col-80 col-offset-10 subTitle" ng-show="meeting.ProgressCounter && meeting.progressWidth > 50 && meeting.progressWidth < 76">{{"TR_Status_2" | translate}}</div>
+
+        <div class="col col-80 col-offset-10 subTitle" ng-show="meeting.ProgressCounter && meeting.progressWidth > 75 && meeting.progressWidth < 100">{{"TR_Status_3" | translate}}</div>
+
+        <div class="col col-80 col-offset-10 progressBar" ng-show="meeting.ProgressCounter && meeting.progressWidth < 100">
+            <div class="progressBarImage" style="width:{{meeting.progressWidth}}%;"></div>
         </div>
 
 
-        <!--Join Line button-->
-        <button class="button icon-left ion-plus button-positive button-block col-80 col-offset-10" menu-close ng-disabled="lineIdToGet===''" ng-click="getLine()">{{"TR_join_line" | translate}}</button>
+        <!--meeting status container-->
+        <div class="container">
+            <!--position row-->
+            <div class="row row-center">
+                <div class="col col-60  col-offset-5">
+                    <div class="input-label" ng-disabled="reminder">{{"TR_yourPositionIs" | translate}}</div>
+                </div>
+                <div class="col col-20">
+                    <h3><b>{{meeting.position}}</b></h3>
+                </div>
+            </div>
+            <!--time of meeting-->
 
-                <div class="col col-80 col-offset-10 row-bottom subTitle" ng-show="user.activeMeetings.length > 0">{{"TR_FutureMeetings" | translate}}
-        <ion-list style="padding:0px !important;">
-            <ion-item ng-repeat="meeting in user.activeMeetings" ng-click="chooseMeeting(meeting.lineId);">
-                <div style="float:left">{{meeting.title}}</div><div style="float:right">{{meeting.time | date : " HH:mm dd/MM/yy"}}</div>
-            </ion-item>
-        </ion-list></div>
+            <div class="row row-center col-80 col-offset-5">
+                <div class="input-label " ng-disabled="reminder">{{"TR_meetingTimeStart" | translate}}:</div>
+            </div>
+            <div class="row row-center col-80 col-offset-5">
+                <h4>{{meeting.time | date : "HH:mm"}} {{meeting.time | date : "dd:MM:yyyy"}}</h4>
+            </div>
 
-              <div class="col col-80 col-offset-10 row-bottom subTitle" ng-show="user.passedMeetings.length > 0">{{"TR_PastMeetings" | translate}}
-        <ion-list style="padding:0px !important;">
-            <ion-item ng-repeat="meeting in user.passedMeetings" ng-click="chooseMeeting(meeting.lineId);">
-                <div style="float:left">{{meeting.title}}</div><div style="float:right">{{meeting.time | date : " HH:mm dd/MM/yy"}}</div>
-            </ion-item>
-        </ion-list></div>
+            <!--time to wait row-->
+            <div class="row row-centercol-80 col-offset-5">
+                <div class="input-label" ng-disabled="reminder">{{"TR_timeToWait" | translate}}</div>
+            </div>
+            <div class="row row-centercol-80 col-offset-5">
+                <h4>{{meeting.timeLeft.days}} days, {{meeting.timeLeft.hours}} hours & {{meeting.timeLeft.minutes}} minutes</h4>
+            </div>
 
+            <!--timmer row-->
+<!--             <div class="row row-center">
+                <div class="col col-60 col-offset-5">
+                    <div class="input-label" ng-disabled="reminder">{{"TR_Reminder" | translate}}</div>
+                </div>
+                <div class="col col-25">
+                    <label class="toggle">
+                        <input type="checkbox" ng-model="reminder">
+                        <div class="track">
+                            <div class="handle"></div>
+                        </div>
+                    </label>
+                </div>
+            </div> -->
+        </div>
+        <br>
+        <br>
     </ion-content>
+
+
+    <div class="bar bar-footer">
+        <div class="tabs tabs-icon-top">
+            <a class="tab-item" ng-show="!meeting.confirmed">
+                <i class="icon ion-checkmark" ng-click="confirmMeeting()"></i> Confirm Meeting
+            </a>
+            <a class="tab-item tabs-stable" ng-show="meeting.confirmed">
+                <i class="icon ion-checkmark"></i> Confirm Meeting
+            </a>
+            <a class="tab-item">
+                <i class="icon ion-close" ng-click="cancelMeeting()"></i>{{"TR_cancelMeeting" | translate}}
+            </a>
+            <a class="tab-item" ng-click="shareMeeting()">
+                <i class="icon ion-android-share"></i> {{"TR_ShareMeeting" | translate}}
+            </a>
+
+            <!--                 <a class="tab-item">
+                    <i class="icon ion-email"></i> {{"TR_messageAdmin" | translate}}
+                </a> -->
+        </div>
+    </div>
 </ion-view>
