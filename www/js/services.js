@@ -323,16 +323,16 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 		function calculateTimeLeft() {
 			var time = new Date(currentMeeting.time);
 			var now = new Date();
-			var difference = new Date(time - now);
+			var delta = (time - now) / 1000;
+			currentMeeting.timeLeft = {};
+		
+			currentMeeting.timeLeft.days = Math.floor(delta / 86400);
+			delta -= currentMeeting.timeLeft.days * 86400;
+			currentMeeting.timeLeft.hours = Math.floor(delta / 3600) % 24;
+			delta -= currentMeeting.timeLeft.hours * 3600;
+			currentMeeting.timeLeft.minutes = Math.floor(delta / 60) % 60;
 
-			var tz_correction_minutes = now.getTimezoneOffset() - difference.getTimezoneOffset();
-			difference.setMinutes(time.getMinutes() + tz_correction_minutes);
-			currentMeeting.timeLeft = {
-				days: difference.getDate() - 1,
-				hours: difference.getHours(),
-				minutes: difference.getMinutes()
-			};
-
+		
 			currentMeeting.ProgressCounter = false;
 			var startCount = new Date(time.getTime() - ((currentMeeting.confirmTime + currentMeeting.druation) * 60000));
 			var timeToWait = time.getTime() - startCount;
