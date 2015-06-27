@@ -431,7 +431,6 @@ angular.module('starter.controllers', ['ngCordova'])
 							template: $filter('translate')('TR_POPTEMPLATE')
 						});
 					} else {
-
 						$scope.user.activeLines.push({
 							lineId: data,
 							title: $scope.newLine.title

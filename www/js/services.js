@@ -514,13 +514,14 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 					params: {
 						line: line,
 						userId: $userManagment.getMyId(),
-					userToken: $userManagment.getMyToken()
+						userToken: $userManagment.getMyToken()
 					},
 					timeout: 8000
 				}).then(function(response) {
+					
 					if (response.data) {
 						currentLine.lineId = response.data;
-						getLineInfo().then(function(data){
+						return getLineInfo().then(function(data){
 							if (data) {
 								return data;		
 							}
