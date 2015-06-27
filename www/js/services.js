@@ -31,10 +31,9 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
 		var userId = "";
 		var deviceId = "";
-		var fbId = "";
 		var username = "";
-		var userEmail = "";
 		var pushToken = false;
+		var userToken = false;
 		var connected = false;
 
 
@@ -43,25 +42,6 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 			if (!device.uuid) deviceId = "browser";
 			else deviceId = device.uuid;
 		});
-
-		// if (!window.cordova) {
-		//   // Initialize - only executed when testing in the browser.
-		//   facebookConnectPlugin.browserInit(800206223408829);
-		// }
-
-		// //check if user connected to facebook
-		// facebookConnectPlugin.getLoginStatus(function(result) {
-
-		//   if (result.status === "canconnected") {
-		//     fbLoginSuccess(result);
-		//     console.log("login:", result);
-		//   }
-
-		// }, function(result) {
-		//   console.log("err:", result);
-		// });
-
-		//connect to facebook
 
 
 		window.sendTokenToServer = function(token) {
@@ -108,6 +88,12 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 					return userId;
 				return "noId";
 			},
+			getMyToken: function() {
+				if (userToken)
+					return userToken;
+				return "noId";
+			},
+
 			getfbId: function() {
 				if (fbId)
 					return fbId;
@@ -146,11 +132,15 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 			loginWithEmail: function(user) {
 				return $http.post(serverUrl + 'logIn', user)
 					.then(function(response) {
-
+							
 						if (response.data.success) {
-							username = response.data.user.username;
+							username = user.username;
 							userId = response.data.user._id;
+							userToken = response.data.user.userToken;
+							delete response.data.user.userToken;
 							delete response.data.user._id;
+
+							response.data.user.username = user.username;
 							$localstorage.setObject('lineup', {
 								username: user.username,
 								password: user.password
@@ -173,12 +163,14 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 			signUpWithEmail: function(user) {
 				return $http.post(serverUrl + 'signUp', user)
 					.then(function(response) {
+					
 						if (response.data.success == 'userExist') {
 							return response.data.success;
 						} else if (response.data.success) {
-							username = response.data.user.username;
+							username = user.username;
 							userId = response.data.user._id;
-							delete response.data.user._id;
+							userToken = response.data.user.userToken;
+							
 							$localstorage.setObject('lineup', {
 								username: user.username,
 								password: user.password
@@ -187,7 +179,9 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 								sendTokenToServer(pushToken);
 							}
 							console.log("user login :", username);
-							return response.data.user;
+						
+							user = {username: user.username};
+							return user;
 						} else {
 							$localstorage.setObject('lineup', '');
 							return false;
@@ -202,6 +196,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 			logOut: function() {
 				userId = "";
 				username = "";
+				userToken= "";
 				userEmail = "";
 				connected = false;
 
@@ -251,7 +246,13 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
 		return {
 			getRandomlineList: function() {
-				return $http.get(serverUrl + 'getRandomlineList')
+				return $http.get(serverUrl + 'getRandomlineList', {
+					params: {
+						userId: $userManagment.getMyId(),
+						userToken: $userManagment.getMyToken()
+					},
+					timeout: 8000
+				})
 					.then(function(response) {
 						if (response.data) {
 							if (myLocation) {
@@ -271,7 +272,8 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 				return $http.get(serverUrl + 'getLine', {
 					params: {
 						lineId: lineId,
-						userId: $userManagment.getMyId()
+						userId: $userManagment.getMyId(),
+						userToken: $userManagment.getMyToken()
 					},
 					timeout: 8000
 				}).then(function(response) {
@@ -293,7 +295,9 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 			searchLineByName: function(value) {
 				return $http.get(serverUrl + 'searchLineList', {
 					params: {
-						value: value
+						value: value,
+						userId: $userManagment.getMyId(),
+						userToken: $userManagment.getMyToken()
 					}
 				}).then(function(response) {
 					if (response.data) {
@@ -351,6 +355,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 					params: {
 						lineId: currentMeeting.lineId,
 						userId: $userManagment.getMyId(),
+						userToken: $userManagment.getMyToken(),
 						userName: $userManagment.getMyName()
 					},
 					timeout: 8000
@@ -384,7 +389,8 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 				return $http.get(serverUrl + 'getMeetingInfo', {
 					params: {
 						lineId: id,
-						userId: $userManagment.getMyId()
+						userId: $userManagment.getMyId(),
+						userToken: $userManagment.getMyToken()
 					},
 					timeout: 8000
 				}).then(function(response) {
@@ -406,6 +412,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 					params: {
 						lineId: meeting.lineId,
 						userId: $userManagment.getMyId(),
+						userToken: $userManagment.getMyToken(),
 						time: meeting.time,
 						userName: $userManagment.getMyName()
 					},
@@ -427,6 +434,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 					params: {
 						lineId: currentMeeting.lineId,
 						userId: $userManagment.getMyId(),
+						userToken: $userManagment.getMyToken(),
 						userName: $userManagment.getMyName()
 					},
 					timeout: 8000
@@ -445,15 +453,15 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 					return $http.get(serverUrl + 'followMeeting', {
 					params: {
 						lineId: currentMeeting.lineId,
-						myId: $userManagment.getMyId(),
-						userId: userIdToFollow,
+						userId: $userManagment.getMyId(),
+						userToken: $userManagment.getMyToken(),
+						FollowId: userIdToFollow,
 						myName: $userManagment.getMyName()
 
 					},
 					timeout: 8000
 				}).then(function(response) {
 					if (response.data) {
-						
 						return true;
 					}
 					return false;
@@ -470,22 +478,26 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
 
 		function getLineInfo() {
-			$http.get(serverUrl + 'getLineInfo', {
+			return $http.get(serverUrl + 'getLineInfo', {
 				params: {
 					lineId: currentLine.lineId,
-					lineManagerId: $userManagment.getMyId()
+					userId: $userManagment.getMyId(),
+					userToken: $userManagment.getMyToken()
 				},
 				timeout: 8000
 			}).then(function(response) {
 				if (response.data) {
 
 					currentLine = response.data;
-					console.log("getLineInfo: ", currentLine);
-					$rootScope.$broadcast('lineInfoUpdated', true);
+					return currentLine;
+					// console.log("getLineInfo: ", currentLine);
+					// $rootScope.$broadcast('lineInfoUpdated', true);
 				} else {
+					return false;
 					$rootScope.$broadcast('lineInfoUpdated', false);
 				}
 			}, function(response) {
+				return false;
 				$rootScope.$broadcast('lineInfoUpdated', false);
 			});
 
@@ -500,14 +512,20 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 				line.lineManagerId = $userManagment.getMyId();
 				return $http.get(serverUrl + 'createLine', {
 					params: {
-						line: line
+						line: line,
+						userId: $userManagment.getMyId(),
+					userToken: $userManagment.getMyToken()
 					},
 					timeout: 8000
 				}).then(function(response) {
 					if (response.data) {
 						currentLine.lineId = response.data;
-						getLineInfo();
-						return response.data;
+						getLineInfo().then(function(data){
+							if (data) {
+								return data;		
+							}
+							else return false;
+						});
 					} else {
 						return false;
 					}
@@ -520,7 +538,8 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 				return $http.get(serverUrl + 'getLineInfo', {
 					params: {
 						lineId: lineId,
-						lineManagerId: $userManagment.getMyId()
+						userId: $userManagment.getMyId(),
+						userToken: $userManagment.getMyToken()
 					},
 					timeout: 8000
 				}).then(function(response) {
@@ -541,7 +560,8 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 				return $http.get(serverUrl + 'endLine', {
 					params: {
 						lineId: currentLine.lineId,
-						lineManagerId: $userManagment.getMyId()
+						userId: $userManagment.getMyId(),
+						userToken: $userManagment.getMyToken()
 					},
 					timeout: 8000
 				}).then(function(response) {
@@ -561,15 +581,20 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 				return $http.get(serverUrl + 'postponeLine', {
 					params: {
 						lineId: currentLine.lineId,
-						lineManagerId: $userManagment.getMyId(),
+						userId: $userManagment.getMyId(),
+						userToken: $userManagment.getMyToken(),
 						time: delayTime
 					},
 					timeout: 8000
 				}).then(function(response) {
 
 					if (response.data) {
-						getLineInfo();
-						return true;
+						getLineInfo().then(function(data){
+							if (data) {
+								return data;		
+							}
+							else return false;
+						});
 					} else {
 						return false;
 					}
@@ -581,7 +606,8 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 				return $http.get(serverUrl + 'nextMeeting', {
 					params: {
 						lineId: currentLine.lineId,
-						lineManagerId: $userManagment.getMyId()
+						userId: $userManagment.getMyId(),
+						userToken: $userManagment.getMyToken()
 					},
 					timeout: 8000
 				}).then(function(response) {

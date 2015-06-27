@@ -13,6 +13,12 @@ angular.module('starter.controllers', ['ngCordova'])
 				if (data) {
 					$scope.user = data;
 					console.log("user data:", $scope.user);
+				} else {
+					var alertPopup = $ionicPopup.alert({
+						title: "LineUp",
+						template: "worng password or user name"
+					});
+
 				}
 			});
 		}
@@ -34,14 +40,17 @@ angular.module('starter.controllers', ['ngCordova'])
 				$userManagment.loginWithEmail($scope.loginData).then(function(data) {
 
 					if (!data) {
-						//TODO popup worng
+						var alertPopup = $ionicPopup.alert({
+							title: "LineUp",
+							template: "worng password or user name"
+						});
 					} else {
 						//TODO pop up welcome back
 						$scope.user = data;
 						console.log("user data:", $scope.user);
-                        $scope.loginMenu.hide();
-                        $state.go("app.default");
-                    }
+						$scope.loginMenu.hide();
+						$state.go("app.default");
+					}
 
 				});
 			}
@@ -82,7 +91,10 @@ angular.module('starter.controllers', ['ngCordova'])
 					$userManagment.signUpWithEmail($scope.signUpData).then(function(data) {
 
 						if (data == "userExist") {
-							//TODO popUpUserexsit
+							var alertPopup = $ionicPopup.alert({
+								title: "LineUp",
+								template: "user exist"
+							});
 						} else if (!data) {
 							//TODO popup to tell what went worng
 						} else {
@@ -366,10 +378,10 @@ angular.module('starter.controllers', ['ngCordova'])
 
 
 
-        $scope.createLine = function() {
-            var validStartDate = 0;
-            var validEndDate = 0;
-            var currentDate = new Date();
+		$scope.createLine = function() {
+			var validStartDate = 0;
+			var validEndDate = 0;
+			var currentDate = new Date();
 			if (!checkAtt($scope.newLine.confirmTime) || !checkAtt($scope.newLine.druation) || !$scope.newLine.startDate || !$scope.newLine.endDate || !$scope.newLine.day) {
 				var alertPopup = $ionicPopup.alert({
 					title: 'missing information',
@@ -378,32 +390,32 @@ angular.module('starter.controllers', ['ngCordova'])
 			} else {
 				$scope.newLine.startDate.setDate($scope.newLine.day.getDate());
 				$scope.newLine.startDate.setMonth($scope.newLine.day.getMonth());
-                $scope.newLine.startDate.setFullYear($scope.newLine.day.getFullYear());
-                $scope.newLine.endDate.setDate($scope.newLine.day.getDate());
-                $scope.newLine.endDate.setMonth($scope.newLine.day.getMonth());
-                $scope.newLine.endDate.setFullYear($scope.newLine.day.getFullYear());
-            }
+				$scope.newLine.startDate.setFullYear($scope.newLine.day.getFullYear());
+				$scope.newLine.endDate.setDate($scope.newLine.day.getDate());
+				$scope.newLine.endDate.setMonth($scope.newLine.day.getMonth());
+				$scope.newLine.endDate.setFullYear($scope.newLine.day.getFullYear());
+			}
 
-            if (currentDate > $scope.newLine.startDate) {
-                var alertPopup = $ionicPopup.alert({
-                    title: 'Date problem',
-                    template: 'Line Start time past..'
-                });
-            } else {
-                validStartDate = 1;
-            } 
+			if (currentDate > $scope.newLine.startDate) {
+				var alertPopup = $ionicPopup.alert({
+					title: 'Date problem',
+					template: 'Line Start time past..'
+				});
+			} else {
+				validStartDate = 1;
+			}
 
-            if ($scope.newLine.startDate >= $scope.newLine.endDate) {
-                var alertPopup = $ionicPopup.alert({
-                    title: 'Date problem',
-                    template: 'Line end time must be greater than Line start time'
-                });
-            } else {
-                validEndDate = 1;
-            }
+			if ($scope.newLine.startDate >= $scope.newLine.endDate) {
+				var alertPopup = $ionicPopup.alert({
+					title: 'Date problem',
+					template: 'Line end time must be greater than Line start time'
+				});
+			} else {
+				validEndDate = 1;
+			}
 
-            if (validStartDate == 1 && validEndDate == 1) {
-                var newLine = $scope.newLine;
+			if (validStartDate == 1 && validEndDate == 1) {
+				var newLine = $scope.newLine;
 				newLine.active = false;
 
 				$ionicLoading.show({
@@ -432,8 +444,8 @@ angular.module('starter.controllers', ['ngCordova'])
 		}
 
 
-    })
- 
+	})
+
 
 .controller('shareLineCtrl', function($scope, $lineManager, $cordovaSocialSharing, $state) {
 
@@ -511,7 +523,7 @@ angular.module('starter.controllers', ['ngCordova'])
 				}
 				console.log("End line");
 				$state.go("app.lineAnalyze");
-			} else if (data = "lineDidntStart") {
+			} else if (data == "lineDidntStart") {
 				var alertPopup = $ionicPopup.alert({
 					title: "line didnt start yet",
 					template: "line didnt start yet"
@@ -561,6 +573,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
 
 			} else if (!data) {
+				$scope.line = data;
 				var alertPopup = $ionicPopup.alert({
 					title: $filter('translate')('TR_2_POPTITLE'),
 					template: $filter('translate')('TR_2_POPTEMPLATE')
@@ -602,6 +615,7 @@ angular.module('starter.controllers', ['ngCordova'])
 							});
 
 						} else {
+							$scope.line = data;
 							var alertPopup = $ionicPopup.alert({
 								title: "line prosponed in:" + $scope.data.delayTime + " minutes",
 								template: "line prosponed in:" + $scope.data.delayTime + " minutes"
@@ -624,26 +638,50 @@ angular.module('starter.controllers', ['ngCordova'])
 	// };
 
 	$scope.endLine = function() {
-		$lineManager.endLine().then(function(data) {
-			$ionicLoading.hide();
-			if (!data) {
-				var alertPopup = $ionicPopup.alert({
-					title: $filter('translate')('TR_2_POPTITLE'),
-					template: $filter('translate')('TR_2_POPTEMPLATE')
-				});
-			} else {
-				for (var i = 0; i < $scope.user.activeLines.length; i++) {
-					if ($scope.user.activeLines[i].lineId == $scope.line.lineId) {
-						$scope.user.passedLines.push($scope.user.activeLines[i]);
-						$scope.user.activeLines.splice(i, 1);
-						break;
-					}
-				}
-				console.log("End line");
-				$state.go("app.lineAnalyze");
-			}
 
+		var popup = $ionicPopup.show({
+			template: "are u sure?",
+			title: 'LineUp',
+			buttons: [{
+				text: 'no',
+				onTap: function(e) {
+					return false;
+				}
+			}, {
+				text: '<b>yes</b>',
+				type: 'button-positive',
+				onTap: function(e) {
+					return true;
+				}
+
+			}]
 		});
+		popup.then(function(data) {
+			if (data) {
+				$lineManager.endLine().then(function(data) {
+					$ionicLoading.hide();
+					if (!data) {
+						var alertPopup = $ionicPopup.alert({
+							title: $filter('translate')('TR_2_POPTITLE'),
+							template: $filter('translate')('TR_2_POPTEMPLATE')
+						});
+					} else {
+						for (var i = 0; i < $scope.user.activeLines.length; i++) {
+							if ($scope.user.activeLines[i].lineId == $scope.line.lineId) {
+								$scope.user.passedLines.push($scope.user.activeLines[i]);
+								$scope.user.activeLines.splice(i, 1);
+								break;
+							}
+						}
+						console.log("End line");
+						$state.go("app.lineAnalyze");
+					}
+
+				});
+
+			}
+		});
+
 	};
 })
 
@@ -710,7 +748,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
 })
 
-.controller('shareMeetingCtrl', function($scope, $meetingManager, $cordovaSocialSharing, $state , $userManagment) {
+.controller('shareMeetingCtrl', function($scope, $meetingManager, $cordovaSocialSharing, $state, $userManagment) {
 
 		$scope.meeting = $meetingManager.getCurrentMeeting();
 
@@ -720,7 +758,7 @@ angular.module('starter.controllers', ['ngCordova'])
 			$scope.meeting.link2 = "link not avilable";
 		} else {
 			$scope.meeting.link = "https://lineupserver.herokuapp.com/meetingRedirect?meetingId=" + $scope.meeting.lineId;
-			$scope.meeting.link2 = "https://lineupserver.herokuapp.com/lineRedirect?lineId=" + $scope.meeting.lineId+ "&userId="+$userManagment.getMyId();
+			$scope.meeting.link2 = "https://lineupserver.herokuapp.com/lineRedirect?lineId=" + $scope.meeting.lineId + "&userId=" + $userManagment.getMyId();
 		}
 
 		$scope.copyLink = function(link) {

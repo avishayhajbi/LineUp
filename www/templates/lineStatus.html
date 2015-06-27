@@ -42,6 +42,16 @@
                 </div>
             </div>
 
+             <div class="row row-center" ng-show="line.currentMeeting.userName">
+                <div class="col col-40 col-offset-5 ">
+                    <div>{{"TR_5_currentGetServed" | translate}}</div>
+                </div>
+                <div class="col col-40 col-offset-5">
+                    <h4>{{line.currentMeeting.userName}}</h4>
+                </div>
+            </div>
+
+
             <!--next meetings row-->
             <div ng-show="line.meetings.length > 0 ">       
                 <div class="col col-40 col-offset-5 row">
@@ -57,6 +67,8 @@
                 <div class="col col-40 col-offset-5">
                     <u>{{"TR_5_confirm" | translate}}</u>
                 </div>
+            </div>
+
             </div>
             <div class="row" ng-repeat="meeting in line.meetings | limitTo:3">
                 <div class="col col-40 col-offset-5">
