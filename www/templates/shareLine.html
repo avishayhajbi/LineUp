@@ -15,7 +15,7 @@
             </div>
         </div> -->
         <!-- Line info -->
-        <div class="col col-80 col-offset-10 row large pageTitle">Title: {{line.title}}</div>
+        <div class="col col-80 col-offset-10 row large pageTitle">{{"TR_Title" | translate}} {{line.title}}</div>
 
 <div class="row row-center col-80 col-offset-10">
             <div class="col-75">
@@ -30,29 +30,35 @@
 </div>
 
             <div class="col-80 col-offset-10">
-                <button class="button icon-left ion-social-facebook button-positive button-block" ng-click="shareFackBook()">{{"TR_4_ShareViaFacebook" | translate}}</button>
+                <button class="button icon-left ion-social-facebook button-positive button-block" ng-click="shareFackBook()">{{"TR_ShareViaFacebook" | translate}}</button>
             </div>
 
             <div class="col-80 col-offset-10">
-                <button class="button icon-left ion-iphone button-positive button-block" ng-click="shareMobile()">{{"TR_4_ShareViaMobile" | translate}}</button>
+                <button class="button icon-left ion-iphone button-positive button-block" ng-click="shareMobile()">{{"TR_ShareViaMobile" | translate}}</button>
             </div>
 
 
     </ion-content>
 <div class="bar bar-footer">
             <div class="tabs tabs-icon-top">
-                <a class="tab-item"  ng-click="nextMeeting()">
-                    <i class="icon ion-skip-forward"></i> Next Meeting
-                </a>
-                <a class="tab-item" ng-click="postponeMeeting()">
-                    <i class="icon ion-pause"></i> Pause Line
-                </a>
-                <a class="tab-item" ng-click="endLine()">
-                    <i class="icon ion-close"></i> End Line
-                </a>                
-                <a class="tab-item" ng-click="LineStatus()">
-                    <i class="icon ion-home"></i> Line Status
-                </a>
+            <a class="tab-item" ng-click="nextMeeting()" ng-show="line.active">
+                <i class="icon ion-skip-forward"></i> {{"TR_NextMeeting" | translate}}
+            </a>
+            <a class="tab-item tabs-stable" ng-show="!line.active">
+                <i class="icon ion-skip-forward"></i>{{"TR_NextMeeting" | translate}}
+            </a>
+            <a class="tab-item" ng-click="postponeLine()">
+                <i class="icon ion-pause"></i> {{"TR_PauseLine" | translate}}
+            </a>
+            <a class="tab-item" ng-click="endLine()">
+                <i class="icon ion-close"></i>{{"TR_EndLine" | translate}}
+            </a>
+            <a class="tab-item" ng-click="LineStatus()">
+                <i class="icon ion-home"></i>{{"TR_lineStatus" | translate}}
+            </a>
+            <a class="tab-item" ng-click="shareLine()">
+                <i class="icon ion-android-share"></i>{{"TR_ShareLine" | translate}}
+            </a>
             </div>
         </div>
 </ion-view>

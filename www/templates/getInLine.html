@@ -14,35 +14,51 @@
                 </div>
             </div>
         </div> -->
-<div class="col col-80 col-offset-10 row large pageTitle">Title: {{meeting.title}}</div>
+<div class="col col-80 col-offset-10 row large pageTitle">{{"TR_Title" | translate}} {{meeting.title}}</div>
         <!-- meeting setting -->
         <div class="container">
             <!-- meeting loction -->
             <div class="row">
                 <div class="col col-40 col-offset-5">
-                    <div class="input-label">{{"TR_9_Location" | translate}}</div>
+                    <div class="input-label">{{"TR_Location" | translate}}</div>
                 </div>
                 <div class="col col-40">{{meeting.location[0].address}}</div>
             </div>
 
-            <!-- meeting time for simple line -->
-            <div class="row" ng-show!="meeting.configEnabeld">
+
+            <!-- meeting date -->
+            <div class="row">
                 <div class="col col-40 col-offset-5">
-                    <div class="input-label">{{"TR_9_Time" | translate}}</div>
+                    <div class="input-label">{{"TR_Date" | translate}}</div>
                 </div>
-                <div class="col col-40">{{meeting.time | date: "dd-MM-yyyy"}} {{meeting.time | date: "HH:mm"}}</div>
+                <div class="col col-40">{{meeting.time | date: "dd-MM-yyyy"}}</div>
             </div>
 
+            <!-- meeting time -->
+            <div class="row" ng-show!="meeting.configEnabeld">
+                <div class="col col-40 col-offset-5">
+                    <div class="input-label">{{"TR_Time" | translate}}</div>
+                </div>
+                <div class="col col-40"> {{meeting.time | date: "HH:mm"}}</div>
+            </div>
+
+            <!-- meeting duration -->
+            <div class="row">
+                <div class="col col-40 col-offset-5">
+                    <div class="input-label">{{"TR_Duration" | translate}}</div>
+                </div>
+                <div class="col col-40">{{meeting.druation}}</div>
+            </div>
 
             <!-- meeting type setting for complex line-->
             <div ng-show="meeting.configEnabeld">
                 <label class="item item-input item-select">
-                    <div class="input-label">{{"TR_9_Type" | translate}}</div>
+                    <div class="input-label">{{"TR_Type" | translate}}</div>
                     <select ng-options="option for option in meeting.type" ng-model="selectedType"></select>
                 </label>
                 <!-- meeting time setting for complex line-->
                 <label class="item item-input item-select">
-                    <div class="input-label"> {{"TR_9_Time" | translate}}</div>
+                    <div class="input-label"> {{"TR_Time" | translate}}</div>
                     <select ng-options="time for time in selectedDate.availableMeetings" ng-model="selectedTime"></select>
                 </label>
             </div>
@@ -69,7 +85,7 @@
             <!-- meeting comments setting -->
 <!--             <div class="row">
                 <div class="col col-40 col-offset-5">
-                    <div class="input-label">{{"TR_9_Comments" | translate}}</div>
+                    <div class="input-label">{{"TR_Comments" | translate}}</div>
                 </div>
             </div>
             <div class="row">

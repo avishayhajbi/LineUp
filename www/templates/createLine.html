@@ -2,7 +2,7 @@
 
     <ion-content id="createLine" class="page">
         <!-- Line info -->
-        <div class="col col-80 col-offset-10 row large pageTitle">Create Line
+        <div class="col col-80 col-offset-10 row large pageTitle">{{"TR_Create_Line" | translate}}
             <!--                 <div class="col">
                     <img width=100px; src="./img/choose.jpg" onerror="this.src = './img/choose.jpg';" ng-src="newLine.ImageURI" id="smallimage" ng-click="ShowPictures()" />
                 </div> -->
@@ -32,7 +32,7 @@
                     <div class="col col-25">{{"TR_Date" | translate}}
                     </div>
                     <div class="col col-75 col-offset-20">
-                        <input type="date" ng-model="newLine.day" placeholder="DD-MM-YYYY" >
+                        <input type="date" ng-model="newLine.day" placeholder="DD-MM-YYYY">
                     </div>
                 </label>
             </div>
@@ -59,7 +59,7 @@
 
             <div class="row row-center">
                 <label class="item item-input lineLable">
-                    <div class="col col-25">{{"TR_2_Location" | translate}}
+                    <div class="col col-25">{{"TR_Location" | translate}}
                     </div>
                     <div class="col col-75 col-offset-20">
                         <input type="text" id="autocomplete" placeholder="Enter Your Address">
@@ -69,7 +69,7 @@
 
             <div class="row row-center">
                 <label class="item item-input lineLable ">
-                    <div class="col col-25">{{"TR_2_Duration" | translate}}
+                    <div class="col col-25">{{"TR_Duration" | translate}}
                     </div>
                     <div class="col col-75 col-offset-20">
                         <input type="number" ng-model="newLine.druation" ng-change="newLine.confirmTime = newLine.druation *3">
@@ -88,7 +88,7 @@
             </div>  
 
             <div class="row row-center">
-                <div class="col col-35 col-offset-5" ng-disabled="newLine.manuall">{{"TR_2_ManualLine" | translate}}
+                <div class="col col-35 col-offset-5" ng-disabled="newLine.manuall">{{"TR_ManualLine" | translate}}
                 </div>
                 <div class="col col-25 col-offset-40">
                     <label class="toggle">

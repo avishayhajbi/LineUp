@@ -26,7 +26,7 @@
             <!--users in line row-->
             <div class="row">
                 <div class="col col-40 col-offset-5">
-                    <div>{{"TR_5_startDate" | translate}}</div>
+                    <div>{{"TR_startDate" | translate}}</div>
                 </div>
             </div>
             <div class="row">
@@ -38,7 +38,7 @@
             <!--uswers in line row-->
             <div class="row">
                 <div class="col col-40 col-offset-5">
-                    <div>{{"TR_5_endDate" | translate}}</div>
+                    <div>{{"TR_endDate" | translate}}</div>
                 </div>
             </div>
             <div class="row">
@@ -51,7 +51,7 @@
             <!--users in line row-->
             <div class="row">
                 <div class="col col-40 col-offset-5">
-                    <div>{{"TR_2_Location" | translate}}</div>
+                    <div>{{"TR_Location" | translate}}</div>
                 </div>
             </div>
             <div class="row">
@@ -93,7 +93,7 @@
                     <div>{{"TR_TotalMeetings" | translate}}</div>
                 </div>
                 <div class="col col-20">
-                    <h4>{{line.meetingsCounter}}</h4>
+                    <h4>{{line.meetingsCounter +line.passedMeetings.length}}</h4>
                 </div>
             </div>
 
@@ -110,7 +110,7 @@
             <!--users in line row-->
             <div class="row row-center">
                 <div class="col col-60 col-offset-5">
-                    <div>{{"TR_PassedMeetings" | translate}}</div>
+                    <div>{{"TR_PastMeetings" | translate}}</div>
                 </div>
                 <div class="col col-20">
                     <h4>{{line.passedMeetings.length}}</h4>
@@ -131,15 +131,15 @@
             <div ng-show="line.meetings.length > 0 ">
                 <div class="row">
                     <div class="col col-40 col-offset-5">
-                        <div>{{"TR_5_nextMeetings" | translate}}</div>
+                        <div>{{"TR_nextMeetings" | translate}}</div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col col-40 col-offset-5">
-                        {{"TR_5_user" | translate}}
+                        {{"TR_user" | translate}}
                     </div>
                     <div class="col col-40 col-offset-5">
-                        {{"TR_5_date" | translate}}
+                        {{"TR_date" | translate}}
                     </div>
                 </div>
                 <div class="row" ng-repeat="meeting in line.meetings">
@@ -147,7 +147,7 @@
                         <h4>{{meeting.userName}}</h4>
                     </div>
                     <div class="col col-40 col-offset-5">
-                        <h4>{{meeting.time | date:'medium'}}</h4>
+                        <h4>{{meeting.time | date: "HH:mm"}}</h4>
                     </div>
                 </div>
             </div>
@@ -156,15 +156,15 @@
             <div ng-show="line.passedMeetings.length > 0 ">
                 <div class="row">
                     <div class="col col-40 col-offset-5">
-                        <div>{{"TR_5_pastMeetings" | translate}}</div>
+                        <div>{{"TR_PastMeetings" | translate}}</div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col col-40 col-offset-5">
-                        {{"TR_5_user" | translate}}
+                        {{"TR_user" | translate}}
                     </div>
                     <div class="col col-40 col-offset-5">
-                        {{"TR_5_date" | translate}}
+                        {{"TR_date" | translate}}
                     </div>
                 </div>
                 <div class="row" ng-repeat="meeting in line.passedMeetings">
@@ -172,19 +172,22 @@
                         <h4>{{meeting.userName}}</h4>
                     </div>
                     <div class="col col-40 col-offset-5">
-                        <h4>{{meeting.time | date:'medium'}}</h4>
+                        <h4>{{meeting.time | date: "HH:mm"}}</h4>
                     </div>
                 </div>
             </div>
 
         </div>
-
+<br><br>
 
     </ion-content>
 
     <div class="bar bar-footer">
         <div class="tabs tabs-icon-top">
-            <a class="tab-item" ng-click="nextMeeting()" ng-show="line.currentMeeting">
+            <a class="tab-item" ng-click="nextMeeting()" ng-show="line.active">
+                <i class="icon ion-skip-forward"></i> {{"TR_NextMeeting" | translate}}
+            </a>
+            <a class="tab-item tabs-stable" ng-show="!line.active">
                 <i class="icon ion-skip-forward"></i>{{"TR_NextMeeting" | translate}}
             </a>
             <a class="tab-item" ng-click="postponeLine()">

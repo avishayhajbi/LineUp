@@ -2,6 +2,7 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
   .config(function($stateProvider, $urlRouterProvider, $translateProvider) {
     $translateProvider.translations('en', {
       //global
+      TR_HI: 'Hi\,',
       TR_LINEUP: 'LineUp',
       TR_BACK: 'Back',
       TR_SEARCH: 'Search',
@@ -20,6 +21,7 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_Passwordrepet: 'Repeat password:',
       TR_Log_up: 'Sign up',
       TR_share: 'Share Line',
+      TR_ShareMeeting: 'Share Meeting',
       TR_lineStatus: 'Line Status',
       TR_page6: 'Line Operations',
       TR_lineAnalyze: 'Line Analyze',
@@ -48,57 +50,61 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_Settings_language: 'Change language',
       TR_Title: 'Title:',
       //page 4
-      TR_4_ShareViaFacebook:'Share via FaceBook',
-      TR_4_ShareViaEmail:'Share via Email',
-      TR_4_ShareViaMobile:'Share via Mobile',
+      TR_ShareViaFacebook:'Share via FaceBook',
+      TR_ShareViaEmail:'Share via Email',
+      TR_ShareViaMobile:'Share via Mobile',
 
+      TR_Status_1: 'Your meeting is getting close..',
+      TR_Status_2: 'It\'s almost time, don\'t forget to confirm your meeting',
+      TR_Status_3: 'Hurry! it\'s time to Get in Line!',
 
       //page 5
-      TR_5_manualControl: 'Manual Control',
-      TR_5_lineAnalyze: 'Line Analyze',
-      TR_5_UsersInLine: 'Users in Line:',
-      TR_5_nextMeetings: 'Next meetings:',
-      TR_5_startDate: 'Start Date:',
-      TR_5_endDate: 'End Date:',
-      TR_5_user: 'Name',
-      TR_5_date: 'Time',
-      TR_5_confirm: 'Confirm',
+      TR_manualControl: 'Manual Control',
+      TR_lineAnalyze: 'Line Analyze',
+      TR_UsersInLine: 'Users in Line:',
+      TR_nextMeetings: 'Next Meetings:',
+      TR_startDate: 'Start Date:',
+      TR_endDate: 'End Date:',
+      TR_user: 'Name',
+      TR_date: 'Time',
+      TR_confirm: 'Confirm',
       //page 6
-      TR_6_nextMeeting: 'Move to next Meeting',
-      TR_6_postponeCurrentMeeting:'Postpone current Meeting',
-      TR_6_sendMessage:'Send message',
-      TR_6_switchMeetings:'Switch Meetings',
-      TR_6_fillEmptyMeeting:'Fill empty Meeting',
-      TR_6_Share: 'Share Line',
-      TR_6_endLine:'End line',
+      TR_nextMeeting: 'Move to next Meeting',
+      TR_postponeCurrentMeeting:'Postpone current Meeting',
+      TR_sendMessage:'Send message',
+      TR_switchMeetings:'Switch Meetings',
+      TR_fillEmptyMeeting:'Fill empty Meeting',
+      TR_Share: 'Share Line',
+      TR_endLine:'End line',
       TR_cancelMeeting: 'Cancel meeting',
       TR_meetingTimeStart: 'Meeting time',
-
+      TR_Active_Lines: 'Active Lines:',
+      TR_Active_Meetings: 'Active Meetings:',
 
       //page 1
-      TR_1_ENTERLINEID: 'Enter Line ID..',
-      TR_1_CHOOSELINE: 'Choose Line',
-      TR_1_POPTITLE: 'line not found',
-      TR_1_POPTEMPLATE: 'id not exist please insert different line ID.',
-      TR_1_myLines:'My Lines:',
-      TR_1_myMeetings: 'My Meetings:',
+      TR_ENTERLINEID: 'Enter Line ID..',
+      TR_CHOOSELINE: 'Choose Line',
+      TR_POPTITLE: 'line not found',
+      TR_POPTEMPLATE: 'ID not exist please insert different line ID.',
+      TR_myLines:'My Lines:',
+      TR_myMeetings: 'My Meetings:',
 
       //page 2
-      TR_2_Dates:'Dates:',
-      TR_2_Location: 'Location:',
-      TR_2_Duration: 'Duration:',
+      TR_Dates:'Dates:',
+      TR_Location: 'Location:',
+      TR_Duration: 'Duration:',
         //getInLine
-      TR_9_POPTITLE: 'line not found',
-      TR_9_POPTEMPLATE: 'id not exist please insert different line ID.',
-      TR_9_Type: 'Type:',
-      TR_9_Location: 'Location:',
-      TR_9_Time: 'Next Meeting:',
-      TR_9_Comments: 'Comments:',
+      TR_POPTITLE: 'line not found',
+      TR_POPTEMPLATE: 'id not exist please insert different line ID.',
+      TR_Type: 'Type:',
+      TR_Location: 'Location:',
+      TR_Time: 'Next Meeting:',
+      TR_Comments: 'Comments:',
 
       // signIn
-      TR_3_SignIn_Facebook:"Sign in with Facebook",
-      TR_3_SignIn_Email:"Login with Email",
-      TR_3_SignUp_Email: 'Sign up with Email',
+      TR_SignIn_Facebook:"Sign in with Facebook",
+      TR_SignIn_Email:"Login with Email",
+      TR_SignUp_Email: 'Sign up with Email',
       TR_signUp: 'Sign up',
       TR_logOut: 'Log out',      
       // login
@@ -110,9 +116,9 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_messageBody:'Body:',
       TR_sendMessage:'Send',
 
-      TR_2_POPTITLE: 'oh oh..',
-      TR_2_POPTEMPLATE: 'Something went wrong :(',
-      TR_2_ManualLine: 'Manual line:',
+      TR_POPTITLE: 'oh oh..',
+      TR_POPTEMPLATE: 'Something went wrong :(',
+      TR_ManualLine: 'Manual line:',
 
       //footer
       TR_NextMeeting: 'Next Meeting',
@@ -122,7 +128,7 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_ShareLine: 'Share Line',
 
       TR_FutureMeetings: 'Future Meetings:',
-      TR_PassedMeetings: 'Passed Meetings:',
+      TR_PastMeetings: 'Past Meetings:',
 
       //line analze
       TR_LineInformation: 'Line information:',
@@ -155,12 +161,12 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       //settings Page
       TR_Settings_language: 'שנה שפה',
       //default
-      TR_1_BUTTON: 'צור תור',
-      TR_1_JOINLINE: 'הצטרף לתור',
-      TR_1_ENTERLINEID: 'הכנס מספר תור',
-      TR_1_CHOOSELINE: 'בחר תור',
-      TR_1_POPTITLE: 'תור לא נמצא',
-      TR_1_POPTEMPLATE: 'מספר תור לא נמצא נסה שוב'
+      TR_BUTTON: 'צור תור',
+      TR_JOINLINE: 'הצטרף לתור',
+      TR_ENTERLINEID: 'הכנס מספר תור',
+      TR_CHOOSELINE: 'בחר תור',
+      TR_POPTITLE: 'תור לא נמצא',
+      TR_POPTEMPLATE: 'מספר תור לא נמצא נסה שוב'
     });
     $translateProvider.preferredLanguage("en");
     $translateProvider.fallbackLanguage("en");

@@ -25,7 +25,7 @@
             </ion-item>
         </ion-list></div>
 
-              <div class="col col-80 col-offset-10 row-bottom subTitle" ng-show="user.passedMeetings.length > 0">{{"TR_PassedMeetings" | translate}}
+              <div class="col col-80 col-offset-10 row-bottom subTitle" ng-show="user.passedMeetings.length > 0">{{"TR_PastMeetings" | translate}}
         <ion-list style="padding:0px !important;">
             <ion-item ng-repeat="meeting in user.passedMeetings" ng-click="chooseMeeting(meeting.lineId);">
                 <div style="float:left">{{meeting.title}}</div><div style="float:right">{{meeting.time | date : " HH:mm dd/MM/yy"}}</div>

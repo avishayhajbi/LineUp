@@ -121,73 +121,15 @@ display: block;
 	margin-top:0px;
 }
 
+#default .pageTitle {
+	padding-bottom: 18px;
+}
+
+
 .modal .item-input {
 	border-radius: 0px;
 }
 
-
-@media (min-width: 500px) {
-
-
-.large {
-  font-size: 2.75em;
-}
-
-.menu .bar-header {
-  font-size: 2.75em;
-  padding-top: 10px;
-  padding-left:5%;
-}
-
-
-.subTitle {
-	margin-top:5%;
-	font-size:1.9em;
-	line-height: 2;
-}
-
-.container .ng-binding {
-	font-family: OpenSans-Light;
-	font-size:1.8em;
-	line-height: 2;
-}
-
-.button.copyBtn {
-	margin-top: 0px;
-	font-size:1.8em;
-}
-
-textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
-	font-family: OpenSans-Light;
-	font-size:1.2em;
-	line-height: none;
-}
-
-.button {
-	border-radius: 5px;
-	font-size:1.6em;
-}
-
-.tabs-icon-top > .tabs .tab-item, .tabs-icon-top.tabs .tab-item, .tabs-icon-bottom > .tabs .tab-item, .tabs-icon-bottom.tabs .tab-item {
-	color:#1b445c;
-	opacity: 1;
-	font-size:1.1em;
-}
-
-.small {
-  font-size: 0.5em;
-}
-
-h4.icon {
-text-align: center;
-  font-size: 1.8em;
-  line-height: 2;
-}
-
-}
-
-@media (max-width: 499px) {
-
 .large {
   font-size: 22px;
 }
@@ -227,20 +169,22 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 	font-size:14px;
 }
 
+
 .tabs-icon-top > .tabs .tab-item, .tabs-icon-top.tabs .tab-item, .tabs-icon-bottom > .tabs .tab-item, .tabs-icon-bottom.tabs .tab-item {
-	color:#1b445c;
 	opacity: 1;
 	font-size:12px;
 }
 
+a.tab-item.tabs-stable {
+	color: #d3d3d3;
+}
+
 .small {
-  font-size: 12px;
+  font-size: 13px;
 }
 
 h4.icon {
 text-align: center;
 font-size: 18px;
 line-height: 2;
-}
-
 }

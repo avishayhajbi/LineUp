@@ -67,7 +67,7 @@ angular.module('starter.controllers', ['ngCordova'])
 			//TODO to valid in html valid user
 			if (!$scope.signUpData.email || !$scope.signUpData.password || !$scope.signUpData.username || !$scope.signUpData.repetPassword) {
 				var alertPopup = $ionicPopup.alert({
-					title: $filter('translate')('TR_2_POPTITLE'),
+					title: $filter('translate')('TR_POPTITLE'),
 					template: $filter('translate')('Missing parameters')
 
 				});
@@ -77,13 +77,13 @@ angular.module('starter.controllers', ['ngCordova'])
 
 				if (!filter.test(email)) {
 					var alertPopup = $ionicPopup.alert({
-						title: $filter('translate')('TR_2_POPTITLE'),
+						title: $filter('translate')('TR_POPTITLE'),
 						template: $filter('translate')(email + 'is not a valid email address')
 					});
 
 				} else if ($scope.signUpData.repetPassword != $scope.signUpData.password) {
 					var alertPopup = $ionicPopup.alert({
-						title: $filter('translate')('TR_2_POPTITLE'),
+						title: $filter('translate')('TR_POPTITLE'),
 						template: $filter('translate')('Passwords do not match')
 					});
 
@@ -221,7 +221,7 @@ angular.module('starter.controllers', ['ngCordova'])
 		}
 
 		$scope.lineIdToGet = '';
-		$scope.placeholder = 'TR_1_ENTERLINEID';
+		$scope.placeholder = 'TR_ENTERLINEID';
 		$scope.searchPlaceHolder = 'TR_SEARCH';
 
 
@@ -427,8 +427,8 @@ angular.module('starter.controllers', ['ngCordova'])
 					$ionicLoading.hide();
 					if (!data) {
 						var alertPopup = $ionicPopup.alert({
-							title: $filter('translate')('TR_1_POPTITLE'),
-							template: $filter('translate')('TR_1_POPTEMPLATE')
+							title: $filter('translate')('TR_POPTITLE'),
+							template: $filter('translate')('TR_POPTEMPLATE')
 						});
 					} else {
 
@@ -511,8 +511,8 @@ angular.module('starter.controllers', ['ngCordova'])
 
 			if (data == "noMoreMeetingsLineClosed") {
 				var alertPopup = $ionicPopup.alert({
-					title: "mo more meetings and room for meetings closeing line",
-					template: "mo more meetings and room for meetings closeing line"
+					title: "No more meetings and room for meetings closing line",
+					template: "No more meetings and room for meetings closing line"
 				});
 				for (var i = 0; i < $scope.user.activeLines.length; i++) {
 					if ($scope.user.activeLines[i].lineId == $scope.line.lineId) {
@@ -525,16 +525,16 @@ angular.module('starter.controllers', ['ngCordova'])
 				$state.go("app.lineAnalyze");
 			} else if (data == "lineDidntStart") {
 				var alertPopup = $ionicPopup.alert({
-					title: "line didnt start yet",
-					template: "line didnt start yet"
+					title: "Line didn't start yet",
+					template: "Line didn't start yet"
 				});
 				console.log("Move to next Meeting");
 
 			} else if (data == "noMoreMeetingsAskWhatToDo") {
 
 				var chooseDatePopUp = $ionicPopup.show({
-					template: 'not more meetings in line what do do?',
-					title: 'not more meetings in line what do do?',
+					template: 'No more meetings in line what do do?',
+					title: 'No more meetings in line what do do?',
 					subTitle: '',
 					scope: $scope,
 					buttons: [{
@@ -549,8 +549,8 @@ angular.module('starter.controllers', ['ngCordova'])
 								$ionicLoading.hide();
 								if (!data) {
 									var alertPopup = $ionicPopup.alert({
-										title: $filter('translate')('TR_2_POPTITLE'),
-										template: $filter('translate')('TR_2_POPTEMPLATE')
+										title: $filter('translate')('TR_POPTITLE'),
+										template: $filter('translate')('TR_POPTEMPLATE')
 									});
 								} else {
 									for (var i = 0; i < $scope.user.activeLines.length; i++) {
@@ -575,8 +575,8 @@ angular.module('starter.controllers', ['ngCordova'])
 			} else if (!data) {
 				$scope.line = data;
 				var alertPopup = $ionicPopup.alert({
-					title: $filter('translate')('TR_2_POPTITLE'),
-					template: $filter('translate')('TR_2_POPTEMPLATE')
+					title: $filter('translate')('TR_POPTITLE'),
+					template: $filter('translate')('TR_POPTEMPLATE')
 				});
 				console.log("Move to next Meeting");
 			}
@@ -610,15 +610,15 @@ angular.module('starter.controllers', ['ngCordova'])
 						$ionicLoading.hide();
 						if (!data) {
 							var alertPopup = $ionicPopup.alert({
-								title: $filter('translate')('TR_2_POPTITLE'),
-								template: $filter('translate')('TR_2_POPTEMPLATE')
+								title: $filter('translate')('TR_POPTITLE'),
+								template: $filter('translate')('TR_POPTEMPLATE')
 							});
 
 						} else {
 							$scope.line = data;
 							var alertPopup = $ionicPopup.alert({
-								title: "line prosponed in:" + $scope.data.delayTime + " minutes",
-								template: "line prosponed in:" + $scope.data.delayTime + " minutes"
+								title: "Line postponed",
+								template: "Line postponed in: " + $scope.data.delayTime + " minutes"
 							});
 
 						}
@@ -662,8 +662,8 @@ angular.module('starter.controllers', ['ngCordova'])
 					$ionicLoading.hide();
 					if (!data) {
 						var alertPopup = $ionicPopup.alert({
-							title: $filter('translate')('TR_2_POPTITLE'),
-							template: $filter('translate')('TR_2_POPTEMPLATE')
+					title: $filter('translate')('TR_POPTITLE'),
+					template: $filter('translate')('TR_POPTEMPLATE')
 						});
 					} else {
 						for (var i = 0; i < $scope.user.activeLines.length; i++) {
@@ -724,8 +724,8 @@ angular.module('starter.controllers', ['ngCordova'])
 
 			if (!data) {
 				var alertPopup = $ionicPopup.alert({
-					title: $filter('translate')('TR_1_POPTITLE'),
-					template: $filter('translate')('TR_1_POPTEMPLATE')
+					title: $filter('translate')('TR_POPTITLE'),
+					template: $filter('translate')('TR_POPTEMPLATE')
 				});
 			} else if (data == "noRoom") {
 				var alertPopup = $ionicPopup.alert({
@@ -814,8 +814,8 @@ angular.module('starter.controllers', ['ngCordova'])
 
 
 								var canceledPopup = $ionicPopup.show({
-									template: 'meeting canceld',
-									title: 'meeting canceld',
+									template: 'Meeting canceled',
+									title: 'Meeting canceled',
 									subTitle: '',
 									scope: $scope,
 									buttons: [{
@@ -855,8 +855,8 @@ angular.module('starter.controllers', ['ngCordova'])
 
 		$scope.cancelMeeting = function() {
 			var cancelLinePopUp = $ionicPopup.show({
-				template: 'are u sure?',
-				title: 'alert',
+				template: 'Are u sure?',
+				title: 'Alert',
 				subTitle: '',
 				scope: $scope,
 				buttons: [{
@@ -873,13 +873,13 @@ angular.module('starter.controllers', ['ngCordova'])
 								$ionicLoading.hide();
 								if (!data) {
 									var alertPopup = $ionicPopup.alert({
-										title: "please try again",
-										template: "please try again"
+										title: "Please try again",
+										template: "Please try again"
 									});
 								} else {
 									var canceledPopup = $ionicPopup.show({
-										template: 'meeting canceld',
-										title: 'meeting canceld',
+										template: 'Meeting canceled',
+										title: 'Meeting canceled',
 										subTitle: '',
 										scope: $scope,
 										buttons: [{
@@ -918,14 +918,14 @@ angular.module('starter.controllers', ['ngCordova'])
 			$meetingManager.confirmMeeting().then(function(data) {
 				if (data) {
 					var alertPopup = $ionicPopup.alert({
-						title: "meeting confirmed",
-						template: "meeting confirmed"
+						title: "Meeting confirmed",
+						template: "Meeting confirmed"
 					});
 
 				} else {
 					var alertPopup = $ionicPopup.alert({
-						title: "problem please try again",
-						template: "problem please try again"
+						title: "Problem please try again",
+						template: "Problem please try again"
 					});
 				}
 			});
@@ -956,7 +956,7 @@ angular.module('starter.controllers', ['ngCordova'])
 		}
 
 		$scope.lineIdToGet = '';
-		$scope.placeholder = 'TR_1_ENTERLINEID';
+		$scope.placeholder = 'TR_ENTERLINEID';
 		$scope.searchPlaceHolder = 'TR_SEARCH';
 
 
@@ -1046,8 +1046,8 @@ angular.module('starter.controllers', ['ngCordova'])
 					$meetingManager.setCurrent($scope.lineIdToGet).then(function(data) {
 						if (!data) {
 							var alertPopup = $ionicPopup.alert({
-								title: "errr",
-								template: "err"
+								title: "Error",
+								template: "Error"
 							});
 						} else {
 							$state.go("app.meetingStatus");
