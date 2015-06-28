@@ -132,7 +132,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 			loginWithEmail: function(user) {
 				return $http.post(serverUrl + 'logIn', user)
 					.then(function(response) {
-							
+
 						if (response.data.success) {
 							username = user.username;
 							userId = response.data.user._id;
@@ -163,14 +163,14 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 			signUpWithEmail: function(user) {
 				return $http.post(serverUrl + 'signUp', user)
 					.then(function(response) {
-					
+
 						if (response.data.success == 'userExist') {
 							return response.data.success;
 						} else if (response.data.success) {
 							username = user.username;
 							userId = response.data.user._id;
 							userToken = response.data.user.userToken;
-							
+
 							$localstorage.setObject('lineup', {
 								username: user.username,
 								password: user.password
@@ -179,8 +179,10 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 								sendTokenToServer(pushToken);
 							}
 							console.log("user login :", username);
-						
-							user = {username: user.username};
+
+							user = {
+								username: user.username
+							};
 							return user;
 						} else {
 							$localstorage.setObject('lineup', '');
@@ -196,7 +198,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 			logOut: function() {
 				userId = "";
 				username = "";
-				userToken= "";
+				userToken = "";
 				userEmail = "";
 				connected = false;
 
@@ -247,12 +249,12 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 		return {
 			getRandomlineList: function() {
 				return $http.get(serverUrl + 'getRandomlineList', {
-					params: {
-						userId: $userManagment.getMyId(),
-						userToken: $userManagment.getMyToken()
-					},
-					timeout: 8000
-				})
+						params: {
+							userId: $userManagment.getMyId(),
+							userToken: $userManagment.getMyToken()
+						},
+						timeout: 8000
+					})
 					.then(function(response) {
 						if (response.data) {
 							if (myLocation) {
@@ -325,14 +327,14 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 			var now = new Date();
 			var delta = (time - now) / 1000;
 			currentMeeting.timeLeft = {};
-		
+
 			currentMeeting.timeLeft.days = Math.floor(delta / 86400);
 			delta -= currentMeeting.timeLeft.days * 86400;
 			currentMeeting.timeLeft.hours = Math.floor(delta / 3600) % 24;
 			delta -= currentMeeting.timeLeft.hours * 3600;
 			currentMeeting.timeLeft.minutes = Math.floor(delta / 60) % 60;
 
-		
+
 			currentMeeting.ProgressCounter = false;
 			var startCount = new Date(time.getTime() - ((currentMeeting.confirmTime + currentMeeting.druation) * 60000));
 			var timeToWait = time.getTime() - startCount;
@@ -449,8 +451,8 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 				});
 
 			},
-			followMeeting :function (lineId , userIdToFollow) {
-					return $http.get(serverUrl + 'followMeeting', {
+			followMeeting: function(lineId, userIdToFollow) {
+				return $http.get(serverUrl + 'followMeeting', {
 					params: {
 						lineId: currentMeeting.lineId,
 						userId: $userManagment.getMyId(),
@@ -478,7 +480,8 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
 
 		function getLineInfo() {
-			return $http.get(serverUrl + 'getLineInfo', {
+			
+			 $http.get(serverUrl + 'getLineInfo', {
 				params: {
 					lineId: currentLine.lineId,
 					userId: $userManagment.getMyId(),
@@ -486,19 +489,17 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 				},
 				timeout: 8000
 			}).then(function(response) {
-				if (response.data) {
-
+				
+				if (response.data) {	
 					currentLine = response.data;
-					return currentLine;
-					// console.log("getLineInfo: ", currentLine);
-					// $rootScope.$broadcast('lineInfoUpdated', true);
+					 console.log("getLineInfo: ", currentLine);
+					$rootScope.$broadcast('lineInfoUpdated');
 				} else {
-					return false;
-					$rootScope.$broadcast('lineInfoUpdated', false);
+					
 				}
 			}, function(response) {
-				return false;
-				$rootScope.$broadcast('lineInfoUpdated', false);
+				 console.log("getlininfo error");
+
 			});
 
 		}
@@ -518,15 +519,10 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 					},
 					timeout: 8000
 				}).then(function(response) {
-					
 					if (response.data) {
 						currentLine.lineId = response.data;
-						return getLineInfo().then(function(data){
-							if (data) {
-								return data;		
-							}
-							else return false;
-						});
+						getLineInfo();
+						return true;
 					} else {
 						return false;
 					}
@@ -534,6 +530,11 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 					return false;
 				});
 
+			},
+			updateLineScreen: function() {
+				
+				 getLineInfo();
+				
 			},
 			setCurrent: function(lineId) {
 				return $http.get(serverUrl + 'getLineInfo', {
@@ -557,7 +558,6 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
 			},
 			endLine: function() {
-
 				return $http.get(serverUrl + 'endLine', {
 					params: {
 						lineId: currentLine.lineId,
@@ -567,7 +567,6 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 					timeout: 8000
 				}).then(function(response) {
 					if (response.data) {
-						//TODO move line to passed lines
 						return true;
 					} else {
 						return false;
@@ -578,7 +577,6 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
 			},
 			postponeLine: function(delayTime) {
-
 				return $http.get(serverUrl + 'postponeLine', {
 					params: {
 						lineId: currentLine.lineId,
@@ -588,14 +586,11 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 					},
 					timeout: 8000
 				}).then(function(response) {
-
+				
 					if (response.data) {
-						getLineInfo().then(function(data){
-							if (data) {
-								return data;		
-							}
-							else return false;
-						});
+						getLineInfo();
+						return true;
+
 					} else {
 						return false;
 					}
@@ -727,16 +722,23 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 							}]
 						});
 						popup.then(function(data) {
-							if (data) {
+							
+							if ($lineManager.getCurrentLine().lineId == notification.payload.lineId) {
+								$lineManager.updateLineScreen();
+							} else if (data) {
 								$ionicLoading.show();
+								debugger;
 								$lineManager.setCurrent(notification.payload.lineId).then(function(data) {
+									debugger;
 									$ionicLoading.hide();
 									if (data) {
 										$state.go("app.lineStatus");
 									} else {}
 
 								});
+
 							}
+
 						});
 						break;
 					case "meeting":
@@ -763,7 +765,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 								$meetingManager.setCurrent(notification.payload.lineId).then(function(data) {
 									$ionicLoading.hide();
 									if (data) {
-										$state.go("app.meetingStatus");
+										$state.go("app.meetingStatus", {}, { reload: true });
 									} else {}
 
 								});
@@ -785,43 +787,8 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 			} else console.log("err in notification:", notification.event + ", message:", notification.msg)
 		}
 
-
-		//       // IOS Notification Received Handler
-		// function handleIOS(notification) {
-		//   // The app was already open but we'll still show the alert and sound the tone received this way. If you didn't check
-		//   // for foreground here it would make a sound twice, once when received in background and upon opening it from clicking
-		//   // the notification when this code runs (weird).
-		//   if (notification.foreground == "1") {
-		//     // Play custom audio if a sound specified.
-		//     if (notification.sound) {
-		//       var mediaSrc = $cordovaMedia.newMedia(notification.sound);
-		//       mediaSrc.promise.then($cordovaMedia.play(mediaSrc.media));
-		//     }
-
-		//     if (notification.body && notification.messageFrom) {
-		//       $cordovaDialogs.alert(notification.body, notification.messageFrom);
-		//     } else $cordovaDialogs.alert(notification.alert, "Push Notification Received");
-
-		//     if (notification.badge) {
-		//       $cordovaPush.setBadgeNumber(notification.badge).then(function(result) {
-		//         console.log("Set badge success " + result)
-		//       }, function(err) {
-		//         console.log("Set badge error " + err)
-		//       });
-		//     }
-		//   }
-		//   // Otherwise it was received in the background and reopened from the push notification. Badge is automatically cleared
-		//   // in this case. You probably wouldn't be displaying anything at this point, this is here to show that you can process
-		//   // the data in this situation.
-		//   else {
-		//     if (notification.body && notification.messageFrom) {
-		//       $cordovaDialogs.alert(notification.body, "(RECEIVED WHEN APP IN BACKGROUND) " + notification.messageFrom);
-		//     } else $cordovaDialogs.alert(notification.alert, "(RECEIVED WHEN APP IN BACKGROUND) Push Notification Received");
-		//   }
-		// }
-
 		window.handleOpenURL = function(url) {
-
+		
 			console.log("received url: " + url);
 			if (url) {
 				var param = url.split("//");
@@ -832,55 +799,52 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 						var params = param[1].split("&&");
 						var id = params[0];
 						var userId = params[1];
-						$meetingManager.followMeeting(id , userId);
-
-						
-					}
-					else {
-						var id = param[1]; 
+						$meetingManager.followMeeting(id, userId);
+					} else {
+						var id = param[1];
 						$ionicLoading.show();
 						$outSideLineHandler.getLine(id).then(function(data) {
-								$ionicLoading.hide();
-								if (!data) {
-									var alertPopup = $ionicPopup.alert({
-										title: "error",
-										template: "error"
-									});
-								} else if (data == "noSuchLine") {
-									var alertPopup = $ionicPopup.alert({
-										title: "no such line",
-										template: "no such line"
-									});
-								} else if (data == "noRoom") {
-									var alertPopup = $ionicPopup.alert({
-										title: "no room in line",
-										template: "no room in line"
-									});
-								} else if (data == "userSignedIn") {
-									var alertPopup = $ionicPopup.alert({
-										title: "already signed to this line",
-										template: "already signed to this line"
-									});
-									$meetingManager.setCurrent(id).then(function(data) {
-										if (!data) {
-											var alertPopup = $ionicPopup.alert({
-												title: "errr",
-												template: "err"
-											});
-										} else {
-											$state.go("app.meetingStatus");
-										}
-									});
+							$ionicLoading.hide();
+							if (!data) {
+								var alertPopup = $ionicPopup.alert({
+									title: "error",
+									template: "error"
+								});
+							} else if (data == "noSuchLine") {
+								var alertPopup = $ionicPopup.alert({
+									title: "no such line",
+									template: "no such line"
+								});
+							} else if (data == "noRoom") {
+								var alertPopup = $ionicPopup.alert({
+									title: "no room in line",
+									template: "no room in line"
+								});
+							} else if (data == "userSignedIn") {
+								var alertPopup = $ionicPopup.alert({
+									title: "already signed to this line",
+									template: "already signed to this line"
+								});
+								$meetingManager.setCurrent(id).then(function(data) {
+									if (!data) {
+										var alertPopup = $ionicPopup.alert({
+											title: "errr",
+											template: "err"
+										});
+									} else {
+										$state.go("app.meetingStatus");
+									}
+								});
 
-								} else {
-									$state.transitionTo("app.getInLine");
-								}
+							} else {
+								$state.transitionTo("app.getInLine");
+							}
 
-							});
+						});
 
 
 					}
-					
+
 				}
 
 			}

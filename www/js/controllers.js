@@ -432,7 +432,6 @@ angular.module('starter.controllers', ['ngCordova'])
 
 
 				$lineManager.createLine(newLine).then(function(data) {
-					debugger;
 					$ionicLoading.hide();
 					if (!data) {
 						var alertPopup = $ionicPopup.alert({
@@ -498,6 +497,7 @@ angular.module('starter.controllers', ['ngCordova'])
 	$scope.line = $lineManager.getCurrentLine();
 
 	$scope.$on("lineInfoUpdated", function() {
+		debugger;
 		$scope.line = $lineManager.getCurrentLine();
 	});
 
@@ -578,8 +578,6 @@ angular.module('starter.controllers', ['ngCordova'])
 					}]
 				});
 
-
-
 			} else if (!data) {
 				$scope.line = data;
 				var alertPopup = $ionicPopup.alert({
@@ -614,7 +612,7 @@ angular.module('starter.controllers', ['ngCordova'])
 					$ionicLoading.show();
 
 					$lineManager.postponeLine($scope.data.delayTime).then(function(data) {
-
+						
 						$ionicLoading.hide();
 						if (!data) {
 							var alertPopup = $ionicPopup.alert({
@@ -623,7 +621,7 @@ angular.module('starter.controllers', ['ngCordova'])
 							});
 
 						} else {
-							$scope.line = data;
+							//$scope.line = data;
 							var alertPopup = $ionicPopup.alert({
 								title: "Line postponed",
 								template: "Line postponed in: " + $scope.data.delayTime + " minutes"

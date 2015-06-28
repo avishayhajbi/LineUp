@@ -21,7 +21,7 @@ checkAtt = function(prop) {
 }
 
 
-// var serverUrl =  "http://10.0.3.209:3030/api/";
+// var serverUrl =  "http://10.0.3.65:3030/api/";
 // var serverUrl =  "http://10.0.0.2:3030/api/";
 // var serverUrl =  "http://localHost:3030/api/";
 var serverUrl =  "https://lineupserver.herokuapp.com/api/";
