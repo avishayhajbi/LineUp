@@ -44,13 +44,13 @@
 
 
             <!--current meetings row-->  
-            <div class="row row-center">
+            <div class="row row-center" ng-show="line.currentMeeting">
                 <div class="col col-40 col-offset-5">
                     <div>{{"TR_Current_Meetings" | translate}}</div>
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" ng-show="line.currentMeeting">
                 <div class="col col-40 col-offset-5">
                     {{line.currentMeeting.userName}}
                 </div>
