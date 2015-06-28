@@ -3,7 +3,10 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('menuCtrl', function($scope, $ionicModal, $localstorage, $ionicModal, $timeout, $filter, $userManagment, $ionicLoading, $ionicPopup, $state, $pushNotificationHere) {
 
 		$scope.user = {};
-
+		$scope.user.activeLines = [];
+		$scope.user.passedLines = [];
+		$scope.user.activeMeetings = [];
+		$scope.user.passedMeetings = [];
 
 		//SIGN on start up 
 		//$localstorage.setObject('lineup', '');
@@ -100,6 +103,11 @@ angular.module('starter.controllers', ['ngCordova'])
 						} else {
 							console.log("user data:", $scope.user);
 							$scope.user = data;
+							$scope.user.activeLines = [];
+							$scope.user.passedLines = [];
+							$scope.user.activeMeetings = [];
+							$scope.user.passedMeetings = [];
+
 							//TODO pop up signed in 
 							$scope.signupMenu.hide();
 						}
@@ -424,6 +432,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
 
 				$lineManager.createLine(newLine).then(function(data) {
+					debugger;
 					$ionicLoading.hide();
 					if (!data) {
 						var alertPopup = $ionicPopup.alert({
@@ -432,7 +441,7 @@ angular.module('starter.controllers', ['ngCordova'])
 						});
 					} else {
 						$scope.user.activeLines.push({
-							lineId: data,
+							lineId: data.lineId,
 							title: $scope.newLine.title
 						});
 						$state.go("app.lineStatus");
@@ -661,8 +670,8 @@ angular.module('starter.controllers', ['ngCordova'])
 					$ionicLoading.hide();
 					if (!data) {
 						var alertPopup = $ionicPopup.alert({
-					title: $filter('translate')('TR_POPTITLE'),
-					template: $filter('translate')('TR_POPTEMPLATE')
+							title: $filter('translate')('TR_POPTITLE'),
+							template: $filter('translate')('TR_POPTEMPLATE')
 						});
 					} else {
 						for (var i = 0; i < $scope.user.activeLines.length; i++) {
