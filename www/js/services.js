@@ -722,14 +722,15 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 							}]
 						});
 						popup.then(function(data) {
-							
-							if ($lineManager.getCurrentLine().lineId == notification.payload.lineId) {
+						
+							if ( $lineManager.getCurrentLine().lineId == notification.payload.lineId) {
 								$lineManager.updateLineScreen();
-							} else if (data) {
+							} 
+							if (data) {
 								$ionicLoading.show();
-								debugger;
+							
 								$lineManager.setCurrent(notification.payload.lineId).then(function(data) {
-									debugger;
+								
 									$ionicLoading.hide();
 									if (data) {
 										$state.go("app.lineStatus");
