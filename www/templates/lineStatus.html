@@ -42,6 +42,24 @@
                 </div>
             </div>
 
+
+            <!--current meetings row-->  
+            <div class="row row-center">
+                <div class="col col-40 col-offset-5">
+                    <div>{{"TR_Current_Meetings" | translate}}</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-40 col-offset-5">
+                    {{line.currentMeeting.userName}}
+                </div>
+                <div class="col col-40 col-offset-5">
+                   {{line.currentMeeting.time | date : " HH:mm"}}
+                </div>
+            </div>
+
+
             <!--next meetings row-->
             <div ng-show="line.meetings.length > 0 ">       
                 <div class="col col-40 col-offset-5 row">

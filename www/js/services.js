@@ -480,8 +480,8 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
 
 		function getLineInfo() {
-			
-			 $http.get(serverUrl + 'getLineInfo', {
+
+			$http.get(serverUrl + 'getLineInfo', {
 				params: {
 					lineId: currentLine.lineId,
 					userId: $userManagment.getMyId(),
@@ -489,16 +489,16 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 				},
 				timeout: 8000
 			}).then(function(response) {
-				
-				if (response.data) {	
+
+				if (response.data) {
 					currentLine = response.data;
-					 console.log("getLineInfo: ", currentLine);
+					console.log("getLineInfo: ", currentLine);
 					$rootScope.$broadcast('lineInfoUpdated');
 				} else {
-					
+
 				}
 			}, function(response) {
-				 console.log("getlininfo error");
+				console.log("getlininfo error");
 
 			});
 
@@ -532,9 +532,9 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 
 			},
 			updateLineScreen: function() {
-				
-				 getLineInfo();
-				
+
+				getLineInfo();
+
 			},
 			setCurrent: function(lineId) {
 				return $http.get(serverUrl + 'getLineInfo', {
@@ -586,7 +586,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 					},
 					timeout: 8000
 				}).then(function(response) {
-				
+
 					if (response.data) {
 						getLineInfo();
 						return true;
@@ -607,8 +607,9 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 					},
 					timeout: 8000
 				}).then(function(response) {
-					if (response.data == "noMoreMeetingsLineClosed" || response.data == "noMoreMeetingsAskWhatToDo" || response.data == "lineDidntStart");
-					return response.data;
+					if (response.data == "noMoreMeetingsLineClosed" || response.data == "noMoreMeetingsAskWhatToDo" || response.data == "lineDidntStart") {
+						return response.data;
+					}
 					if (response.data) {
 						getLineInfo();
 						return true;
@@ -722,15 +723,15 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 							}]
 						});
 						popup.then(function(data) {
-						
-							if ( $lineManager.getCurrentLine().lineId == notification.payload.lineId) {
+
+							if ($lineManager.getCurrentLine().lineId == notification.payload.lineId) {
 								$lineManager.updateLineScreen();
-							} 
+							}
 							if (data) {
 								$ionicLoading.show();
-							
+
 								$lineManager.setCurrent(notification.payload.lineId).then(function(data) {
-								
+
 									$ionicLoading.hide();
 									if (data) {
 										$state.go("app.lineStatus");
@@ -766,7 +767,9 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 								$meetingManager.setCurrent(notification.payload.lineId).then(function(data) {
 									$ionicLoading.hide();
 									if (data) {
-										$state.go("app.meetingStatus", {}, { reload: true });
+										$state.go("app.meetingStatus", {}, {
+											reload: true
+										});
 									} else {}
 
 								});
@@ -789,7 +792,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 		}
 
 		window.handleOpenURL = function(url) {
-		
+
 			console.log("received url: " + url);
 			if (url) {
 				var param = url.split("//");
