@@ -49,7 +49,7 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       //settings Page
       TR_Settings_language: 'Change language',
       TR_Title: 'Title:',
-      TR_Current_Meetings: 'Current meeting:'
+      TR_Current_Meetings: 'Current meeting:',
       //page 4
       TR_ShareViaFacebook:'Share via FaceBook',
       TR_ShareViaEmail:'Share via Email',
