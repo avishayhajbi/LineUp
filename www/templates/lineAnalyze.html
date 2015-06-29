@@ -87,7 +87,7 @@
 </div>
             <!--next meetings row-->
             <div ng-show="line.meetings.length > 0 ">
-            <div class="col col-80 col-offset-10 subTitle">{{"TR_nextMeetings" | translate}}</div>
+            <div class="col col-80 col-offset-10 subTitle">{{"TR_FutureMeetings" | translate}}</div>
 
         <div class="container">
                 <div class="row">
@@ -115,7 +115,7 @@
         <div class="container">
 
                 <div class="row">
-                    <div class="col">
+                    <div class="col col-offset-5">
                         {{"TR_user" | translate}}
                     </div>
                     <div class="col col-offset-5">
@@ -126,7 +126,7 @@
                     </div>
                 </div>
                 <div class="row" ng-repeat="meeting in line.passedMeetings" >
-                    <div class="col">
+                    <div class="col col-offset-5">
                         <h4 ng-class='{red : meeting.meetingTime > line.druation, green: meeting.meetingTime < line.druation}'>{{meeting.userName}}</h4>
                     </div>
                     <div class="col col-offset-5">
