@@ -72,7 +72,7 @@
 <br>
             <!--next meetings row-->
             <div ng-show="line.meetings.length > 0 ">       
-                <div class="col col-40 col-offset-5 row">
+                <div class="col col-40 row">
                     {{"TR_nextMeetings" | translate}}           
             </div>
             <div class="row">
@@ -87,15 +87,15 @@
                 </div>
             </div>
             <div class="row" ng-repeat="meeting in line.meetings | limitTo:3">
-                <div class="col col-offset-5">
+                <div class="col">
                     <h4>{{meeting.userName}}</h4>
                 </div>
                 <div class="col col-offset-5">
                     <h4>{{meeting.time | date: "HH:mm"}}</h4>
                 </div>
                 <div class="col col-offset-5">
-                    <h4 ng-show="meeting.confirmed" class="icon ion-checkmark"></h4>
-                    <h4 ng-show="!meeting.confirmed" class="icon ion-close"></h4>
+                    <h4 ng-show="meeting.confirmed" class="icon-left ion-checkmark"></h4>
+                    <h4 ng-show="!meeting.confirmed" class="icon-left ion-close"></h4>
                 </div>
                 </div>
             </div>

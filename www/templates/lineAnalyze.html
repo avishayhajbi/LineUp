@@ -115,18 +115,18 @@
         <div class="container">
 
                 <div class="row">
-                    <div class="col col-40 col-offset-5">
+                    <div class="col">
                         {{"TR_user" | translate}}
                     </div>
-                    <div class="col col-40 col-offset-5">
+                    <div class="col col-offset-5">
                         {{"TR_date" | translate}}
                     </div>
-                    <div class="col col-40 col-offset-5">
+                    <div class="col col-offset-5">
                         {{"TR_Real_Duration" | translate}}
                     </div>
                 </div>
                 <div class="row" ng-repeat="meeting in line.passedMeetings" >
-                    <div class="col col-offset-5">
+                    <div class="col">
                         <h4 ng-class='{red : meeting.meetingTime > line.druation, green: meeting.meetingTime < line.druation}'>{{meeting.userName}}</h4>
                     </div>
                     <div class="col col-offset-5">
