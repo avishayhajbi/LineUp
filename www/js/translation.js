@@ -94,6 +94,7 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_Dates:'Dates:',
       TR_Location: 'Location:',
       TR_Duration: 'Duration:',
+      TR_Real_Duration: 'Duration',
         //getInLine
       TR_POPTITLE: 'line not found',
       TR_POPTEMPLATE: 'id not exist please insert different line ID.',
@@ -138,7 +139,8 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
       TR_DefualtDuration: 'Defualt Duration:',
       TR_AvgDuration: 'Avg. Duration:',
       TR_TotalMeetings: 'Total Meetings:',
-      TR_CanceledMeetings: 'Canceled meetings:',
+      TR_CanceledMeetings: 'Canceled Meetings:',
+
 
     });
     $translateProvider.translations('he', {

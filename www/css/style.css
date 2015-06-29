@@ -188,3 +188,14 @@ text-align: center;
 font-size: 18px;
 line-height: 2;
 }
+
+
+.red {
+	color: red;
+	font-weight: bold;
+}
+
+.green {
+	color: green;
+	font-weight: bold;
+}

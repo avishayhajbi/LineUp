@@ -497,7 +497,7 @@ angular.module('starter.controllers', ['ngCordova'])
 	$scope.line = $lineManager.getCurrentLine();
 
 	$scope.$on("lineInfoUpdated", function() {
-		debugger;
+		
 		$scope.line = $lineManager.getCurrentLine();
 	});
 
