@@ -126,13 +126,13 @@
                     </div>
                 </div>
                 <div class="row" ng-repeat="meeting in line.passedMeetings" >
-                    <div class="col col-40 col-offset-5">
+                    <div class="col col-offset-5">
                         <h4 ng-class='{red : meeting.meetingTime > line.druation, green: meeting.meetingTime < line.druation}'>{{meeting.userName}}</h4>
                     </div>
-                    <div class="col col-40 col-offset-5">
+                    <div class="col col-offset-5">
                         <h4 ng-class='{red : meeting.meetingTime > line.druation, green: meeting.meetingTime < line.druation}'>{{meeting.time | date: "HH:mm"}}</h4>
                     </div>
-                  <div class="col col-40 col-offset-5" >
+                  <div class="col col-offset-5" >
                         <h4 ng-class='{red : meeting.meetingTime > line.druation, green: meeting.meetingTime < line.druation}'>{{meeting.meetingTime}}</h4>
                     </div>
                 </div>

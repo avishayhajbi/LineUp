@@ -76,24 +76,24 @@
                     {{"TR_nextMeetings" | translate}}           
             </div>
             <div class="row">
-                <div class="col col-40 col-offset-5">
+                <div class="col col-offset-5">
                     <u>{{"TR_user" | translate}}</u>
                 </div>
-                <div class="col col-40 col-offset-5">
+                <div class="col col-offset-5">
                     <u>{{"TR_date" | translate}}</u>
                 </div>
-                <div class="col col-40 col-offset-5">
+                <div class="col col-offset-5">
                     <u>{{"TR_confirm" | translate}}</u>
                 </div>
             </div>
             <div class="row" ng-repeat="meeting in line.meetings | limitTo:3">
-                <div class="col col-40 col-offset-5">
+                <div class="col col-offset-5">
                     <h4>{{meeting.userName}}</h4>
                 </div>
-                <div class="col col-40 col-offset-5">
+                <div class="col col-offset-5">
                     <h4>{{meeting.time | date: "HH:mm"}}</h4>
                 </div>
-                <div class="col col-40 col-offset-5">
+                <div class="col col-offset-5">
                     <h4 ng-show="meeting.confirmed" class="icon ion-checkmark"></h4>
                     <h4 ng-show="!meeting.confirmed" class="icon ion-close"></h4>
                 </div>
