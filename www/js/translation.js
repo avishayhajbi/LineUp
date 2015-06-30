@@ -131,7 +131,7 @@ angular.module('starter.localization', ['ionic', 'pascalprecht.translate'])
 
       TR_FutureMeetings: 'Future Meetings:',
       TR_PastMeetings: 'Past Meetings:',
-
+      TR_PastLines: 'Past Lines:',
       //line analze
       TR_LineInformation: 'Line information:',
       TR_UsersInLine: 'Users in Line:',

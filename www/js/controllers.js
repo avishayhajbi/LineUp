@@ -675,7 +675,7 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('myLinesCtrl', function($scope, $lineManager, $state, $userManagment, $ionicLoading, $filter) {
 
 	$scope.chooseLineNew = function(id) {
-		debugger;
+
 		$ionicLoading.show({
 			template: $filter('translate')('TR_Loading')
 		});
