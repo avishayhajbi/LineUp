@@ -522,7 +522,7 @@ angular.module('starter.services', ['ngCordova']).config(['$provide', function($
 					if (response.data) {
 						currentLine.lineId = response.data;
 						getLineInfo();
-						return true;
+						return response.data;
 					} else {
 						return false;
 					}

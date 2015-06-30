@@ -205,7 +205,10 @@ angular.module('starter.controllers', ['ngCordova'])
 				if (data) {
 					$state.go("app.lineStatus");
 				} else {
-					//TODO pop up can load line
+					var alertPopup = $ionicPopup.alert({
+					title: "LineUp",
+					template: "somthing went worng please try again"
+				});
 				}
 
 			});
@@ -362,29 +365,6 @@ angular.module('starter.controllers', ['ngCordova'])
 			});
 		})();
 
-		//image handeling
-		// $scope.PicSourece = document.getElementById('smallimage');
-
-		// function UploadPicture(imageURI) {
-		//     if (imageURI.substring(0, 21) == "content://com.android") {
-		//         var photo_split = imageURI.split("%3A");
-		//         imageURI = "content://media/external/images/media/" + photo_split[1];
-		//     }
-		//     $scope.newLine.ImageURI = imageURI;
-		//     $scope.PicSourece.src = imageURI;
-
-		// }
-		// $scope.ShowPictures = function() {
-		//     navigator.camera.getPicture(UploadPicture, function(message) {
-		//         console.log('get picture failed');
-		//     }, {
-		//         quality: 100,
-		//         destinationType: navigator.camera.DestinationType.FILE_URI,
-		//         sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-		//     });
-		// };
-
-
 
 		$scope.createLine = function() {
 			var validStartDate = 0;
@@ -439,8 +419,9 @@ angular.module('starter.controllers', ['ngCordova'])
 							template: $filter('translate')('TR_POPTEMPLATE')
 						});
 					} else {
+						debugger;
 						$scope.user.activeLines.push({
-							lineId: data.lineId,
+							lineId: data,
 							title: $scope.newLine.title
 						});
 						$state.go("app.lineStatus");
@@ -694,6 +675,7 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('myLinesCtrl', function($scope, $lineManager, $state, $userManagment, $ionicLoading, $filter) {
 
 	$scope.chooseLineNew = function(id) {
+		debugger;
 		$ionicLoading.show({
 			template: $filter('translate')('TR_Loading')
 		});
@@ -702,7 +684,10 @@ angular.module('starter.controllers', ['ngCordova'])
 			if (data) {
 				$state.go("app.lineStatus");
 			} else {
-				//TODO pop up can load line
+				var alertPopup = $ionicPopup.alert({
+					title: "LineUp",
+					template: "somthing went worng please try again"
+				});
 			}
 
 		});
